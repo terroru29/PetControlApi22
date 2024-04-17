@@ -13,4 +13,9 @@
         las iniciales de los creadores y del título, rellenas con diferentes animales.</string>
     <string name="eslogan">Cerca de tus animales</string>
 
+    <!-- PANTALLA PRINCIPAL -->
+    <string name="add_type">Añadir tipo</string>
+    <string name="title_main">Tipo animales</string>
+    <string name="img_description">Icono plus para añadir</string>
+
 </resources>
