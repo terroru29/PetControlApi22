@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/sharp_notifications_24"
+        android:title="@string/title_notifications" />
+
+    <item
+        android:id="@+id/navigation_calendar"
+        android:icon="@drawable/outline_calendar_month_24"
+        android:title="@string/title_calendar" />
+
+    <item
+        android:id="@+id/navigation_PC"
+        android:icon="@drawable/baseline_android_24"
+        android:title="@string/title_PC" />
+
+    <item
+        android:id="@+id/navigation_location"
+        android:icon="@drawable/sharp_location_on_24"
+        android:title="@string/title_location" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/outline_settings_24"
+        android:title="@string/title_settings" />
+</menu>
