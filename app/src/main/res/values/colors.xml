@@ -12,4 +12,10 @@
     <color name="yellow_pastel">#FFFFF176</color>
     <color name="purple">#FF6A1B9A</color>
     <color name="grey">#FF737373</color>
+
+    <!-- Switch activado/desactivado-->
+    <color name="colorSwitchThumbDisabled">@android:color/transparent</color>
+    <color name="colorSwitchThumbEnabled">@color/black</color>
+    <!-- Color fondo switch -->
+    <color name="switch_track_color">#FFA500</color>
 </resources>

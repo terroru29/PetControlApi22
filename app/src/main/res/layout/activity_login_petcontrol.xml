@@ -68,6 +68,8 @@
         android:layout_height="wrap_content"
         android:text="@string/terms"
         android:textSize="12sp"
+        android:thumbTint="@color/switch_thumb_selector"
+        android:trackTint="@color/switch_track_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.569"
