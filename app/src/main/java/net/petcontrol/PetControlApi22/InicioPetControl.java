@@ -21,7 +21,8 @@ public class InicioPetControl extends AppCompatActivity {
     TextView txtEslogan;
 
     // PRUEBA
-    Animation aparecer1, aparecer2, aparecer3, aparecer4, aparecer5, aparecer6, aparecer7, aparecer8, aparecer9, aparecer10;
+    Animation aparecer1, aparecer2, aparecer3, aparecer4, aparecer5, aparecer6, aparecer7,
+            aparecer8, aparecer9, aparecer10;
     TextView P, E, T, C, O, N, T2, R2, O2, L;
 
     @SuppressLint("MissingInflatedId")
@@ -62,25 +63,14 @@ public class InicioPetControl extends AppCompatActivity {
         metodoAnimacion(aparecer8, R.anim.appearing8, R2);
         metodoAnimacion(aparecer9, R.anim.appearing9, O2);
         metodoAnimacion(aparecer10, R.anim.appearing10, L);
-
-        //();
     }
 
     public void next(View view) {
         fab = (FloatingActionButton) view;
 
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, LoginPetControl.class);
         startActivity(i);
     }
-    /*
-    public void espera() {
-        try {
-            Thread.sleep(10000);c
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    */
     public void metodoAnimacion(Animation animation, int anim, View view) {
         // Asignación para que cargue la animación (aparición del logo)
         animation = AnimationUtils.loadAnimation(this, anim);
@@ -105,6 +95,15 @@ public class InicioPetControl extends AppCompatActivity {
         moving.reset();
         // Empezamos la animación sobre la imagen (mediante su variable) que queremos que aparezca
         txtEslogan.startAnimation(moving);
+    }
+    */
+    /*
+    public void espera() {
+        try {
+            Thread.sleep(10000);c
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
     */
 }

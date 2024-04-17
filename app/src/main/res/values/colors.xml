@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- Colores creados por Patri -->
     <color name="yellow_pastel">#FFFFF176</color>
     <color name="purple">#FF6A1B9A</color>
+    <color name="grey">#FF737373</color>
 </resources>

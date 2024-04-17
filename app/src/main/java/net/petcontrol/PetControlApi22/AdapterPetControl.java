@@ -23,6 +23,7 @@ public class AdapterPetControl extends ArrayAdapter<MascotasPetControl> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        /*
         //Guardamos en un objeto Libros los ítems
         MascotasPetControl mpc = getItem(position);
 
@@ -40,5 +41,7 @@ public class AdapterPetControl extends ArrayAdapter<MascotasPetControl> {
 
         //Devolvemos la vista
         return v;
+         */
+        return null;
     }
 }

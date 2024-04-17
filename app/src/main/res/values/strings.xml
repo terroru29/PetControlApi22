@@ -13,9 +13,27 @@
         las iniciales de los creadores y del título, rellenas con diferentes animales.</string>
     <string name="eslogan">Cerca de tus animales</string>
 
+    <!-- LOGIN -->
+    <string name="title_login">Login</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_pass">Contraseña</string>
+    <string name="terms">Acepte las condiciones de uso y privacidad </string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="sign_up">Registrarse</string>
+
+
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>
     <string name="title_main">Tipo animales</string>
     <string name="img_description">Icono plus para añadir</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 </resources>
