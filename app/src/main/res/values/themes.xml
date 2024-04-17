@@ -14,8 +14,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!-- Barra inferior (visualiza las demás pantallas abiertas) -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+        <!-- Poner pantalla completa (desaparece barra superior con: hora, batería...) -->
+        <item name="android:windowFullscreen">true</item>
+        <!-- Si está en false no funciona la aplicación -->
+        <item name="windowActionBar">true</item>
+        <!-- Activa/desactiva la barra superior del título -->
+        <item name="windowNoTitle">false</item>
     </style>
-    
+
     <style name="title">
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
