@@ -63,4 +63,11 @@ public class LoginPetControl extends AppCompatActivity {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
+
+    public void register(View view) {
+        signUp = (TextView) view;
+
+        Intent i = new Intent(this, RegisterPetControl.class);
+        startActivity(i);
+    }
 }

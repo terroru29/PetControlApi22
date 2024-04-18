@@ -1,6 +1,7 @@
 <resources>
-    <!-- BOTTOM VIEW -->
     <string name="app_name">PetControl</string>
+
+    <!-- BOTTOM VIEW -->
     <string name="title_notifications">Notifications</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_PC">PC</string>
@@ -22,6 +23,22 @@
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
 
+    <!-- REGISTER -->
+    <string name="title_settings_user">Datos del usuario</string>
+    <string name="txt_name">Nombre:</string>
+    <string name="hint_name">Nombre</string>
+    <string name="txt_surname">Apellido 1:</string>
+    <string name="hint_surname">Apellido 1</string>
+    <string name="txt_second_surname">Apellido 2:</string>
+    <string name="hint_second_surname">Apellido 2</string>
+    <string name="txt_email_user">E-mail:</string>
+    <string name="hint_email_user">E-mail</string>
+    <string name="txt_password_user">Contraseña:</string>
+    <string name="hint_pass_user">Contraseña</string>
+    <string name="txt_picture">Foto:</string>
+    <string name="btn_picture">Buscar imagen...</string>
+
+    <string name="btn_next">Siguiente</string>
 
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>
