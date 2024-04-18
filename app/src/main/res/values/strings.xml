@@ -1,6 +1,6 @@
 <resources>
     <!-- BOTTOM VIEW -->
-    <string name="app_name">PetControlApi22</string>
+    <string name="app_name">PetControl</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_PC">PC</string>
@@ -12,6 +12,7 @@
     <string name="description_pic">Logo de la aplicación que representa las letras P y C, que son
         las iniciales de los creadores y del título, rellenas con diferentes animales.</string>
     <string name="eslogan">Cerca de tus animales</string>
+    <string name="btn_floatting">Botón flotante para pasar de pantalla</string>
 
     <!-- LOGIN -->
     <string name="title_login">Login</string>

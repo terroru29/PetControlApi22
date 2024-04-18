@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Color de la barra deslizante cuando está desactivada -->
-    <item android:color="@color/colorSwitchThumbDisabled" android:state_enabled="false" />
+    <item android:color="@color/switch_pointer_unchecked" android:state_checked="false" />
     <!-- Color de la barra deslizante cuando está activada -->
-    <item android:color="@color/colorSwitchThumbEnabled" />
+    <item android:color="@color/switch_pointer_checked" android:state_checked="true"/>
 </selector>

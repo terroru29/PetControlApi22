@@ -219,6 +219,8 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="next"
+        android:contentDescription="@string/btn_floatting"
+        android:backgroundTint="@color/teal_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.926"

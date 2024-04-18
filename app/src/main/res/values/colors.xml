@@ -13,9 +13,9 @@
     <color name="purple">#FF6A1B9A</color>
     <color name="grey">#FF737373</color>
 
-    <!-- Switch activado/desactivado-->
-    <color name="colorSwitchThumbDisabled">@android:color/transparent</color>
-    <color name="colorSwitchThumbEnabled">@color/black</color>
+    <!-- Switch marcado/no marcado-->
+    <color name="switch_pointer_unchecked">@color/black</color>
+    <color name="switch_pointer_checked">#FFFA52C2</color>
     <!-- Color fondo switch -->
-    <color name="switch_track_color">#FFA500</color>
+    <color name="switch_track_background">#FF340059</color>
 </resources>
