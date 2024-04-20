@@ -36,8 +36,9 @@
     <string name="txt_password_user">Contraseña:</string>
     <string name="hint_pass_user">Contraseña</string>
     <string name="txt_picture">Foto:</string>
-    <string name="btn_picture">Buscar imagen...</string>
-
+    <string name="btn_picture">Buscar imagen…</string>
+    <string name="txt_picture_selected">Imagen.jpg</string>
+    <string name="image_description">Imagen del usuario</string>
     <string name="btn_next">Siguiente</string>
 
     <!-- PANTALLA PRINCIPAL -->

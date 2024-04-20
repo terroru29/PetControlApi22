@@ -21,7 +21,6 @@ public class RegisterPetControl extends AppCompatActivity {
     Button searchPicture;
     TextView pictureSelected;
     ImageView pictureUser;
-    private static final int REQUEST_CODE_FILE_PICKER = 1;
     private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
@@ -44,7 +43,7 @@ public class RegisterPetControl extends AppCompatActivity {
                 intent.setType("*/*");
 
                 // Iniciar la actividad para seleccionar un archivo
-                startActivityForResult(intent, REQUEST_CODE_FILE_PICKER);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
     }
@@ -65,7 +64,7 @@ public class RegisterPetControl extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == REQUEST_CODE_FILE_PICKER || requestCode == PICK_IMAGE_REQUEST )
+        if ((requestCode == PICK_IMAGE_REQUEST)
                 && resultCode == RESULT_OK && data != null) {
             // Obtenemos la URI del archivo seleccionado
             Uri selectedFileUri = data.getData();
@@ -81,9 +80,7 @@ public class RegisterPetControl extends AppCompatActivity {
         }
     }
 
-    /**
-     * Obtener la imagen de la galería.
-     */
+    //Obtener la imagen de la galería.
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
@@ -92,22 +89,17 @@ public class RegisterPetControl extends AppCompatActivity {
      * Obtener el nombre del archivo a partir de su URI
      *
      * @param uri Path of the picture
-     * @return picName Name of the picture
+     * @return picName Name of the picture selected by the user
      */
     @SuppressLint("Range")
     private String getFileName(Uri uri) {
         String picName = null;
         ContentResolver contentResolver = getContentResolver();
 
-        Cursor cursor = contentResolver.query(uri, null, null, null, null);
-
-        try {
+        // El try-with-resources permite que se cierren automáticametne los recursos (sin finally)
+        try (Cursor cursor = contentResolver.query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 picName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
             }
         }
         return picName;
