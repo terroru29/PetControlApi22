@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "net.petcontrol.PetControlApi22"
-        minSdk = 28
+        minSdk = 22
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -43,6 +43,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
+    //implementation("com.android.car.ui:car-ui-lib:2.0.0")
     implementation("com.android.car.ui:car-ui-lib:2.6.0")
     implementation("androidx.annotation:annotation:1.7.1")
     testImplementation("junit:junit:4.13.2")
