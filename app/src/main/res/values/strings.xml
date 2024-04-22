@@ -18,6 +18,8 @@
     <!-- LOGIN -->
     <string name="title_login">Login</string>
     <string name="hint_email">E-mail</string>
+    <string name="validation_email">El correo tiene el formato correcto.</string>
+    <string name="invalidation_email">El correo tiene un formato incorrecto.</string>
     <string name="hint_pass">Contraseña</string>
     <string name="terms">Acepte las condiciones de uso y privacidad </string>
     <string name="log_in">Iniciar sesión</string>
