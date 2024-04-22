@@ -13,13 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 public class LoginPetControl extends AppCompatActivity {
 
     Button logIn;
-    TextView terms, signUp;
-    String requirements, conditions;
+    TextView terms, signUp, validationEmail;
+    String correoElectronico, requirements, conditions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +27,20 @@ public class LoginPetControl extends AppCompatActivity {
         logIn = findViewById(R.id.btnLogIn);
         terms = findViewById(R.id.switchTerms);
         signUp = findViewById(R.id.txtSignUp);
+        validationEmail = findViewById(R.id.txtValidationEmail);
+
+        /*
+        correoElectronico = (String) validationEmail.getText();
+        // Validación de correo --> Si funciona aparece en verde, sino, en rojo
+        if (emailValidation(correoElectronico))
+            // Ponerlo en recurso String
+            validationEmail.setText("El correo tiene el formato correcto.");
+        else {
+            validationEmail.setText("El correo no tiene el formato correcto.");
+            validationEmail.setTextColor(Color.RED);
+        }
+         */
+
 
         // ----- CAMBIAR COLOR DEL TEXTO DEL SWITCH -----
         // Obtener String del Switch
@@ -51,23 +63,38 @@ public class LoginPetControl extends AppCompatActivity {
         // Establecer la cadena formateada en el TextView
         terms.setText(spannableString);
 
+
         // ----- SUBRAYAR PALABRA PARA IMITAR UN ENLACE ----
         // Subrayar Registro
         signUp.setPaintFlags(signUp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         signUp.setText(R.string.sign_up);
     }
 
+    // Pasar a la pantalla de inicio de sesión
     public void nextWindow(View view) {
         logIn = (Button) view;
 
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, MenuInferiorPetControl.class);
         startActivity(i);
     }
 
+    // Cambio de pantalla al registro
     public void register(View view) {
         signUp = (TextView) view;
 
         Intent i = new Intent(this, RegisterPetControl.class);
         startActivity(i);
+    }
+    /**
+     *  Método que valida el correo electrónico: Mín. 1 @ y 1 . al final con la extensión (3-4 letras)
+     *
+     * @param correo Correo electrónico del usuario
+     * @return Variable que indica si el correo está bien o no
+     */
+    public boolean emailValidation(String correo) {
+        boolean correcto = false;
+
+        //if (correo.contains())
+        return correcto;
     }
 }

@@ -15,6 +15,8 @@
     <color name="grey">#FF737373</color>
     <color name="beige">#FFE3C986</color>
     <color name="grey_dark">#FF4A4A4A</color>
+    <color name="green">#FF4DBC34</color>
+    <color name="red">#FFEF1010</color>
 
 
     <!-- Switch marcado/no marcado-->

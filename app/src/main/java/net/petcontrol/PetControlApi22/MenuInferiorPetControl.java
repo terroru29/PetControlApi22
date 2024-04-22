@@ -2,7 +2,7 @@ package net.petcontrol.PetControlApi22;
 
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+//import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -10,20 +10,20 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import net.petcontrol.PetControlApi22.databinding.ActivityMainBinding;
+import net.petcontrol.PetControlApi22.databinding.ActivityMenuInferiorPetcontrolBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MenuInferiorPetControl extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    private ActivityMenuInferiorPetcontrolBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMenuInferiorPetcontrolBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navViewBottom = findViewById(R.id.nav_view_bottom);
+        //BottomNavigationView navViewBottom = findViewById(R.id.nav_view_bottom);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -34,5 +34,4 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navViewBottom, navController);
     }
-
 }
