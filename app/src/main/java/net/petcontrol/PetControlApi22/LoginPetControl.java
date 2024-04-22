@@ -19,10 +19,10 @@ import android.widget.TextView;
 public class LoginPetControl extends AppCompatActivity {
 
     Button logIn;
-    TextView terms, signUp, messageEmail;
+    TextView terms, signUp, messageEmail, messagePass;
     EditText validationEmail, validationPass;
     String email, mensajeEmailCorrect, cadenaCorrecta, mensajeEmailIncorrect, cadenaIncorrecta,
-            requirements, conditions;
+            pass, passCorrect, msgPassCorrect, passIncorrect, msgPassIncorrect, requirements, conditions;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
     @Override
@@ -37,6 +37,7 @@ public class LoginPetControl extends AppCompatActivity {
         validationEmail = findViewById(R.id.etEmail);
         messageEmail = findViewById(R.id.txtValidationEmail);
         validationPass = findViewById(R.id.etPassword);
+        messagePass = findViewById(R.id.txtValidationPass);
 
 
         //-Evento EditText
@@ -76,10 +77,22 @@ public class LoginPetControl extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                pass = validationPass.getText().toString();
+                // Validación de correo --> Si es correcto aparece en verde, sino, en rojo
+                if (passValidation(pass)) {
+                    passCorrect = getResources().getString(R.string.validation_pass);
+                    msgPassCorrect = String.format(passCorrect);
+                    messagePass.setText(msgPassCorrect);
+                    messagePass.setTextColor(Color.parseColor("#FF4DBC34"));
+                }
+                else {
+                    passIncorrect = getResources().getString(R.string.invalidation_pass);
+                    msgPassIncorrect = String.format(passIncorrect);
+                    messagePass.setText(msgPassIncorrect);
+                    messagePass.setTextColor(Color.RED);
+                }
             }
         });
-
 
 
         // ----- CAMBIAR COLOR DEL TEXTO DEL SWITCH -----
@@ -130,6 +143,7 @@ public class LoginPetControl extends AppCompatActivity {
      *
      * @param email Correo electrónico del usuario para validar
      * @return true si el correo es correcto; false si es incorrecto
+     *
      */
     public boolean emailValidation(String email) {
         boolean correct = false;
@@ -149,12 +163,13 @@ public class LoginPetControl extends AppCompatActivity {
         }
         return correct;
     }
-
     /**
+     * Método que valida la contraseña: Mínimo una minúscula, una mayúscula, un dígito,
+     * un carácter especial y que tenga una longitud entre 8 y 12 caracteres.
      *
-     * @param pass Contraseña del usuario a validar --> Mínimo una minúscula, una mayúscula,
-     *             un dígito, un carácter especial y que tenga una longitud entre 8 y 12 caracteres.
+     * @param pass Contraseña del usuario a validar
      * @return true si cumple los requisitos anteriores; false en caso contrario
+     *
      */
     public boolean passValidation(String pass) {
         boolean correct = false;

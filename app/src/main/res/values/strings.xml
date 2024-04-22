@@ -21,6 +21,8 @@
     <string name="validation_email">El correo tiene el formato correcto.</string>
     <string name="invalidation_email">El correo tiene un formato incorrecto.</string>
     <string name="hint_pass">Contraseña</string>
+    <string name="validation_pass">La contraseña tiene el formato correcto.</string>
+    <string name="invalidation_pass">La contraseña tiene un formato incorrecto.</string>
     <string name="terms">Acepte las condiciones de uso y privacidad </string>
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
