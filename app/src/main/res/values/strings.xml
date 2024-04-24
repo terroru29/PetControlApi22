@@ -28,6 +28,14 @@
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
 
+    <!-- CHANGE PASSWORD -->
+    <string name="new_password">Nueva contraseña</string>
+    <string name="hint_new_password">Contraseña nueva</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="hint_confirm_password">Confirmar contraseña</string>
+    <string name="btn_accept">Aceptar</string>
+    <string name="btn_cancel">Cancelar</string>
+
     <!-- REGISTER -->
     <string name="title_settings_user">Datos del usuario</string>
     <string name="txt_name">Nombre:</string>

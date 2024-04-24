@@ -1,7 +1,9 @@
 package net.petcontrol.PetControlApi22;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,20 +11,24 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginPetControl extends AppCompatActivity {
 
     Button logIn;
     TextView forgotPassword, terms, signUp, messageEmail, messagePass;
-    EditText validationEmail, validationPass;
+    EditText validationEmail, validationPass, newPassword, confirmPassword;
     String email, mensajeEmailCorrect, cadenaCorrecta, mensajeEmailIncorrect, cadenaIncorrecta,
-            pass, passCorrect, msgPassCorrect, passIncorrect, msgPassIncorrect, requirements, conditions;
+            pass, passCorrect, msgPassCorrect, passIncorrect, msgPassIncorrect, requirements,
+            conditions, passwordNew, passwordConfirm;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
     @Override
@@ -208,5 +214,62 @@ public class LoginPetControl extends AppCompatActivity {
     public void muteValidation(String et, TextView text) {
         if (et.isEmpty())
             text.setText("");
+    }
+
+    public void forgotPassword(View v) {
+        forgotPassword = (TextView) v;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Establece el diseño personalizado para el diálogo
+        View design = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+        builder.setView(design);
+
+        // Configuración de los botones
+        //-Aceptar
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newPassword = design.findViewById(R.id.etNewPassword);
+                confirmPassword = design.findViewById(R.id.etConfirmPassword);
+
+                passwordNew = newPassword.getText().toString();
+                passwordConfirm = confirmPassword.getText().toString();
+
+                if (TextUtils.isEmpty(passwordNew) || TextUtils.isEmpty(passwordConfirm))
+                    Toast.makeText(getApplicationContext(), "Por favor ingresa ambos campos",
+                            Toast.LENGTH_SHORT).show();
+                else if (!TextUtils.equals(passwordNew, passwordConfirm))
+                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden",
+                            Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Contraseña cambiada con éxito",
+                            Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Cierra el diálogo sin hacer nada
+                dialog.dismiss();
+            }
+        });
+
+        // Muestra el diálogo
+        AlertDialog dialog = builder.create();
+        // Configurar el tamaño deseado del diálogo
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                // Establecer el tamaño del diálogo
+                dialog.getWindow().setLayout(
+                        // 90% del ancho de la pantalla
+                        (int) (getResources().getDisplayMetrics().widthPixels * 0.9),
+                        WindowManager.LayoutParams.WRAP_CONTENT
+                );
+            }
+        });
+        dialog.show();
     }
 }
