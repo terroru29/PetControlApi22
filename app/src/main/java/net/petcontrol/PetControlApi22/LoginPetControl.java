@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class LoginPetControl extends AppCompatActivity {
 
     Button logIn;
-    TextView terms, signUp, messageEmail, messagePass;
+    TextView forgotPassword, terms, signUp, messageEmail, messagePass;
     EditText validationEmail, validationPass;
     String email, mensajeEmailCorrect, cadenaCorrecta, mensajeEmailIncorrect, cadenaIncorrecta,
             pass, passCorrect, msgPassCorrect, passIncorrect, msgPassIncorrect, requirements, conditions;
@@ -31,13 +31,14 @@ public class LoginPetControl extends AppCompatActivity {
         setContentView(R.layout.activity_login_petcontrol);
 
         // Asociación de variables con sus recursos
-        logIn = findViewById(R.id.btnLogIn);
-        terms = findViewById(R.id.switchTerms);
-        signUp = findViewById(R.id.txtSignUp);
         validationEmail = findViewById(R.id.etEmail);
         messageEmail = findViewById(R.id.txtValidationEmail);
         validationPass = findViewById(R.id.etPassword);
         messagePass = findViewById(R.id.txtValidationPass);
+        forgotPassword = findViewById(R.id.txtForgotPassword);
+        terms = findViewById(R.id.txtTerms);
+        logIn = findViewById(R.id.btnLogIn);
+        signUp = findViewById(R.id.txtSignUp);
 
 
         //-Evento EditText
@@ -65,6 +66,7 @@ public class LoginPetControl extends AppCompatActivity {
                     messageEmail.setText(cadenaIncorrecta);
                     messageEmail.setTextColor(Color.RED);
                 }
+                muteValidation(email, messageEmail);
             }
         });
         //--Password
@@ -91,6 +93,7 @@ public class LoginPetControl extends AppCompatActivity {
                     messagePass.setText(msgPassIncorrect);
                     messagePass.setTextColor(Color.RED);
                 }
+                muteValidation(pass, messagePass);
             }
         });
 
@@ -121,6 +124,9 @@ public class LoginPetControl extends AppCompatActivity {
         // Subrayar Registro
         signUp.setPaintFlags(signUp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         signUp.setText(R.string.sign_up);
+        // Subrayar Olvidar contraseña
+        forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        forgotPassword.setText(R.string.forgot_password);
     }
 
     // Pasar a la pantalla de inicio de sesión
@@ -191,5 +197,16 @@ public class LoginPetControl extends AppCompatActivity {
                 correct = true;
         }
         return correct;
+    }
+
+    /**
+     * Silenciar la validación en caso de que los campos a comprobar estén vacíos
+     *
+     * @param et Caja de texto
+     * @param text Mensaje a mostrar para la validación
+     */
+    public void muteValidation(String et, TextView text) {
+        if (et.isEmpty())
+            text.setText("");
     }
 }

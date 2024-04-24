@@ -23,7 +23,8 @@
     <string name="hint_pass">Contraseña</string>
     <string name="validation_pass">La contraseña tiene el formato correcto.</string>
     <string name="invalidation_pass">La contraseña tiene un formato incorrecto.</string>
-    <string name="terms">Acepte las condiciones de uso y privacidad </string>
+    <string name="forgot_password">¿Has olvidado la contraseña?</string>
+    <string name="terms">Acepte las condiciones de uso y privacidad   </string>
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
 

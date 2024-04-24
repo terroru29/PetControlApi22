@@ -65,12 +65,25 @@ public class InicioPetControl extends AppCompatActivity {
         metodoAnimacion(aparecer10, R.anim.appearing10, L);
     }
 
+    /**
+     * Pasará a la ventana indicada --> Iniciar sesión/Registros
+     *
+     * @param view Elemento sobre el que se ejcutará la acción
+     */
     public void next(View view) {
         fab = (FloatingActionButton) view;
 
         Intent i = new Intent(this, LoginPetControl.class);
         startActivity(i);
     }
+
+    /**
+     * Proyectará la animación sobre el elemento pasados como argumentos
+     *
+     * @param animation Objeto que almacenará la animación
+     * @param anim Archivo de animación
+     * @param view Elemento sobre el que se va a proyectar
+     */
     public void metodoAnimacion(Animation animation, int anim, View view) {
         // Asignación para que cargue la animación (aparición del logo)
         animation = AnimationUtils.loadAnimation(this, anim);

@@ -17,6 +17,7 @@
     <color name="grey_dark">#FF4A4A4A</color>
     <color name="green">#FF4DBC34</color>
     <color name="red">#FFEF1010</color>
+    <color name="link_blue">#FF0C4EFA</color>
 
 
     <!-- Switch marcado/no marcado-->
