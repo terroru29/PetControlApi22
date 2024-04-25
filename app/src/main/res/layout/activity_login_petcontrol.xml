@@ -35,21 +35,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.225" />
 
-    <TextView
-        android:id="@+id/txtValidationEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/green"
-        android:textSize="13sp"
-        android:typeface="serif"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284" />
-
     <EditText
         android:id="@+id/etPassword"
         style="@style/edit_text"
@@ -69,47 +54,18 @@
     <TextView
         android:id="@+id/txtForgotPassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:onClick="forgotPassword"
         android:text="@string/forgot_password"
         android:textColor="@color/link_blue"
         android:textSize="13sp"
         android:textStyle="italic"
-        android:onClick="forgotPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.692"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.42" />
-
-    <TextView
-        android:id="@+id/txtValidationPass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/green"
-        android:textSize="13sp"
-        android:typeface="serif"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.378" />
-
-    <Button
-        android:id="@+id/btnLogIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="nextWindow"
-        android:text="@string/log_in"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547"
-        tools:ignore="UsingOnClickInXml" />
 
     <TextView
         android:id="@+id/txtTerms"
@@ -126,21 +82,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.477" />
 
-    <TextView
-        android:id="@+id/txtTerms2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/without_account"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.602" />
-
     <Switch
         android:id="@+id/switchTerms"
         android:layout_width="48dp"
@@ -155,6 +96,35 @@
         app:layout_constraintVertical_bias="0.477"
         tools:ignore="UseSwitchCompatOrMaterialXml"
         tools:targetApi="m" />
+
+    <Button
+        android:id="@+id/btnLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="nextWindow"
+        android:text="@string/log_in"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.547"
+        tools:ignore="UsingOnClickInXml" />
+
+    <TextView
+        android:id="@+id/txtWithoutAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/without_account"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.602" />
 
     <TextView
         android:id="@+id/txtSignUp"

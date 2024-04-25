@@ -28,15 +28,11 @@ public class LoginPetControl extends AppCompatActivity {
     Button logIn;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch termsAndConditions;
-    TextView forgotPassword, terms, signUp, messageEmail, messagePass;
-    EditText validationEmail, validationPass, newPassword, confirmPassword;
-    String email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
-            pass, msgPassCorrect, msgPassIncorrect, passSaved, passwordNew, passwordConfirm,
-            conditions, credentials, acceptTerms;
-    boolean validateEmail, validatePass, termsCheck;
-    // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
-    private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
-    OwnerPetControl opc = new OwnerPetControl();
+    TextView forgotPassword, terms, signUp;
+    EditText emailUser, passUser, newPassword, confirmPassword;
+    String email, emailSaved, pass, passSaved, passwordNew, passwordConfirm, conditions,
+            credentials, acceptTerms;
+    boolean termsCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,72 +40,13 @@ public class LoginPetControl extends AppCompatActivity {
         setContentView(R.layout.activity_login_petcontrol);
 
         // Asociación de variables con sus recursos
-        validationEmail = findViewById(R.id.etEmail);
-        messageEmail = findViewById(R.id.txtValidationEmail);
-        validationPass = findViewById(R.id.etPassword);
-        messagePass = findViewById(R.id.txtValidationPass);
+        emailUser = findViewById(R.id.etEmail);
+        passUser = findViewById(R.id.etPassword);
         forgotPassword = findViewById(R.id.txtForgotPassword);
         terms = findViewById(R.id.txtTerms);
         termsAndConditions = findViewById(R.id.switchTerms);
         logIn = findViewById(R.id.btnLogIn);
         signUp = findViewById(R.id.txtSignUp);
-
-
-        //-Evento EditText
-        //--Email
-        validationEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                email = validationEmail.getText().toString();
-                // Validación de correo --> Si es correcto aparece en verde, sino, en rojo
-                if (emailValidation(email)) {
-                    msgEmailCorrect = getResources().getString(R.string.validation_email);
-                    messageEmail.setText(msgEmailCorrect);
-                    messageEmail.setTextColor(Color.parseColor("#FF4DBC34"));
-                    validateEmail = true;
-                }
-                else {
-                    msgEmailIncorrect = getResources().getString(R.string.invalidation_email);
-                    messageEmail.setText(msgEmailIncorrect);
-                    messageEmail.setTextColor(Color.RED);
-                    validateEmail = false;
-                }
-                muteValidation(email, messageEmail);
-            }
-        });
-        //--Password
-        validationPass.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                pass = validationPass.getText().toString();
-                // Validación de contraseña --> Si es correcta aparece en verde, sino, en rojo
-                if (passValidation(pass)) {
-                    msgPassCorrect = getResources().getString(R.string.validation_pass);
-                    messagePass.setText(msgPassCorrect);
-                    messagePass.setTextColor(Color.parseColor("#FF4DBC34"));
-                    validatePass = true;
-                }
-                else {
-                    msgPassIncorrect = getResources().getString(R.string.invalidation_pass);
-                    messagePass.setText(msgPassIncorrect);
-                    messagePass.setTextColor(Color.RED);
-                    validatePass = false;
-                }
-                muteValidation(pass, messagePass);
-            }
-        });
 
 
         // ----- CAMBIAR COLOR DEL TEXTO DEL SWITCH -----
@@ -146,17 +83,6 @@ public class LoginPetControl extends AppCompatActivity {
     public void nextWindow(View view) {
         logIn = (Button) view;
 
-        if (validateEmail) {
-            // Almacenamos el email introducido
-            opc.setEmail(email);
-            emailSaved = opc.getEmail();
-            //Toast.makeText(this, emailSaved, Toast.LENGTH_LONG).show();
-        }
-        if (validatePass) {
-            opc.setPassword(pass);
-            passSaved = opc.getPassword();
-            //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
-        }
         if (termsAndConditions.isChecked())
             termsCheck = true;
         else {
@@ -165,7 +91,11 @@ public class LoginPetControl extends AppCompatActivity {
             termsCheck = false;
         }
 
-        if (validateEmail && validatePass) {
+        // Obtenemos el texto escrito por el usuario en las cajas
+        email = emailUser.getText().toString();
+        pass = passUser.getText().toString();
+
+        if (!(email.isEmpty() && pass.isEmpty())) {
             Toast.makeText(this, emailSaved + " " + passSaved, Toast.LENGTH_LONG).show();
 
             if (termsCheck) {
@@ -186,72 +116,6 @@ public class LoginPetControl extends AppCompatActivity {
         Intent i = new Intent(this, RegisterPetControl.class);
         startActivity(i);
     }
-    /**
-     *  Método que valida el correo electrónico: Mín. 1 @ y 1 . al final con la extensión (3-4 letras)
-     *
-     * @param email Correo electrónico del usuario para validar
-     * @return true si el correo es correcto; false si es incorrecto
-     *
-     */
-    public boolean emailValidation(String email) {
-        boolean correct = false;
-        int countArroba = 0, countPoint = 0;
-
-        if (email != null) {
-            for (int i = 0; i < email.length(); i++) {
-                if (email.charAt(i) == '@') {
-                    countArroba++;
-                }
-                if (email.charAt(i) == '.') {
-                    countPoint++;
-                }
-            }
-            if (countArroba == 1 && countPoint >= 1 && email.matches(EMAIL_PATTERN))
-                correct = true;
-        }
-        return correct;
-    }
-    /**
-     * Método que valida la contraseña: Mínimo una minúscula, una mayúscula, un dígito,
-     * un carácter especial y que tenga una longitud entre 8 y 12 caracteres.
-     *
-     * @param pass Contraseña del usuario a validar
-     * @return true si cumple los requisitos anteriores; false en caso contrario
-     *
-     */
-    public boolean passValidation(String pass) {
-        boolean correct = false;
-        int countLow = 0, countUp = 0, countNum = 0, countSpe = 0;
-
-        if (pass != null) {
-            for (int i = 0; i < pass.length(); i++) {
-                if (pass.charAt(i) >= 'a' && pass.charAt(i) <= 'z')
-                    countLow++;
-                else if (pass.charAt(i) >= 'A' && pass.charAt(i) <= 'Z')
-                    countUp++;
-                else if (pass.charAt(i) >= '0' && pass.charAt(i) <= '9')
-                    countNum++;
-                else
-                    countSpe++;
-            }
-            if (countLow >= 1 && countUp >= 1 && countNum >= 1 &&
-                    (pass.length() >= 8 && pass.length() <= 12) && countSpe >= 1)
-                correct = true;
-        }
-        return correct;
-    }
-
-    /**
-     * Silenciar la validación en caso de que los campos a comprobar estén vacíos
-     *
-     * @param et Caja de texto
-     * @param text Mensaje a mostrar para la validación
-     */
-    public void muteValidation(String et, TextView text) {
-        if (et.isEmpty())
-            text.setText("");
-    }
-
     public void forgotPassword(View v) {
         forgotPassword = (TextView) v;
 
