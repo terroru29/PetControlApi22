@@ -3,6 +3,7 @@ package net.petcontrol.PetControlApi22;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,19 +19,25 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginPetControl extends AppCompatActivity {
 
     Button logIn;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch termsAndConditions;
     TextView forgotPassword, terms, signUp, messageEmail, messagePass;
     EditText validationEmail, validationPass, newPassword, confirmPassword;
-    String email, mensajeEmailCorrect, cadenaCorrecta, mensajeEmailIncorrect, cadenaIncorrecta,
-            pass, passCorrect, msgPassCorrect, passIncorrect, msgPassIncorrect, requirements,
-            conditions, passwordNew, passwordConfirm;
+    String email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
+            pass, msgPassCorrect, msgPassIncorrect, passSaved, passwordNew, passwordConfirm,
+            conditions, credentials, acceptTerms;
+    boolean validateEmail, validatePass, termsCheck;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
+    OwnerPetControl opc = new OwnerPetControl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,7 @@ public class LoginPetControl extends AppCompatActivity {
         messagePass = findViewById(R.id.txtValidationPass);
         forgotPassword = findViewById(R.id.txtForgotPassword);
         terms = findViewById(R.id.txtTerms);
+        termsAndConditions = findViewById(R.id.switchTerms);
         logIn = findViewById(R.id.btnLogIn);
         signUp = findViewById(R.id.txtSignUp);
 
@@ -61,16 +69,16 @@ public class LoginPetControl extends AppCompatActivity {
                 email = validationEmail.getText().toString();
                 // Validación de correo --> Si es correcto aparece en verde, sino, en rojo
                 if (emailValidation(email)) {
-                    mensajeEmailCorrect = getResources().getString(R.string.validation_email);
-                    cadenaCorrecta = String.format(mensajeEmailCorrect);
-                    messageEmail.setText(cadenaCorrecta);
+                    msgEmailCorrect = getResources().getString(R.string.validation_email);
+                    messageEmail.setText(msgEmailCorrect);
                     messageEmail.setTextColor(Color.parseColor("#FF4DBC34"));
+                    validateEmail = true;
                 }
                 else {
-                    mensajeEmailIncorrect = getResources().getString(R.string.invalidation_email);
-                    cadenaIncorrecta = String.format(mensajeEmailIncorrect);
-                    messageEmail.setText(cadenaIncorrecta);
+                    msgEmailIncorrect = getResources().getString(R.string.invalidation_email);
+                    messageEmail.setText(msgEmailIncorrect);
                     messageEmail.setTextColor(Color.RED);
+                    validateEmail = false;
                 }
                 muteValidation(email, messageEmail);
             }
@@ -86,18 +94,18 @@ public class LoginPetControl extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 pass = validationPass.getText().toString();
-                // Validación de correo --> Si es correcto aparece en verde, sino, en rojo
+                // Validación de contraseña --> Si es correcta aparece en verde, sino, en rojo
                 if (passValidation(pass)) {
-                    passCorrect = getResources().getString(R.string.validation_pass);
-                    msgPassCorrect = String.format(passCorrect);
+                    msgPassCorrect = getResources().getString(R.string.validation_pass);
                     messagePass.setText(msgPassCorrect);
                     messagePass.setTextColor(Color.parseColor("#FF4DBC34"));
+                    validatePass = true;
                 }
                 else {
-                    passIncorrect = getResources().getString(R.string.invalidation_pass);
-                    msgPassIncorrect = String.format(passIncorrect);
+                    msgPassIncorrect = getResources().getString(R.string.invalidation_pass);
                     messagePass.setText(msgPassIncorrect);
                     messagePass.setTextColor(Color.RED);
+                    validatePass = false;
                 }
                 muteValidation(pass, messagePass);
             }
@@ -106,8 +114,7 @@ public class LoginPetControl extends AppCompatActivity {
 
         // ----- CAMBIAR COLOR DEL TEXTO DEL SWITCH -----
         // Obtener String del Switch
-        requirements = getResources().getString(R.string.terms);
-        conditions = String.format(requirements);
+        conditions = getResources().getString(R.string.terms);
 
         // Crear una instancia de SpannableString con el texto completo
         SpannableString spannableString = new SpannableString(conditions);
@@ -139,8 +146,37 @@ public class LoginPetControl extends AppCompatActivity {
     public void nextWindow(View view) {
         logIn = (Button) view;
 
-        Intent i = new Intent(this, MenuInferiorPetControl.class);
-        startActivity(i);
+        if (validateEmail) {
+            // Almacenamos el email introducido
+            opc.setEmail(email);
+            emailSaved = opc.getEmail();
+            //Toast.makeText(this, emailSaved, Toast.LENGTH_LONG).show();
+        }
+        if (validatePass) {
+            opc.setPassword(pass);
+            passSaved = opc.getPassword();
+            //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
+        }
+        if (termsAndConditions.isChecked())
+            termsCheck = true;
+        else {
+            acceptTerms = getResources().getString(R.string.accept_conditions);
+            Toast.makeText(this, acceptTerms, Toast.LENGTH_LONG).show();
+            termsCheck = false;
+        }
+
+        if (validateEmail && validatePass) {
+            Toast.makeText(this, emailSaved + " " + passSaved, Toast.LENGTH_LONG).show();
+
+            if (termsCheck) {
+                Intent i = new Intent(this, MenuInferiorPetControl.class);
+                startActivity(i);
+            }
+        }
+        else {
+            credentials = getResources().getString(R.string.incorrect_credentials);
+            Toast.makeText(this, credentials, Toast.LENGTH_LONG).show();
+        }
     }
 
     // Cambio de pantalla al registro
@@ -273,3 +309,6 @@ public class LoginPetControl extends AppCompatActivity {
         dialog.show();
     }
 }
+//TODO Comparar email y contraseña con las almacenadas en la BD
+//TODO Guardar la contraseña que se escriba en confirmación de contraseña
+//TODO Guardar correo y contraseña de registro
