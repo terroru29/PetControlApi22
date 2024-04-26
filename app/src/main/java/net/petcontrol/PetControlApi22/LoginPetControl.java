@@ -30,9 +30,10 @@ public class LoginPetControl extends AppCompatActivity {
     Switch termsAndConditions;
     TextView forgotPassword, terms, signUp;
     EditText emailUser, passUser, newPassword, confirmPassword;
-    String email, emailSaved, pass, passSaved, passwordNew, passwordConfirm, conditions,
+    String email, pass, passwordNew, passwordConfirm, conditions,
             credentials, acceptTerms;
-    boolean termsCheck;
+    boolean change = false, termsCheck;
+    OwnerPetControl opc = new OwnerPetControl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,36 @@ public class LoginPetControl extends AppCompatActivity {
         logIn = findViewById(R.id.btnLogIn);
         signUp = findViewById(R.id.txtSignUp);
 
+
+        //-Evento EditText
+        //--Email
+        emailUser.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable e) {
+                // Obtenemos el texto escrito por el usuario en la caja
+                email = emailUser.getText().toString();
+            }
+        });
+        //--Contraseña
+        passUser.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable edit) {
+                // Obtenemos el texto escrito por el usuario en la caja
+                pass = passUser.getText().toString();
+            }
+        });
 
         // ----- CAMBIAR COLOR DEL TEXTO DEL SWITCH -----
         // Obtener String del Switch
@@ -91,12 +122,12 @@ public class LoginPetControl extends AppCompatActivity {
             termsCheck = false;
         }
 
-        // Obtenemos el texto escrito por el usuario en las cajas
-        email = emailUser.getText().toString();
-        pass = passUser.getText().toString();
+        Toast.makeText(this, "Email guardado: " + getIntent().getStringExtra("email"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Pass guardada: " + getIntent().getStringExtra("pass"), Toast.LENGTH_SHORT).show();
 
-        if (!(email.isEmpty() && pass.isEmpty())) {
-            Toast.makeText(this, emailSaved + " " + passSaved, Toast.LENGTH_LONG).show();
+        if (email.equals(getIntent().getStringExtra("email"))
+                && pass.equals(getIntent().getStringExtra("pass"))) {
+            Toast.makeText(this, email + "···" + pass, Toast.LENGTH_LONG).show();
 
             if (termsCheck) {
                 Intent i = new Intent(this, MenuInferiorPetControl.class);
@@ -142,9 +173,16 @@ public class LoginPetControl extends AppCompatActivity {
                 else if (!TextUtils.equals(passwordNew, passwordConfirm))
                     Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden",
                             Toast.LENGTH_SHORT).show();
-                else
+                else {
                     Toast.makeText(getApplicationContext(), "Contraseña cambiada con éxito",
                             Toast.LENGTH_SHORT).show();
+                    change = true;
+                }
+
+                if (change) {
+                    opc.setPassword(passwordConfirm);
+                    Toast.makeText(getApplicationContext(), "Change: " + opc.toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -175,4 +213,3 @@ public class LoginPetControl extends AppCompatActivity {
 }
 //TODO Comparar email y contraseña con las almacenadas en la BD
 //TODO Guardar la contraseña que se escriba en confirmación de contraseña
-//TODO Guardar correo y contraseña de registro

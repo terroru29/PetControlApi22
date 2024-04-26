@@ -137,15 +137,15 @@
 
     <TextView
         android:id="@+id/txtValidationEmail"
-        android:layout_width="2dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/green"
         android:textSize="13sp"
         android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.870"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.566" />
@@ -181,15 +181,15 @@
 
     <TextView
         android:id="@+id/txtValidationPass"
-        android:layout_width="2dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/green"
         android:textSize="13sp"
         android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintHorizontal_bias="0.82"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.68" />
@@ -255,7 +255,6 @@
         android:id="@+id/btnNextConfiguration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="nextWindowOfConfiguration"
         android:text="@string/btn_next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -18,11 +18,7 @@
     <!-- LOGIN -->
     <string name="title_login">Login</string>
     <string name="hint_email">E-mail</string>
-    <string name="validation_email">El correo tiene el formato correcto.</string>
-    <string name="invalidation_email">El correo tiene un formato incorrecto.</string>
     <string name="hint_pass">Contraseña</string>
-    <string name="validation_pass">La contraseña tiene el formato correcto.</string>
-    <string name="invalidation_pass">La contraseña tiene un formato incorrecto.</string>
     <string name="forgot_password">¿Has olvidado la contraseña?</string>
     <string name="terms">Acepte las condiciones de uso y privacidad   </string>
     <string name="log_in">Iniciar sesión</string>
@@ -49,13 +45,18 @@
     <string name="hint_second_surname">Apellido 2</string>
     <string name="txt_email_user">E-mail:</string>
     <string name="hint_email_user">E-mail</string>
+    <string name="validation_email">El correo tiene el formato correcto.</string>
+    <string name="invalidation_email">El correo tiene un formato incorrecto.</string>
     <string name="txt_password_user">Contraseña:</string>
     <string name="hint_pass_user">Contraseña</string>
+    <string name="validation_pass">La contraseña tiene el formato correcto.</string>
+    <string name="invalidation_pass">La contraseña tiene un formato incorrecto.</string>
     <string name="txt_picture">Foto:</string>
     <string name="btn_picture">Buscar imagen…</string>
     <string name="txt_picture_selected">Imagen.jpg</string>
     <string name="image_description">Imagen del usuario</string>
     <string name="btn_next">Siguiente</string>
+    <string name="incorrect_access">El e-mail o la contraseña no cumplen los requisitos.</string>
 
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>

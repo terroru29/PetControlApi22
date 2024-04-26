@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterPetControl extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class RegisterPetControl extends AppCompatActivity {
     TextView messageEmail, messagePass, pictureSelected;
     ImageView pictureUser;
     String email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
-            pass, msgPassCorrect, msgPassIncorrect, passSaved;
+            pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
     boolean validateEmail, validatePass;
     private static final int PICK_IMAGE_REQUEST = 1;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
@@ -46,7 +47,7 @@ public class RegisterPetControl extends AppCompatActivity {
         searchPicture = findViewById(R.id.btnPicture);
         pictureUser = findViewById(R.id.ivUser);
         pictureSelected = findViewById(R.id.txtPictureSelected);
-        next = findViewById(R.id.btnNext);
+        next = findViewById(R.id.btnNextConfiguration);
 
 
         //-Evento EditText
@@ -59,7 +60,7 @@ public class RegisterPetControl extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable e) {
                 email = validationEmail.getText().toString();
                 // Validación de correo --> Si es correcto aparece en verde, sino, en rojo
                 if (emailValidation(email)) {
@@ -107,6 +108,7 @@ public class RegisterPetControl extends AppCompatActivity {
 
 
         //-Evento de botón
+        //--Buscar imagen
         searchPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +119,35 @@ public class RegisterPetControl extends AppCompatActivity {
 
                 // Iniciar la actividad para seleccionar un archivo
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+        });
+        //--Siguiente
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateEmail) {
+                    // Almacenamos el email introducido
+                    opc.setEmail(email);
+                    emailSaved = opc.getEmail();
+                    //Toast.makeText(this, emailSaved, Toast.LENGTH_LONG).show();
+                }
+                if (validatePass) {
+                    opc.setPassword(pass);
+                    passSaved = opc.getPassword();
+                    //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
+                }
+                if (validateEmail && validatePass) {
+                    Toast.makeText(getApplicationContext(), emailSaved + " --> " + passSaved, Toast.LENGTH_LONG).show();
+
+                    Intent i = new Intent(getApplicationContext(), LoginPetControl.class);
+                    i.putExtra("email", emailSaved);
+                    i.putExtra("pass", passSaved);
+                    startActivity(i);
+                }
+                else {
+                    access = getResources().getString(R.string.incorrect_access);
+                    Toast.makeText(getApplicationContext(), access, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -240,8 +271,8 @@ public class RegisterPetControl extends AppCompatActivity {
         }
         return picName;
     }
-
-    //
+/*
+    // Pasar a la siguiente ventana de configuración (elección de animales)
     public void nextWindowOfConfiguration(View view) {
         next = (Button) view;
 
@@ -256,5 +287,19 @@ public class RegisterPetControl extends AppCompatActivity {
             passSaved = opc.getPassword();
             //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
         }
+        if (validateEmail && validatePass) {
+            Toast.makeText(this, emailSaved + " " + passSaved, Toast.LENGTH_LONG).show();
+
+            Intent i = new Intent(this, LoginPetControl.class);
+            i.putExtra("email", emailSaved);
+            i.putExtra("pass", passSaved);
+            startActivity(i);
+        }
+        else {
+            access = getResources().getString(R.string.incorrect_access);
+            Toast.makeText(this, access, Toast.LENGTH_LONG).show();
+        }
     }
+    */
 }
+//TODO Guardar correo y contraseña de registro
