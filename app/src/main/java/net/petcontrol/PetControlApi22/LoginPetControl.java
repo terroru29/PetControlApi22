@@ -1,11 +1,14 @@
 package net.petcontrol.PetControlApi22;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,10 +34,12 @@ public class LoginPetControl extends AppCompatActivity {
     Switch termsAndConditions;
     TextView forgotPassword, terms, signUp;
     EditText emailUser, passUser, newPassword, confirmPassword;
-    String email, pass, passwordNew, passwordConfirm, conditions,
+    String email, savedEmail, pass, savedPassword, passwordNew, passwordConfirm, conditions,
             credentials, acceptTerms;
     boolean change = false, termsCheck;
     OwnerPetControl opc = new OwnerPetControl();
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,13 +127,27 @@ public class LoginPetControl extends AppCompatActivity {
             Toast.makeText(this, acceptTerms, Toast.LENGTH_LONG).show();
             termsCheck = false;
         }
+/*
+        Toast.makeText(this, "Email guardado: " + getIntent().getStringExtra("email"),
+                Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Pass guardada: " + getIntent().getStringExtra("pass"),
+                Toast.LENGTH_SHORT).show();
+*/
+        sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
+        // Le asigna una cadena vacía por defecto si no recibe valores
+        savedEmail = sharedPreferences.getString("email", "");
+        savedPassword = sharedPreferences.getString("password", "");
+        // Verificar que los datos recuperados son correctos
+        Toast.makeText(this, "Email recuperado: " + savedEmail, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Password recuperado: " + savedPassword, Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(this, "Email guardado: " + getIntent().getStringExtra("email"), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Pass guardada: " + getIntent().getStringExtra("pass"), Toast.LENGTH_SHORT).show();
+        Log.d(TAG, savedEmail);
+        Log.d(TAG, savedPassword);
 
-        if (email.equals(getIntent().getStringExtra("email"))
-                && pass.equals(getIntent().getStringExtra("pass"))) {
+        // Si las credenciales coinciden
+        if (email.equals(savedEmail) && pass.equals(savedPassword)) {
             Toast.makeText(this, email + "···" + pass, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "¡Acceso permitido!", Toast.LENGTH_LONG).show();
 
             if (termsCheck) {
                 Intent i = new Intent(this, MenuInferiorPetControl.class);
@@ -179,9 +199,17 @@ public class LoginPetControl extends AppCompatActivity {
                     change = true;
                 }
 
+                // Si la contraseña fue cambiada y se confirmó
                 if (change) {
                     opc.setPassword(passwordConfirm);
-                    Toast.makeText(getApplicationContext(), "Change: " + opc.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Change: " + opc.toString(),
+                            Toast.LENGTH_SHORT).show();
+
+                    sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
+                    editor = sharedPreferences.edit();
+                    editor.putString("password", passwordConfirm);
+                    // Aplica los cambios
+                    editor.apply();
                 }
             }
         });

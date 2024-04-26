@@ -1,11 +1,14 @@
 package net.petcontrol.PetControlApi22;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,12 +16,15 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class RegisterPetControl extends AppCompatActivity {
 
@@ -33,6 +39,8 @@ public class RegisterPetControl extends AppCompatActivity {
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
     OwnerPetControl opc = new OwnerPetControl();
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +133,7 @@ public class RegisterPetControl extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if (validateEmail) {
                     // Almacenamos el email introducido
                     opc.setEmail(email);
@@ -136,12 +145,42 @@ public class RegisterPetControl extends AppCompatActivity {
                     passSaved = opc.getPassword();
                     //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
                 }
-                if (validateEmail && validatePass) {
-                    Toast.makeText(getApplicationContext(), emailSaved + " --> " + passSaved, Toast.LENGTH_LONG).show();
 
-                    Intent i = new Intent(getApplicationContext(), LoginPetControl.class);
-                    i.putExtra("email", emailSaved);
-                    i.putExtra("pass", passSaved);
+                sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("email", email);
+                editor.putString("password", pass);
+                Log.d(TAG, email);
+                Log.d(TAG, pass);
+                // Aplica los cambios de forma asíncrona para que el código no se bloquee
+                editor.apply();
+*/
+                sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+
+                // Guardar datos solo si las validaciones son correctas
+                if (validateEmail) {
+                    emailSaved = validationEmail.getText().toString();
+                    editor.putString("email", emailSaved);
+                }
+
+                if (validatePass) {
+                    passSaved = validationPass.getText().toString();
+                    editor.putString("password", passSaved);
+                }
+
+                editor.apply();
+
+                // Para verificar, puedes usar Toast o Log.d
+                Toast.makeText(getApplicationContext(), "Datos guardados: " + emailSaved + " / "
+                        + passSaved, Toast.LENGTH_LONG).show();
+
+                if (validateEmail && validatePass) {
+                    Toast.makeText(getApplicationContext(), email + " --> " + pass, Toast.LENGTH_LONG).show();
+
+                    Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
+                    //i.putExtra("email", emailSaved);
+                    //i.putExtra("pass", passSaved);
                     startActivity(i);
                 }
                 else {
