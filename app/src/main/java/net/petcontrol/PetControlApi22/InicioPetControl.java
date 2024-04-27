@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -23,7 +26,7 @@ public class InicioPetControl extends AppCompatActivity {
     // PRUEBA
     Animation aparecer1, aparecer2, aparecer3, aparecer4, aparecer5, aparecer6, aparecer7,
             aparecer8, aparecer9, aparecer10;
-    TextView P, E, T, C, O, N, T2, R2, O2, L;
+    TextView P, E, T, C, O, N, T2, R1, O2, L;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,16 +35,6 @@ public class InicioPetControl extends AppCompatActivity {
         setContentView(R.layout.activity_inicio_petcontrol);
 
         // Asociación de variables con sus recursos
-        fab = findViewById(R.id.floatingActionButton);
-        ivLogo = findViewById(R.id.logoPC);
-        txtEslogan = findViewById(R.id.eslogan);
-
-
-        metodoAnimacion(aparecer, R.anim.appearing, ivLogo);
-        metodoAnimacion(moving, R.anim.traslado, txtEslogan);
-
-        // PRUEBA
-
         P = findViewById(R.id.tituloP);
         E = findViewById(R.id.tituloE);
         T = findViewById(R.id.tituloT);
@@ -49,10 +42,15 @@ public class InicioPetControl extends AppCompatActivity {
         O = findViewById(R.id.tituloO);
         N = findViewById(R.id.tituloN);
         T2 = findViewById(R.id.tituloT2);
-        R2 = findViewById(R.id.tituloR);
+        R1 = findViewById(R.id.tituloR);
         O2 = findViewById(R.id.tituloO2);
         L = findViewById(R.id.tituloL);
+        ivLogo = findViewById(R.id.logoPC);
+        txtEslogan = findViewById(R.id.eslogan);
+        fab = findViewById(R.id.floatingActionButton);
 
+
+        // ANIMACIONES
         metodoAnimacion(aparecer1, R.anim.appearing1, P);
         metodoAnimacion(aparecer2, R.anim.appearing2, E);
         metodoAnimacion(aparecer3, R.anim.appearing3, T);
@@ -60,13 +58,35 @@ public class InicioPetControl extends AppCompatActivity {
         metodoAnimacion(aparecer5, R.anim.appearing5, O);
         metodoAnimacion(aparecer6, R.anim.appearing6, N);
         metodoAnimacion(aparecer7, R.anim.appearing7, T2);
-        metodoAnimacion(aparecer8, R.anim.appearing8, R2);
+        metodoAnimacion(aparecer8, R.anim.appearing8, R1);
         metodoAnimacion(aparecer9, R.anim.appearing9, O2);
         metodoAnimacion(aparecer10, R.anim.appearing10, L);
+        metodoAnimacion(aparecer, R.anim.appearing, ivLogo);
+
+        // Hacer que el texto esté oculto inicialmente
+        txtEslogan.setVisibility(View.INVISIBLE);
+
+        /*
+        // Usar un Handler para retrasar la visibilidad y luego aplicar una animación para aparecer suavemente
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            // Crear una animación de desvanecimiento para que el texto aparezca suavemente
+            Animation fadeIn = new AlphaAnimation(0, 1);
+            fadeIn.setDuration(2500); // Duración de la animación (1 segundo)
+
+            txtEslogan.startAnimation(fadeIn);
+            txtEslogan.setVisibility(View.VISIBLE);
+        }, 5000); // 5000 ms de retraso (5 segundos)
+        */
+        // Usar un Handler para hacer que el texto sea visible después de 5 segundos (5000 ms)
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            txtEslogan.setVisibility(View.VISIBLE);
+            metodoAnimacion(moving, R.anim.traslado, txtEslogan);
+        }, 5000); // 5000 ms de retraso (5 segundos)
+
     }
 
     /**
-     * Pasará a la ventana indicada --> Iniciar sesión/Registros
+     * Pasará a la ventana indicada --> Iniciar sesión/Registrarse
      *
      * @param view Elemento sobre el que se ejcutará la acción
      */

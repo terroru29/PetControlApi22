@@ -4,6 +4,6 @@
     android:fromYDelta="0"
     android:toXDelta="1500"
     android:toYDelta="0"
-    android:repeatMode="reverse"
-    android:duration="2500" >
-</translate>
+    android:repeatMode="restart"
+    android:duration="2500" />
+    <!--android:startOffset="3200"-->

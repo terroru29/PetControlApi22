@@ -2,17 +2,25 @@
     <string name="app_name">PetControl</string>
 
     <!-- BOTTOM VIEW -->
-    <string name="title_notifications">Notifications</string>
-    <string name="title_calendar">Calendar</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="title_calendar">Calendario</string>
     <string name="title_PC">PC</string>
-    <string name="title_location">Location</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_location">Ubicación</string>
+    <string name="title_settings">Ajustes</string>
 
     <!-- PORTADA -->
     <string name="title">PetControl</string>
+    <string name="letter_P">P</string>
+    <string name="letter_E">e</string>
+    <string name="letter_T">t</string>
+    <string name="letter_C">C</string>
+    <string name="letter_O">o</string>
+    <string name="letter_N">n</string>
+    <string name="letter_R">r</string>
+    <string name="letter_L">l</string>
     <string name="description_pic">Logo de la aplicación que representa las letras P y C, que son
         las iniciales de los creadores y del título, rellenas con diferentes animales.</string>
-    <string name="eslogan">Cerca de tus animales</string>
+    <string name="slogan">Cerca de tus animales</string>
     <string name="btn_floatting">Botón flotante para pasar de pantalla</string>
 
     <!-- LOGIN -->
@@ -55,6 +63,8 @@
     <string name="btn_picture">Buscar imagen…</string>
     <string name="txt_picture_selected">Imagen.jpg</string>
     <string name="image_description">Imagen del usuario</string>
+    <string name="asterik">*</string>
+    <string name="fields_required">Los campos con este símbolo son obligatorios.</string>
     <string name="btn_next">Siguiente</string>
     <string name="incorrect_access">El e-mail o la contraseña no cumplen los requisitos.</string>
 
