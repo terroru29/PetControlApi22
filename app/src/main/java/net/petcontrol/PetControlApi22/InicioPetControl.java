@@ -19,14 +19,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class InicioPetControl extends AppCompatActivity {
 
     FloatingActionButton fab;
-    Animation aparecer, moving;
+    TextView P, E, T, C, O, N, T2, R1, O2, L, eslogan;
     ImageView logoPC;
-    TextView eslogan;
-
-    // PRUEBA
     Animation aparecer1, aparecer2, aparecer3, aparecer4, aparecer5, aparecer6, aparecer7,
-            aparecer8, aparecer9, aparecer10;
-    TextView P, E, T, C, O, N, T2, R1, O2, L;
+            aparecer8, aparecer9, aparecer10, aparecer, moving;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -82,7 +78,6 @@ public class InicioPetControl extends AppCompatActivity {
             // Iniciar la actividad a la que quieres cambiar
             Intent intent = new Intent(this, LoginPetControl.class);
             startActivity(intent);
-
             // Cierra la actividad actual para evitar que el usuario regrese a ella
             finish();
         }, 8000); // 8000ms de retraso (8 segundos) antes de cambiar a la próxima actividad

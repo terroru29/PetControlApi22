@@ -114,11 +114,20 @@ public class LoginPetControl extends AppCompatActivity {
         // Subrayar Olvidar contraseña
         forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         forgotPassword.setText(R.string.forgot_password);
+
+        //-Evento botón
+        //--Iniciar sesión
+        logIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextWindow(logIn);
+            }
+        });
     }
 
     // Pasar a la pantalla de inicio de sesión
     public void nextWindow(View view) {
-        logIn = (Button) view;
+        //logIn = (Button) view;
 
         if (termsAndConditions.isChecked())
             termsCheck = true;
@@ -127,12 +136,7 @@ public class LoginPetControl extends AppCompatActivity {
             Toast.makeText(this, acceptTerms, Toast.LENGTH_LONG).show();
             termsCheck = false;
         }
-/*
-        Toast.makeText(this, "Email guardado: " + getIntent().getStringExtra("email"),
-                Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Pass guardada: " + getIntent().getStringExtra("pass"),
-                Toast.LENGTH_SHORT).show();
-*/
+
         sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
         // Le asigna una cadena vacía por defecto si no recibe valores
         savedEmail = sharedPreferences.getString("email", "");
@@ -159,14 +163,23 @@ public class LoginPetControl extends AppCompatActivity {
             Toast.makeText(this, credentials, Toast.LENGTH_LONG).show();
         }
     }
-
-    // Cambio de pantalla al registro
+    /**
+     * Cambio de pantalla al registro --> Datos de usuario
+     *
+     * @param view Elemento sobre el que se interactúa
+     */
     public void register(View view) {
         signUp = (TextView) view;
 
         Intent i = new Intent(this, RegisterPetControl.class);
         startActivity(i);
     }
+
+    /**
+     * Aparece cuadro de diálogo para cambiar la contraseña.
+     *
+     * @param v
+     */
     public void forgotPassword(View v) {
         forgotPassword = (TextView) v;
 
@@ -239,5 +252,3 @@ public class LoginPetControl extends AppCompatActivity {
         dialog.show();
     }
 }
-//TODO Comparar email y contraseña con las almacenadas en la BD
-//TODO Guardar la contraseña que se escriba en confirmación de contraseña
