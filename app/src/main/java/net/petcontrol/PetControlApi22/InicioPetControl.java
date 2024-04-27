@@ -77,7 +77,15 @@ public class InicioPetControl extends AppCompatActivity {
             */
             eslogan.setVisibility(View.VISIBLE);
             showAnimation(moving, R.anim.traslado, eslogan);
-        }, 5000); // 5000 ms de retraso (5 segundos)
+        }, 5000); // 5000ms de retraso (5 segundos) antes de aparecer la animación
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            // Iniciar la actividad a la que quieres cambiar
+            Intent intent = new Intent(this, LoginPetControl.class);
+            startActivity(intent);
+
+            // Cierra la actividad actual para evitar que el usuario regrese a ella
+            finish();
+        }, 8000); // 8000ms de retraso (8 segundos) antes de cambiar a la próxima actividad
     }
     /**
      * Pasará a la ventana indicada --> Iniciar sesión/Registrarse
