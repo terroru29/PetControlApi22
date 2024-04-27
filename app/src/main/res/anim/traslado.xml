@@ -5,5 +5,4 @@
     android:toXDelta="1500"
     android:toYDelta="0"
     android:repeatMode="restart"
-    android:duration="2500" />
-    <!--android:startOffset="3200"-->
+    android:duration="2200" />

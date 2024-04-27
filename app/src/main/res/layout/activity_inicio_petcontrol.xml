@@ -185,7 +185,7 @@
         app:layout_constraintVertical_bias="0.114" />
 
     <ImageView
-        android:id="@+id/logoPC"
+        android:id="@+id/ivLogo"
         android:layout_width="234dp"
         android:layout_height="250dp"
         android:contentDescription="@string/description_pic"
@@ -198,17 +198,17 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/eslogan"
+        android:id="@+id/txtEslogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/slogan"
         android:textColor="@color/black"
         android:textSize="38sp"
         android:textStyle="italic"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.789" />
