@@ -28,17 +28,17 @@ import com.google.android.material.tabs.TabLayout;
 
 public class RegisterPetControl extends AppCompatActivity {
 
-    EditText validationEmail, validationPass;
+    EditText name, surname, validationEmail, validationPass;
     Button searchPicture, next;
     TextView messageEmail, messagePass, pictureSelected;
     ImageView pictureUser;
-    String email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
+    String nameCorrect, surnameCorrect, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
             pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
     boolean validateEmail, validatePass;
     private static final int PICK_IMAGE_REQUEST = 1;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
-    OwnerPetControl opc = new OwnerPetControl();
+    //OwnerPetControl opc = new OwnerPetControl();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -48,6 +48,8 @@ public class RegisterPetControl extends AppCompatActivity {
         setContentView(R.layout.activity_register_petcontrol);
 
         // Asociar variables con sus recursos
+        name = findViewById(R.id.etName);
+        surname = findViewById(R.id.etSurname);
         validationEmail = findViewById(R.id.etEmailUser);
         messageEmail = findViewById(R.id.txtValidationEmail);
         validationPass = findViewById(R.id.etPasswordUser);
@@ -62,10 +64,12 @@ public class RegisterPetControl extends AppCompatActivity {
         //--Email
         validationEmail.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable e) {
@@ -76,8 +80,7 @@ public class RegisterPetControl extends AppCompatActivity {
                     messageEmail.setText(msgEmailCorrect);
                     messageEmail.setTextColor(Color.parseColor("#FF4DBC34"));
                     validateEmail = true;
-                }
-                else {
+                } else {
                     msgEmailIncorrect = getResources().getString(R.string.invalidation_email);
                     messageEmail.setText(msgEmailIncorrect);
                     messageEmail.setTextColor(Color.RED);
@@ -89,10 +92,12 @@ public class RegisterPetControl extends AppCompatActivity {
         //--Password
         validationPass.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -103,8 +108,7 @@ public class RegisterPetControl extends AppCompatActivity {
                     messagePass.setText(msgPassCorrect);
                     messagePass.setTextColor(Color.parseColor("#FF4DBC34"));
                     validatePass = true;
-                }
-                else {
+                } else {
                     msgPassIncorrect = getResources().getString(R.string.invalidation_pass);
                     messagePass.setText(msgPassIncorrect);
                     messagePass.setTextColor(Color.RED);
@@ -133,72 +137,59 @@ public class RegisterPetControl extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                if (validateEmail) {
-                    // Almacenamos el email introducido
-                    opc.setEmail(email);
-                    emailSaved = opc.getEmail();
-                    //Toast.makeText(this, emailSaved, Toast.LENGTH_LONG).show();
-                }
-                if (validatePass) {
-                    opc.setPassword(pass);
-                    passSaved = opc.getPassword();
-                    //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
-                }
+                //Log.d(TAG, email);
+                //Log.d(TAG, pass);
 
                 sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
                 editor = sharedPreferences.edit();
-                editor.putString("email", email);
-                editor.putString("password", pass);
-                Log.d(TAG, email);
-                Log.d(TAG, pass);
-                // Aplica los cambios de forma asíncrona para que el código no se bloquee
-                editor.apply();
-*/
-                sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
-                editor = sharedPreferences.edit();
 
-                // Guardar datos solo si las validaciones son correctas
+                // Almacenar datos si las validaciones son correctas
                 if (validateEmail) {
                     emailSaved = validationEmail.getText().toString();
                     editor.putString("email", emailSaved);
                 }
-
                 if (validatePass) {
                     passSaved = validationPass.getText().toString();
                     editor.putString("password", passSaved);
                 }
-
+                // Aplica los cambios de forma asíncrona para que el código no se bloquee
                 editor.apply();
 
-                // Para verificar, puedes usar Toast o Log.d
-                Toast.makeText(getApplicationContext(), "Datos guardados: " + emailSaved + " / "
-                        + passSaved, Toast.LENGTH_LONG).show();
-
                 if (validateEmail && validatePass) {
-                    Toast.makeText(getApplicationContext(), email + " --> " + pass, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Datos guardados: " + emailSaved + " / "
+                            + passSaved, Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
-                    startActivity(i);
-                }
-                else {
+                    nameCorrect = name.getText().toString();
+                    surnameCorrect = surname.getText().toString();
+                    if (!nameCorrect.isEmpty() && !surnameCorrect.isEmpty()) {
+                        if (withoutDigit(nameCorrect) && withoutDigit(surnameCorrect)) {
+                            Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
+                            startActivity(i);
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "El campo nombre o apellido 1" +
+                                    " no puede contener dígitos.", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(getApplicationContext(), "Debe rellenar los campos " +
+                                "señalados con el símbolo *.", Toast.LENGTH_LONG).show();
+                } else {
                     access = getResources().getString(R.string.incorrect_access);
                     Toast.makeText(getApplicationContext(), access, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
+
     /**
      * Manejar el resultado cuando el usuario seleccione un archivo.
      *
      * @param requestCode The integer request code originally supplied to
      *                    startActivityForResult(), allowing you to identify who this
      *                    result came from.
-     * @param resultCode The integer result code returned by the child activity
-     *                   through its setResult().
-     * @param data An Intent, which can return result data to the caller
-     *               (various data can be attached to Intent "extras").
-     *
+     * @param resultCode  The integer result code returned by the child activity
+     *                    through its setResult().
+     * @param data        An Intent, which can return result data to the caller
+     *                    (various data can be attached to Intent "extras").
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -225,12 +216,13 @@ public class RegisterPetControl extends AppCompatActivity {
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
  */
+    /* -------------------- MÉTODOS -------------------- */
+
     /**
-     *  Método que valida el correo electrónico: Mín. 1 @ y 1 . al final con la extensión (3-4 letras)
+     * Método que valida el correo electrónico: Mín. 1 @ y 1 . al final con la extensión (3-4 letras)
      *
      * @param email Correo electrónico del usuario para validar
      * @return true si el correo es correcto; false si es incorrecto
-     *
      */
     public boolean emailValidation(String email) {
         boolean correct = false;
@@ -250,13 +242,13 @@ public class RegisterPetControl extends AppCompatActivity {
         }
         return correct;
     }
+
     /**
      * Método que valida la contraseña: Mínimo una minúscula, una mayúscula, un dígito,
      * un carácter especial y que tenga una longitud entre 8 y 12 caracteres.
      *
      * @param pass Contraseña del usuario a validar
      * @return true si cumple los requisitos anteriores; false en caso contrario
-     *
      */
     public boolean passValidation(String pass) {
         boolean correct = false;
@@ -279,16 +271,18 @@ public class RegisterPetControl extends AppCompatActivity {
         }
         return correct;
     }
+
     /**
      * Silenciar la validación en caso de que los campos a comprobar estén vacíos
      *
-     * @param et Caja de texto
+     * @param et   Caja de texto
      * @param text Mensaje a mostrar para la validación
      */
     public void muteValidation(String et, TextView text) {
         if (et.isEmpty())
             text.setText("");
     }
+
     /**
      * Obtener el nombre del archivo a partir de su URI
      *
@@ -302,41 +296,23 @@ public class RegisterPetControl extends AppCompatActivity {
 
         // El try-with-resources permite que se cierren automáticametne los recursos (sin finally)
         try (Cursor cursor = contentResolver.query(uri, null, null, null, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst())
                 picName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-            }
         }
         return picName;
     }
-/*
-    // Pasar a la siguiente ventana de configuración (elección de animales)
-    public void nextWindowOfConfiguration(View view) {
-        next = (Button) view;
-
-        if (validateEmail) {
-            // Almacenamos el email introducido
-            opc.setEmail(email);
-            emailSaved = opc.getEmail();
-            //Toast.makeText(this, emailSaved, Toast.LENGTH_LONG).show();
+    /**
+     * Comprueba si la cadena pasada como parámetro contiene algún dígito.
+     *
+     * @param word Palabra a comprobar si contiene algún dígito
+     * @return true si no contiene ningún dígito; false, en caso contrario
+     */
+    public boolean withoutDigit(String word) {
+        for (char w : word.toCharArray()) {
+            if (Character.isDigit(w))
+                // Contiene, al menos, un dígito
+                return false;
         }
-        if (validatePass) {
-            opc.setPassword(pass);
-            passSaved = opc.getPassword();
-            //Toast.makeText(this, passSaved, Toast.LENGTH_LONG).show();
-        }
-        if (validateEmail && validatePass) {
-            Toast.makeText(this, emailSaved + " " + passSaved, Toast.LENGTH_LONG).show();
-
-            Intent i = new Intent(this, LoginPetControl.class);
-            i.putExtra("email", emailSaved);
-            i.putExtra("pass", passSaved);
-            startActivity(i);
-        }
-        else {
-            access = getResources().getString(R.string.incorrect_access);
-            Toast.makeText(this, access, Toast.LENGTH_LONG).show();
-        }
+        return true;
     }
-    */
 }
-//TODO Guardar correo y contraseña de registro
