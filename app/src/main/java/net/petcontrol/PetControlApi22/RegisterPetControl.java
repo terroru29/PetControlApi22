@@ -179,8 +179,6 @@ public class RegisterPetControl extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), email + " --> " + pass, Toast.LENGTH_LONG).show();
 
                     Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
-                    //i.putExtra("email", emailSaved);
-                    //i.putExtra("pass", passSaved);
                     startActivity(i);
                 }
                 else {

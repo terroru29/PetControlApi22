@@ -78,6 +78,8 @@ public class InicioPetControl extends AppCompatActivity {
             // Iniciar la actividad a la que quieres cambiar
             Intent intent = new Intent(this, LoginPetControl.class);
             startActivity(intent);
+            // Aplicar las transiciones personalizadas de entrada y salida de cada pantalla
+            overridePendingTransition(R.anim.fading_in, R.anim.fading_out);
             // Cierra la actividad actual para evitar que el usuario regrese a ella
             finish();
         }, 8000); // 8000ms de retraso (8 segundos) antes de cambiar a la próxima actividad
