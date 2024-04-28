@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -79,7 +78,7 @@ public class InicioPetControl extends AppCompatActivity {
             Intent intent = new Intent(this, LoginPetControl.class);
             startActivity(intent);
             // Aplicar las transiciones personalizadas de entrada y salida de cada pantalla
-            overridePendingTransition(R.anim.fading_in, R.anim.fading_out);
+            overridePendingTransition(R.anim.fading_entry, R.anim.fading_exit);
             // Cierra la actividad actual para evitar que el usuario regrese a ella
             finish();
         }, 8000); // 8000ms de retraso (8 segundos) antes de cambiar a la próxima actividad
