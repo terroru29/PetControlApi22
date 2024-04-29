@@ -4,19 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPetPetControl">
+    tools:context=".AdapterPetsPetControl">
 
-    <GridView
-        android:id="@+id/gvPets"
+    <ImageButton
+        android:id="@+id/imbDog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="auto_fit"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
+        android:src="@drawable/perro"
+        android:contentDescription="@string/description_imageButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.083" />
 </androidx.constraintlayout.widget.ConstraintLayout>

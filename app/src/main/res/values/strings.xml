@@ -67,6 +67,7 @@
     <string name="fields_required">Los campos con este símbolo son obligatorios.</string>
     <string name="btn_next">Siguiente</string>
     <string name="incorrect_access">El e-mail o la contraseña no cumplen los requisitos.</string>
+    <string name="description_imageButton">Imagen PNG de un animal.</string>
 
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>

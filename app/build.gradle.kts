@@ -46,6 +46,8 @@ dependencies {
     //implementation("com.android.car.ui:car-ui-lib:2.0.0")
     implementation("com.android.car.ui:car-ui-lib:2.6.0")
     implementation("androidx.annotation:annotation:1.7.1")
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")

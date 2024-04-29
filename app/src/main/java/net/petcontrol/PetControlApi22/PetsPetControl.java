@@ -1,6 +1,6 @@
 package net.petcontrol.PetControlApi22;
 
-public class MascotasPetControl {
+public class PetsPetControl {
     //Atributos --> Columnas tabla Pets
     private String codigo;
     private String nombre;
@@ -11,12 +11,12 @@ public class MascotasPetControl {
 
 
     //Constructor
-    public MascotasPetControl(String codigo, String nombre, String dueño) {
+    public PetsPetControl(String codigo, String nombre, String dueño) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.dueño = dueño;
     }
-    public MascotasPetControl() {}
+    public PetsPetControl() {}
 
 
     //Getter
