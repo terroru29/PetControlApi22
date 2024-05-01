@@ -7,10 +7,9 @@
     tools:context=".AdapterPetsPetControl">
 
     <ImageButton
-        android:id="@+id/imbDog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/perro"
+        android:id="@+id/imbPets"
+        android:layout_width="93dp"
+        android:layout_height="88dp"
         android:contentDescription="@string/description_imageButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

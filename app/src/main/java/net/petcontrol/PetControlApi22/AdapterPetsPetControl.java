@@ -1,22 +1,12 @@
 package net.petcontrol.PetControlApi22;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-
-import com.bumptech.glide.Glide;
-
-import java.util.List;
+import android.widget.Toast;
 
 public class AdapterPetsPetControl extends BaseAdapter {
     private Context context;
@@ -78,13 +68,25 @@ public class AdapterPetsPetControl extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Si es nulo se podrá reutilizar vistas y evitar problemas de memoria, mejorando el rendimiento
         if (convertView == null) {
             // Inflamos el diseño para cada elemento.
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.activity_adapter_pets_petcontrol, parent, false);
         }
+        pets = convertView.findViewById(R.id.imbPets);
         // Usamos un array de imágenes para cada botón
         pets.setBackgroundResource(images[position]);
+
+        //-Evento de botón de cada animal
+        pets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Position nos indicará cuál fue el elemento clicado
+                Toast.makeText(context.getApplicationContext(), "Se hizo clic en el elemento de" +
+                        " la posición " + position + " que corresponde al animal ", Toast.LENGTH_SHORT).show();
+            }
+        });
         return convertView;
     }
 }
