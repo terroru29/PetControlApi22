@@ -10,6 +10,7 @@
         android:id="@+id/imbPets"
         android:layout_width="93dp"
         android:layout_height="88dp"
+        android:layout_marginStart="24dp"
         android:contentDescription="@string/description_imageButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

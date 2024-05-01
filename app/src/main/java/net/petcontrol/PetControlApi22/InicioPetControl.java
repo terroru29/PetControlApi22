@@ -71,7 +71,8 @@ public class InicioPetControl extends AppCompatActivity {
             eslogan.startAnimation(fadeIn);
             */
             eslogan.setVisibility(View.VISIBLE);
-            showAnimation(moving, R.anim.traslado, eslogan);
+            // Animación de traslado
+            showAnimation(moving, R.anim.horizontal_movement, eslogan);
         }, 5000); // 5000ms de retraso (5 segundos) antes de aparecer la animación
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             // Iniciar la actividad a la que quieres cambiar

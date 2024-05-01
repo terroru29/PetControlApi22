@@ -1,5 +1,6 @@
 package net.petcontrol.PetControlApi22;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 public class AdapterPetsPetControl extends BaseAdapter {
     private Context context;
     private int[] images;
-    ImageButton pets;
+    private int[] names;
+    private String[] namesPets;
+    String petsNames;
 
-    public AdapterPetsPetControl(Context context, int[] images) {
+    // Constructor
+    public AdapterPetsPetControl(@NonNull Context context, int[] images, int[] names) {
         this.context = context;
         this.images = images;
-    }
+        this.names = names;
 
+        // Asociamos los nombres de los animales al array indicado cuando se inicializa el adaptador
+        namesPets = context.getResources().getStringArray(R.array.pets_names);
+    }
     /**
      * How many items are in the data set represented by this Adapter.
      *
@@ -74,7 +83,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.activity_adapter_pets_petcontrol, parent, false);
         }
-        pets = convertView.findViewById(R.id.imbPets);
+        ImageButton pets = convertView.findViewById(R.id.imbPets);
         // Usamos un array de imágenes para cada botón
         pets.setBackgroundResource(images[position]);
 
@@ -82,9 +91,29 @@ public class AdapterPetsPetControl extends BaseAdapter {
         pets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Rotación horizontal (tridimensional)
+                ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
+                        "rotationY", 0f, 100f).setDuration(1000);
+                // Iniciar la animación
+                rotationAnimator.start();
+                pets.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Cambiar la imagen después del giro
+                        pets.setBackgroundResource(names[position]);
+                        // Seguir el giro hasta colocar la imagen normal
+                        ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
+                                "rotationY", 100f, 360f).setDuration(1500);
+                        rotationAnimator1.start();
+                    }
+                }, 1100); // Tiempo de retraso que espera el giro complete antes de cambiar la imagen
+
+                // Almacenanos en una variable el nombre de cada animal según su posición
+                petsNames = namesPets[position];
                 // Position nos indicará cuál fue el elemento clicado
-                Toast.makeText(context.getApplicationContext(), "Se hizo clic en el elemento de" +
-                        " la posición " + position + " que corresponde al animal ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(), "Elemento de la posición " +
+                        position + " que corresponde al animal " + petsNames, Toast.LENGTH_SHORT)
+                        .show();
             }
         });
         return convertView;

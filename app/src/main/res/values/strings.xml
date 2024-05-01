@@ -69,6 +69,22 @@
     <string name="incorrect_access">El e-mail o la contraseña no cumplen los requisitos.</string>
     <string name="description_imageButton">Imagen PNG de un animal.</string>
 
+    <!-- ADD PET -->
+    <string-array name="pets_names">
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Hámster</item>
+        <item>Pez</item>
+        <item>Ratón</item>
+        <item>Pájaro</item>
+        <item>Conejo</item>
+        <item>Tortuga</item>
+        <item>Hurón</item>
+        <item>Cerdo</item>
+        <item>Tarántula</item>
+        <item>Serpiente</item>
+    </string-array>
+
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>
     <string name="title_main">Tipo animales</string>

@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.GridView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AddPetPetControl extends AppCompatActivity {
     GridView pets;
-    //int[] imagesPets;
+    int[] imagesPets = {R.drawable.perro, R.drawable.gato, R.drawable.hamster, R.drawable.pez,
+            R.drawable.raton, R.drawable.pajaro, R.drawable.conejo, R.drawable.tortuga,
+            R.drawable.huron, R.drawable.cerdo, R.drawable.tarantula, R.drawable.serpiente};
+    int[] nameAnimal = {R.drawable.serpiente, R.drawable.perro, R.drawable.gato, R.drawable.hamster};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +20,7 @@ public class AddPetPetControl extends AppCompatActivity {
         // Asociamos recursos con sus variables
         pets = findViewById(R.id.gvPets);
 
-        int[] imagesPets = {R.drawable.perro, R.drawable.gato, R.drawable.hamster, R.drawable.pez,
-                R.drawable.raton, R.drawable.pajaro, R.drawable.conejo, R.drawable.tortuga,
-                R.drawable.huron, R.drawable.cerdo, R.drawable.tarantula, R.drawable.serpiente};
-
-        AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets);
+        AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets, nameAnimal);
         // Enlazamos el GridView con el adaptador personalizado
         pets.setAdapter(adapterPets);
     }
