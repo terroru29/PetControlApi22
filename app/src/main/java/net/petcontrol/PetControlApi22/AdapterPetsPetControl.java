@@ -84,8 +84,10 @@ public class AdapterPetsPetControl extends BaseAdapter {
             convertView = inflater.inflate(R.layout.activity_adapter_pets_petcontrol, parent, false);
         }
         ImageButton pets = convertView.findViewById(R.id.imbPets);
-        // Usamos un array de imágenes para cada botón
-        pets.setBackgroundResource(images[position]);
+        // Configurar el botón circular con borde y fondo morado
+        pets.setBackgroundResource(R.drawable.circle_button);
+        // Configurar la imagen interna según la posición (índice) correspondiente
+        pets.setImageResource(images[position]);
 
         //-Evento de botón de cada animal
         pets.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +102,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
                     @Override
                     public void run() {
                         // Cambiar la imagen después del giro
-                        pets.setBackgroundResource(names[position]);
+                        pets.setImageResource(names[position]);
                         // Seguir el giro hasta colocar la imagen normal
                         ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
                                 "rotationY", 100f, 360f).setDuration(1500);

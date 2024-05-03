@@ -10,6 +10,7 @@ public class AddPetPetControl extends AppCompatActivity {
     int[] imagesPets = {R.drawable.perro, R.drawable.gato, R.drawable.hamster, R.drawable.pez,
             R.drawable.raton, R.drawable.pajaro, R.drawable.conejo, R.drawable.tortuga,
             R.drawable.huron, R.drawable.cerdo, R.drawable.tarantula, R.drawable.serpiente};
+    //TODO Cambiar imágenes por palabras de cada animal
     int[] nameAnimal = {R.drawable.serpiente, R.drawable.perro, R.drawable.gato, R.drawable.hamster};
 
     @Override

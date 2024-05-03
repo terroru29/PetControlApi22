@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color fondo interno -->
+    <solid android:color="@color/purple" />
+    <!-- Grososr y color borde externo -->
+    <stroke android:width="6dp" android:color="@color/yellow_pastel" />
+    <!-- Fondo circular -->
+    <corners android:radius="250dp" />
+</shape>
