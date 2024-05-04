@@ -83,10 +83,11 @@ public class AdapterPetsPetControl extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.activity_adapter_pets_petcontrol, parent, false);
         }
+        // Asociar al recurso, su variable aplicándole un estilo
         ImageButton pets = convertView.findViewById(R.id.imbPets);
-        // Configurar el botón circular con borde y fondo morado
+        // Configurar el botón con el estilo deseado (circular, con borde y fondo morado)
         pets.setBackgroundResource(R.drawable.circle_button);
-        // Configurar la imagen interna según la posición (índice) correspondiente
+        // Colocar una imagen interna según la posición (índice) correspondiente
         pets.setImageResource(images[position]);
 
         //-Evento de botón de cada animal

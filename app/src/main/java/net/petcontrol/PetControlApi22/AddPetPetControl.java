@@ -7,11 +7,11 @@ import android.widget.GridView;
 
 public class AddPetPetControl extends AppCompatActivity {
     GridView pets;
-    int[] imagesPets = {R.drawable.perro, R.drawable.gato, R.drawable.hamster, R.drawable.pez,
-            R.drawable.raton, R.drawable.pajaro, R.drawable.conejo, R.drawable.tortuga,
-            R.drawable.huron, R.drawable.cerdo, R.drawable.tarantula, R.drawable.serpiente};
+    int[] imagesPets = {R.drawable.dog, R.drawable.cat, R.drawable.hamster, R.drawable.fish,
+            R.drawable.mouse, R.drawable.bird, R.drawable.rabbit, R.drawable.tortoise,
+            R.drawable.ferret, R.drawable.pig, R.drawable.tarantula, R.drawable.snake};
     //TODO Cambiar imágenes por palabras de cada animal
-    int[] nameAnimal = {R.drawable.serpiente, R.drawable.perro, R.drawable.gato, R.drawable.hamster};
+    int[] nameAnimal = {R.drawable.snake, R.drawable.dog, R.drawable.cat, R.drawable.hamster};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
