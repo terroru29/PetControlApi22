@@ -86,6 +86,12 @@
     </string-array>
     <string name="btn_description_image">Añadir animal</string>
 
+    <!-- FAST CONFIGURATION -->
+    <string name="title_fast_configuration">Configuración rápida</string>
+    <string name="voice">Lectura de acciones</string>
+    <string name="username">Introduzca el username para referirnos a usted:</string>
+    <string name="hint_username">Username</string>
+
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>
     <string name="title_main">Tipo animales</string>
