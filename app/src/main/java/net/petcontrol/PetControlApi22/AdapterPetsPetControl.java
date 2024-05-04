@@ -16,7 +16,10 @@ public class AdapterPetsPetControl extends BaseAdapter {
     private int[] images;
     private int[] names;
     private String[] namesPets;
+    private boolean[] isImageChanged;
     String petsNames;
+    // Nueva imagen tras el giro
+    int newImage;
 
     // Constructor
     public AdapterPetsPetControl(@NonNull Context context, int[] images, int[] names) {
@@ -26,6 +29,8 @@ public class AdapterPetsPetControl extends BaseAdapter {
 
         // Asociamos los nombres de los animales al array indicado cuando se inicializa el adaptador
         namesPets = context.getResources().getStringArray(R.array.pets_names);
+        // Inicializar el array booleano para mantener el estado de cada ImageButton
+        this.isImageChanged = new boolean[images.length];
     }
     /**
      * How many items are in the data set represented by this Adapter.
@@ -90,6 +95,12 @@ public class AdapterPetsPetControl extends BaseAdapter {
         // Colocar una imagen interna según la posición (índice) correspondiente
         pets.setImageResource(images[position]);
 
+        // Establecer la imagen según el estado actual
+        if (isImageChanged[position])
+            pets.setImageResource(names[position]);
+        else
+            pets.setImageResource(images[position]);
+
         //-Evento de botón de cada animal
         pets.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +120,32 @@ public class AdapterPetsPetControl extends BaseAdapter {
                                 "rotationY", 100f, 360f).setDuration(1500);
                         rotationAnimator1.start();
                     }
-                }, 1100); // Tiempo de retraso que espera el giro complete antes de cambiar la imagen
+                }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
+
+                if (isImageChanged[position])
+                    // Vuelve a la imagen original
+                    newImage = images[position];
+                else
+                    // Cambia a la segunda imagen
+                    newImage = names[position];
+
+                // Crear la animación de rotación (eje Y) para volver a la imagen del animal
+                ObjectAnimator rotationAnimator2 = ObjectAnimator.ofFloat(pets,
+                        "rotationY", 0f, 100f).setDuration(2000);
+                rotationAnimator2.start();
+
+                // Cambiar la imagen tras un tiempo que se le da al giro
+                pets.postDelayed(() -> {
+                    pets.setImageResource(newImage);
+/*
+                    ObjectAnimator rotationAnimator3 = ObjectAnimator.ofFloat(pets,
+                            "rotationY", 100f, 360f).setDuration(2000);
+                    rotationAnimator3.start();
+ */
+                    // Alternar el estado
+                    isImageChanged[position] = !isImageChanged[position];
+
+                }, 2000);
 
                 // Almacenanos en una variable el nombre de cada animal según su posición
                 petsNames = namesPets[position];

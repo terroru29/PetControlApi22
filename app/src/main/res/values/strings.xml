@@ -84,6 +84,7 @@
         <item>Tarántula</item>
         <item>Serpiente</item>
     </string-array>
+    <string name="btn_description_image">Añadir animal</string>
 
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>

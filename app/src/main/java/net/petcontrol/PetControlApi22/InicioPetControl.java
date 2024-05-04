@@ -42,7 +42,6 @@ public class InicioPetControl extends AppCompatActivity {
         L = findViewById(R.id.tituloL);
         logoPC = findViewById(R.id.ivLogo);
         eslogan = findViewById(R.id.txtEslogan);
-        fab = findViewById(R.id.floatingActionButton);
 
 
         // ANIMACIONES
@@ -83,17 +82,6 @@ public class InicioPetControl extends AppCompatActivity {
             // Cierra la actividad actual para evitar que el usuario regrese a ella
             finish();
         }, 8000); // 8000ms de retraso (8 segundos) antes de cambiar a la próxima actividad
-    }
-    /**
-     * Pasará a la ventana indicada --> Iniciar sesión/Registrarse
-     *
-     * @param view Elemento sobre el que se ejcutará la acción
-     */
-    public void next(View view) {
-        fab = (FloatingActionButton) view;
-
-        Intent i = new Intent(this, LoginPetControl.class);
-        startActivity(i);
     }
     /**
      * Proyectará la animación sobre el elemento pasados como argumentos
