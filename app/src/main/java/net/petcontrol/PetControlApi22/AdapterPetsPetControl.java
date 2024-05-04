@@ -113,39 +113,26 @@ public class AdapterPetsPetControl extends BaseAdapter {
                 pets.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (isImageChanged[position])
+                            // Vuelve a la imagen original
+                            newImage = images[position];
+                        else
+                            // Cambia a la segunda imagen
+                            newImage = names[position];
+
                         // Cambiar la imagen después del giro
-                        pets.setImageResource(names[position]);
+                        //pets.setImageResource(names[position]);
+                        pets.setImageResource(newImage);
+
                         // Seguir el giro hasta colocar la imagen normal
                         ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
                                 "rotationY", 100f, 360f).setDuration(1500);
                         rotationAnimator1.start();
+
+                        // Alternar el estado
+                        isImageChanged[position] = !isImageChanged[position];
                     }
                 }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
-
-                if (isImageChanged[position])
-                    // Vuelve a la imagen original
-                    newImage = images[position];
-                else
-                    // Cambia a la segunda imagen
-                    newImage = names[position];
-
-                // Crear la animación de rotación (eje Y) para volver a la imagen del animal
-                ObjectAnimator rotationAnimator2 = ObjectAnimator.ofFloat(pets,
-                        "rotationY", 0f, 100f).setDuration(2000);
-                rotationAnimator2.start();
-
-                // Cambiar la imagen tras un tiempo que se le da al giro
-                pets.postDelayed(() -> {
-                    pets.setImageResource(newImage);
-/*
-                    ObjectAnimator rotationAnimator3 = ObjectAnimator.ofFloat(pets,
-                            "rotationY", 100f, 360f).setDuration(2000);
-                    rotationAnimator3.start();
- */
-                    // Alternar el estado
-                    isImageChanged[position] = !isImageChanged[position];
-
-                }, 2000);
 
                 // Almacenanos en una variable el nombre de cada animal según su posición
                 petsNames = namesPets[position];
