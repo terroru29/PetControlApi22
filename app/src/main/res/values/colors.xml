@@ -18,6 +18,8 @@
     <color name="green">#FF4DBC34</color>
     <color name="red">#FFEF1010</color>
     <color name="link_blue">#FF0C4EFA</color>
+    <color name="grey_light">#FF939292</color>
+    <color name="fuchsia">#FFF50057</color>
 
 
     <!-- Switch marcado/no marcado-->

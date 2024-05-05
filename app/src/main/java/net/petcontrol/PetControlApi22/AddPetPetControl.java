@@ -19,7 +19,9 @@ public class AddPetPetControl extends AppCompatActivity {
             R.drawable.mouse, R.drawable.bird, R.drawable.rabbit, R.drawable.tortoise,
             R.drawable.ferret, R.drawable.pig, R.drawable.tarantula, R.drawable.snake};
     //TODO Cambiar imágenes por palabras de cada animal
-    int[] nameAnimal = {R.drawable.snake, R.drawable.dog, R.drawable.cat, R.drawable.hamster};
+    int[] nameAnimal = {R.drawable.snake, R.drawable.dog, R.drawable.cat, R.drawable.hamster,
+            R.drawable.fish, R.drawable.mouse, R.drawable.bird, R.drawable.rabbit,
+            R.drawable.tortoise, R.drawable.ferret, R.drawable.pig, R.drawable.tarantula};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,28 +41,6 @@ public class AddPetPetControl extends AppCompatActivity {
 
         //-Evento de botón
         fastConfiguration.setOnClickListener(v -> next(fastConfiguration));
-    }
-    /**
-     * Método perteneciente del ciclo de vida de una actividad en Android y que se llama justo antes
-     * de que la actividad se destruya y se elimine de la memoria de manera permanente, como por
-     * ejemplo, cuando se cierra la aplicación o el sistema la descarta para liberar recursos.
-     *
-     * Sirve para limpiar recursos y detener servicios para asegurarse de que no existan fugas de
-     * memoria ni problemas relacionados con recursos no liberados y que podrían causar problemas
-     * en el rendimiento de la aplicación o incluso bloqueos.
-     */
-    @Override
-    protected void onDestroy() {
-        if (textInVoice != null) {
-            // Detiene cualquier discurso en curso asegurando que si hay alguna voz hablando,
-            // se detenga de inmediato
-            textInVoice.stop();
-            // Apaga el servicio de texto a voz liberando cualquier recurso asociado y evitando las
-            // fugas de memoria
-            textInVoice.shutdown();
-        }
-        // El sistema Android realiza su propia limpieza y libera recursos internos
-        super.onDestroy();
     }
     /**
      * Pasará a la siguiente ventana

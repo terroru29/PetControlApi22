@@ -41,20 +41,18 @@ public class AdapterPetsPetControl extends BaseAdapter {
         this.isImageChanged = new boolean[images.length];
 
 
-        // Inicializar TextToSpeech
-        textInVoice = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    // Configurar el idioma
-                    int result = textInVoice.setLanguage(Locale.getDefault());
+        // Inicializar la lectura del texto con voz
+        textInVoice = new TextToSpeech(context, status -> {
+            // Verificación del estado
+            if (status == TextToSpeech.SUCCESS) {
+                // Configuración del idioma
+                int result = textInVoice.setLanguage(Locale.getDefault());
 
-                    if (result == TextToSpeech.LANG_MISSING_DATA
-                            || result == TextToSpeech.LANG_NOT_SUPPORTED)
-                        Log.e("TTS", "Idioma no soportado.");
-                } else
-                    Log.e("TTS", "Inicialización fallida.");
-            }
+                if (result == TextToSpeech.LANG_MISSING_DATA
+                        || result == TextToSpeech.LANG_NOT_SUPPORTED)
+                    Log.e("TTS", "Idioma no soportado.");
+            } else
+                Log.e("TTS", "Inicialización fallida.");
         });
     }
     /**
@@ -121,61 +119,63 @@ public class AdapterPetsPetControl extends BaseAdapter {
         pets.setImageResource(images[position]);
 
         // Establecer la imagen según el estado actual
-        if (isImageChanged[position])
+        if (isImageChanged[position]) {
+            pets.setBackgroundResource(R.drawable.button_names_pets);
             pets.setImageResource(names[position]);
-        else
+        } else {
+            pets.setBackgroundResource(R.drawable.circle_button);
             pets.setImageResource(images[position]);
+        }
 
         //-Evento de botón de cada animal
-        pets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Rotación horizontal (tridimensional)
-                ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
-                        "rotationY", 0f, 100f).setDuration(1000);
-                // Iniciar la animación
-                rotationAnimator.start();
-                pets.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isImageChanged[position])
-                            // Vuelve a la imagen original
-                            newImage = images[position];
-                        else
-                            // Cambia a la segunda imagen
-                            newImage = names[position];
-
-                        // Cambiar la imagen después del giro
-                        //pets.setImageResource(names[position]);
-                        pets.setImageResource(newImage);
-
-                        // Seguir el giro hasta colocar la imagen normal
-                        ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
-                                "rotationY", 100f, 360f).setDuration(1500);
-                        rotationAnimator1.start();
-
-                        // Alternar el estado
-                        isImageChanged[position] = !isImageChanged[position];
-                    }
-                }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
-
-                // Almacenanos en una variable el nombre de cada animal según su posición
-                petsNames = namesPets[position];
-                // Position nos indicará cuál fue el elemento clicado
-                Toast.makeText(context.getApplicationContext(), "Elemento de la posición " +
-                        position + " que corresponde al animal " + petsNames, Toast.LENGTH_SHORT)
-                        .show();
-                // Anunciar el nombre del animal usando la clase de lectura de texto con voz
-                if (textInVoice != null) {
-                    textInVoice.speak("Se ha seleccionado " + petsNames,
-                            TextToSpeech.QUEUE_FLUSH, null, null);
+        pets.setOnClickListener(v -> {
+            // Rotación horizontal (tridimensional)
+            ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
+                    "rotationY", 0f, 100f).setDuration(1000);
+            // Iniciar la animación
+            rotationAnimator.start();
+            pets.postDelayed(() -> {
+                if (isImageChanged[position]) {
+                    pets.setBackgroundResource(R.drawable.circle_button);
+                    // Vuelve a la imagen original
+                    newImage = images[position];
+                } else {
+                    pets.setBackgroundResource(R.drawable.button_names_pets);
+                    // Cambia a la segunda imagen
+                    newImage = names[position];
                 }
+
+                // Cambiar la imagen después del giro
+                pets.setImageResource(newImage);
+
+                // Seguir el giro hasta colocar la imagen normal
+                ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
+                        "rotationY", 100f, 360f).setDuration(1500);
+                rotationAnimator1.start();
+
+                // Alternar el estado
+                isImageChanged[position] = !isImageChanged[position];
+            }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
+
+            // Almacenanos en una variable el nombre de cada animal según su posición
+            petsNames = namesPets[position];
+            // Position nos indicará cuál fue el elemento clicado
+            Toast.makeText(context.getApplicationContext(), "Elemento de la posición " +
+                    position + " que corresponde al animal " + petsNames, Toast.LENGTH_SHORT)
+                    .show();
+            if (textInVoice != null) {
+                // Decir el nombre del animal con voz
+                textInVoice.speak("Se ha seleccionado " + petsNames,
+                        TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });
         return convertView;
     }
-    // Limpieza de TextToSpeech cuando el adaptador se destruye
-    public void shutdownTextToSpeech() {
+    /**
+     * Libera recursos cuando el adaptador ya no se use y se va a destruir para limpiar
+     * TextToSpeech y evitar fugas de memoria.
+     */
+    public void shutdownTextToSpeech () {
         if (textInVoice != null) {
             // Detiene cualquier discurso en curso asegurando que si hay alguna voz hablando,
             // se detenga de inmediato
