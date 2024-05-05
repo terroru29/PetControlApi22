@@ -2,6 +2,8 @@ package net.petcontrol.PetControlApi22;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.util.Locale;
+
 public class AdapterPetsPetControl extends BaseAdapter {
+    private TextToSpeech textInVoice;
     private Context context;
     private int[] images;
     private int[] names;
@@ -21,16 +26,36 @@ public class AdapterPetsPetControl extends BaseAdapter {
     // Nueva imagen tras el giro
     int newImage;
 
+
     // Constructor
     public AdapterPetsPetControl(@NonNull Context context, int[] images, int[] names) {
         this.context = context;
         this.images = images;
         this.names = names;
 
+
         // Asociamos los nombres de los animales al array indicado cuando se inicializa el adaptador
         namesPets = context.getResources().getStringArray(R.array.pets_names);
+
         // Inicializar el array booleano para mantener el estado de cada ImageButton
         this.isImageChanged = new boolean[images.length];
+
+
+        // Inicializar TextToSpeech
+        textInVoice = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Configurar el idioma
+                    int result = textInVoice.setLanguage(Locale.getDefault());
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED)
+                        Log.e("TTS", "Idioma no soportado.");
+                } else
+                    Log.e("TTS", "Inicialización fallida.");
+            }
+        });
     }
     /**
      * How many items are in the data set represented by this Adapter.
@@ -140,8 +165,24 @@ public class AdapterPetsPetControl extends BaseAdapter {
                 Toast.makeText(context.getApplicationContext(), "Elemento de la posición " +
                         position + " que corresponde al animal " + petsNames, Toast.LENGTH_SHORT)
                         .show();
+                // Anunciar el nombre del animal usando la clase de lectura de texto con voz
+                if (textInVoice != null) {
+                    textInVoice.speak("Se ha seleccionado " + petsNames,
+                            TextToSpeech.QUEUE_FLUSH, null, null);
+                }
             }
         });
         return convertView;
+    }
+    // Limpieza de TextToSpeech cuando el adaptador se destruye
+    public void shutdownTextToSpeech() {
+        if (textInVoice != null) {
+            // Detiene cualquier discurso en curso asegurando que si hay alguna voz hablando,
+            // se detenga de inmediato
+            textInVoice.stop();
+            // Apaga el servicio de texto a voz liberando cualquier recurso asociado y evitando las
+            // fugas de memoria
+            textInVoice.shutdown();
+        }
     }
 }
