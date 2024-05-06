@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,20 +20,14 @@ public class AdapterPetsPetControl extends BaseAdapter {
     private TextToSpeech textInVoice;
     private Context context;
     private int[] images;
-    private int[] names;
     private String[] namesPets;
     private boolean[] isImageChanged;
-    String petsNames;
-    // Nueva imagen tras el giro
-    int newImage;
 
 
     // Constructor
-    public AdapterPetsPetControl(@NonNull Context context, int[] images, int[] names) {
+    public AdapterPetsPetControl(@NonNull Context context, int[] images) {
         this.context = context;
         this.images = images;
-        this.names = names;
-
 
         // Asociamos los nombres de los animales al array indicado cuando se inicializa el adaptador
         namesPets = context.getResources().getStringArray(R.array.pets_names);
@@ -108,23 +103,29 @@ public class AdapterPetsPetControl extends BaseAdapter {
         // Si es nulo se podrá reutilizar vistas y evitar problemas de memoria, mejorando el rendimiento
         if (convertView == null) {
             // Inflamos el diseño para cada elemento.
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.activity_adapter_pets_petcontrol, parent, false);
+            LayoutInflater inflater = (LayoutInflater)
+                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.activity_adapter_pets_petcontrol,
+                    parent, false);
         }
-        // Asociar al recurso, su variable aplicándole un estilo
+        // Asociar al recurso su variable, aplicándole un estilo
         ImageButton pets = convertView.findViewById(R.id.imbPets);
-        // Configurar el botón con el estilo deseado (circular, con borde y fondo morado)
-        pets.setBackgroundResource(R.drawable.circle_button);
-        // Colocar una imagen interna según la posición (índice) correspondiente
-        pets.setImageResource(images[position]);
+        TextView names = convertView.findViewById(R.id.txtNamesPets);
 
         // Establecer la imagen según el estado actual
         if (isImageChanged[position]) {
+            // Alternativo
             pets.setBackgroundResource(R.drawable.button_names_pets);
-            pets.setImageResource(names[position]);
+            // Mostramos el texto
+            names.setVisibility(View.VISIBLE);
+            names.setText(namesPets[position]);
+            // Ocultamos la imagen
+            pets.setImageResource(0);
         } else {
+            // Principal
             pets.setBackgroundResource(R.drawable.circle_button);
             pets.setImageResource(images[position]);
+            names.setVisibility(View.GONE);
         }
 
         //-Evento de botón de cada animal
@@ -134,38 +135,41 @@ public class AdapterPetsPetControl extends BaseAdapter {
                     "rotationY", 0f, 100f).setDuration(1000);
             // Iniciar la animación
             rotationAnimator.start();
+
             pets.postDelayed(() -> {
                 if (isImageChanged[position]) {
+                    // Principal
                     pets.setBackgroundResource(R.drawable.circle_button);
                     // Vuelve a la imagen original
-                    newImage = images[position];
+                    pets.setImageResource(images[position]);
+                    // Ocultamos el texto
+                    names.setVisibility(View.GONE);
                 } else {
+                    // Alternativa
                     pets.setBackgroundResource(R.drawable.button_names_pets);
-                    // Cambia a la segunda imagen
-                    newImage = names[position];
+                    // Muestra el texto
+                    names.setVisibility(View.VISIBLE);
+                    names.setText(namesPets[position]);
+                    // Ocultamos la imagen
+                    pets.setImageResource(0);
                 }
-
-                // Cambiar la imagen después del giro
-                pets.setImageResource(newImage);
 
                 // Seguir el giro hasta colocar la imagen normal
                 ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
                         "rotationY", 100f, 360f).setDuration(1500);
                 rotationAnimator1.start();
 
-                // Alternar el estado
+                // Cambiar el estado en cada click
                 isImageChanged[position] = !isImageChanged[position];
             }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
 
-            // Almacenanos en una variable el nombre de cada animal según su posición
-            petsNames = namesPets[position];
-            // Position nos indicará cuál fue el elemento clicado
+            // Dirá el nombre de cada animal según su posición del elemento pulsado
             Toast.makeText(context.getApplicationContext(), "Elemento de la posición " +
-                    position + " que corresponde al animal " + petsNames, Toast.LENGTH_SHORT)
+                    position + " que corresponde al animal " + namesPets[position], Toast.LENGTH_SHORT)
                     .show();
             if (textInVoice != null) {
                 // Decir el nombre del animal con voz
-                textInVoice.speak("Se ha seleccionado " + petsNames,
+                textInVoice.speak("Se ha seleccionado " + namesPets[position],
                         TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });

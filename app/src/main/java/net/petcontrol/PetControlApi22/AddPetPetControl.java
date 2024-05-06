@@ -18,10 +18,6 @@ public class AddPetPetControl extends AppCompatActivity {
     int[] imagesPets = {R.drawable.dog, R.drawable.cat, R.drawable.hamster, R.drawable.fish,
             R.drawable.mouse, R.drawable.bird, R.drawable.rabbit, R.drawable.tortoise,
             R.drawable.ferret, R.drawable.pig, R.drawable.tarantula, R.drawable.snake};
-    //TODO Cambiar imágenes por palabras de cada animal
-    int[] nameAnimal = {R.drawable.snake, R.drawable.dog, R.drawable.cat, R.drawable.hamster,
-            R.drawable.fish, R.drawable.mouse, R.drawable.bird, R.drawable.rabbit,
-            R.drawable.tortoise, R.drawable.ferret, R.drawable.pig, R.drawable.tarantula};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +30,7 @@ public class AddPetPetControl extends AppCompatActivity {
 
 
         // Creamos objeto de la clase del adaptador, pasando los dos arrays de imágenes a intercambiar
-        AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets, nameAnimal);
+        AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets);
         // Enlazamos el GridView con el adaptador personalizado
         pets.setAdapter(adapterPets);
 
