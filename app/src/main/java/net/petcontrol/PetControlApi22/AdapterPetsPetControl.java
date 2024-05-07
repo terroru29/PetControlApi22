@@ -133,8 +133,11 @@ public class AdapterPetsPetControl extends BaseAdapter {
             // Rotación horizontal (tridimensional)
             ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
                     "rotationY", 0f, 100f).setDuration(1000);
+            ObjectAnimator rotationNames = ObjectAnimator.ofFloat(names,
+                    "rotationY", 0f, 100f).setDuration(1000);
             // Iniciar la animación
             rotationAnimator.start();
+            rotationNames.start();
 
             pets.postDelayed(() -> {
                 if (isImageChanged[position]) {
@@ -157,7 +160,10 @@ public class AdapterPetsPetControl extends BaseAdapter {
                 // Seguir el giro hasta colocar la imagen normal
                 ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
                         "rotationY", 100f, 360f).setDuration(1500);
+                ObjectAnimator rotationNames1 = ObjectAnimator.ofFloat(names,
+                        "rotationY", 100f, 360f).setDuration(1500);
                 rotationAnimator1.start();
+                rotationNames1.start();
 
                 // Cambiar el estado en cada click
                 isImageChanged[position] = !isImageChanged[position];
