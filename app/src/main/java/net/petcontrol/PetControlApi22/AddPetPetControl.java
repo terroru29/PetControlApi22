@@ -36,7 +36,6 @@ public class AddPetPetControl extends AppCompatActivity {
 
 
         //-Evento de botón
-        fastConfiguration.setOnClickListener(v -> next(fastConfiguration));
     }
     /**
      * Pasará a la siguiente ventana
@@ -46,5 +45,7 @@ public class AddPetPetControl extends AppCompatActivity {
     public void next(View view) {
         Intent i = new Intent(this, FastConfigurationPetControl.class);
         startActivity(i);
+        // Cierra la actividad actual para evitar que el usuario regrese a ella
+        finish();
     }
 }

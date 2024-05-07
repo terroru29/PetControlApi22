@@ -21,6 +21,8 @@ public class FastConfigurationPetControl extends AppCompatActivity {
         btnNextActivity.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), MenuInferiorPetControl.class);
             startActivity(i);
+            // Cierra la actividad actual para evitar que el usuario regrese a ella
+            finish();
         });
     }
 }

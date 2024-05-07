@@ -165,6 +165,8 @@ public class RegisterPetControl extends AppCompatActivity {
                         if (withoutDigit(nameCorrect) && withoutDigit(surnameCorrect)) {
                             Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                             startActivity(i);
+                            // Cierra la actividad actual para evitar que el usuario regrese a ella
+                            finish();
                         }
                         else
                             Toast.makeText(getApplicationContext(), "El campo nombre o apellido 1" +
@@ -217,7 +219,6 @@ public class RegisterPetControl extends AppCompatActivity {
     }
  */
     /* -------------------- MÉTODOS -------------------- */
-
     /**
      * Método que valida el correo electrónico: Mín. 1 @ y 1 . al final con la extensión (3-4 letras)
      *
@@ -242,7 +243,6 @@ public class RegisterPetControl extends AppCompatActivity {
         }
         return correct;
     }
-
     /**
      * Método que valida la contraseña: Mínimo una minúscula, una mayúscula, un dígito,
      * un carácter especial y que tenga una longitud entre 8 y 12 caracteres.
@@ -271,7 +271,6 @@ public class RegisterPetControl extends AppCompatActivity {
         }
         return correct;
     }
-
     /**
      * Silenciar la validación en caso de que los campos a comprobar estén vacíos
      *
@@ -282,7 +281,6 @@ public class RegisterPetControl extends AppCompatActivity {
         if (et.isEmpty())
             text.setText("");
     }
-
     /**
      * Obtener el nombre del archivo a partir de su URI
      *
