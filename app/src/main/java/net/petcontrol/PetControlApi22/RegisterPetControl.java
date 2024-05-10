@@ -16,10 +16,12 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +30,11 @@ import com.google.android.material.tabs.TabLayout;
 
 public class RegisterPetControl extends AppCompatActivity {
 
-    EditText name, surname, validationEmail, validationPass;
+    EditText name, surname, secondSurname, validationEmail, validationPass;
     Button searchPicture, next;
     TextView messageEmail, messagePass, pictureSelected;
     ImageView pictureUser;
+    ImageButton cleanName, cleanSurname, cleanSecondSurname, cleanEmail, closedEye, openEye;
     String nameCorrect, surnameCorrect, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
             pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
     boolean validateEmail, validatePass;
@@ -49,10 +52,17 @@ public class RegisterPetControl extends AppCompatActivity {
 
         // Asociar variables con sus recursos
         name = findViewById(R.id.etName);
+        cleanName = findViewById(R.id.imgbXName);
         surname = findViewById(R.id.etSurname);
+        cleanSurname = findViewById(R.id.imgbXSurname);
+        secondSurname = findViewById(R.id.etSecondSurname);
+        cleanSecondSurname = findViewById(R.id.imgbXSecondSurname);
         validationEmail = findViewById(R.id.etEmailUser);
         messageEmail = findViewById(R.id.txtValidationEmail);
+        cleanEmail = findViewById(R.id.imgbXEmail);
         validationPass = findViewById(R.id.etPasswordUser);
+        closedEye = findViewById(R.id.imgbClosedEye);
+        openEye = findViewById(R.id.imgbOpenEye);
         messagePass = findViewById(R.id.txtValidationPass);
         searchPicture = findViewById(R.id.btnPicture);
         pictureUser = findViewById(R.id.ivUser);
@@ -60,7 +70,7 @@ public class RegisterPetControl extends AppCompatActivity {
         next = findViewById(R.id.btnNextConfiguration);
 
 
-        //-Evento EditText
+        //-EVENTO EDITTEXT
         //--Email
         validationEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -119,7 +129,7 @@ public class RegisterPetControl extends AppCompatActivity {
         });
 
 
-        //-Evento de botón
+        //-EVENTO DE BOTÓN
         //--Buscar imagen
         searchPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,9 +147,8 @@ public class RegisterPetControl extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.d(TAG, email);
-                //Log.d(TAG, pass);
-
+                //Log.d("Email", email);
+                //Log.d("Pass", pass);
                 sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
                 editor = sharedPreferences.edit();
 
@@ -180,8 +189,27 @@ public class RegisterPetControl extends AppCompatActivity {
                 }
             }
         });
-    }
 
+
+        //-EVENTO IMAGEBUTTON
+        //--Limpiar campo
+        cleanName.setOnClickListener(v -> name.setText(""));
+        cleanSurname.setOnClickListener(v -> surname.setText(""));
+        cleanSecondSurname.setOnClickListener(v -> secondSurname.setText(""));
+        cleanEmail.setOnClickListener(v -> validationEmail.setText(""));
+        //--Mostrar contraseña
+        closedEye.setOnClickListener(v -> {
+            closedEye.setVisibility(View.GONE);
+            openEye.setVisibility(View.VISIBLE);
+            validationPass.setTransformationMethod(null);
+        });
+        //-Ocultar contraseña
+        openEye.setOnClickListener(v -> {
+            openEye.setVisibility(View.GONE);
+            closedEye.setVisibility(View.VISIBLE);
+            validationPass.setTransformationMethod(new PasswordTransformationMethod());
+        });
+    }
     /**
      * Manejar el resultado cuando el usuario seleccione un archivo.
      *

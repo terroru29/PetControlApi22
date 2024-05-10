@@ -26,7 +26,10 @@
     <!-- LOGIN -->
     <string name="title_login">Login</string>
     <string name="hint_email">E-mail</string>
+    <string name="clean_field">Icono personalizado que limpia el campo.</string>
     <string name="hint_pass">Contraseña</string>
+    <string name="closed_eye">Icono personalizado que invisibiliza la contraseña.</string>
+    <string name="open_eye">Icono personalizado que visibiliza la contraseña al usuario.</string>
     <string name="forgot_password">¿Has olvidado la contraseña?</string>
     <string name="terms">Acepte las condiciones de uso y privacidad   </string>
     <string name="log_in">Iniciar sesión</string>

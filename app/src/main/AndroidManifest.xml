@@ -16,10 +16,12 @@
     -->
 
     <!-- Compatibilidad -->
+    <!--
     <uses-sdk
-        android:minSdkVersion="22"
-        android:targetSdkVersion="30"
+        android:minSdkVersion="29"
+        android:targetSdkVersion="34"
         tools:overrideLibrary="com.android.car.ui" />
+    -->
 
     <application
         android:allowBackup="true"
@@ -51,18 +53,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MenuInferiorPetControl"
             android:exported="true">
-
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->

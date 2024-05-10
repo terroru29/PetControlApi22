@@ -17,18 +17,21 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginPetControl extends AppCompatActivity {
 
+    ImageButton clean, closedEye, openEye;
     Button logIn;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch termsAndConditions;
@@ -48,7 +51,10 @@ public class LoginPetControl extends AppCompatActivity {
 
         // Asociación de variables con sus recursos
         emailUser = findViewById(R.id.etEmail);
+        clean = findViewById(R.id.imgbX);
         passUser = findViewById(R.id.etPassword);
+        closedEye = findViewById(R.id.imgbClosedEye);
+        openEye = findViewById(R.id.imgbOpenEye);
         forgotPassword = findViewById(R.id.txtForgotPassword);
         terms = findViewById(R.id.txtTerms);
         termsAndConditions = findViewById(R.id.switchTerms);
@@ -56,7 +62,7 @@ public class LoginPetControl extends AppCompatActivity {
         signUp = findViewById(R.id.txtSignUp);
 
 
-        //-Evento EditText
+        //-EVENTO EDITTEXT
         //--Email
         emailUser.addTextChangedListener(new TextWatcher() {
             @Override
@@ -115,13 +121,30 @@ public class LoginPetControl extends AppCompatActivity {
         forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         forgotPassword.setText(R.string.forgot_password);
 
-        //-Evento botón
+        //-EVENTO BOTÓN
         //--Iniciar sesión
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextWindow(logIn);
             }
+        });
+
+
+        //-EVENTO IMAGEBUTTON
+        //--Limpiar campo
+        clean.setOnClickListener(v -> emailUser.setText(""));
+        //--Mostrar contraseña
+        closedEye.setOnClickListener(v -> {
+            closedEye.setVisibility(View.GONE);
+            openEye.setVisibility(View.VISIBLE);
+            passUser.setTransformationMethod(null);
+        });
+        //-Ocultar contraseña
+        openEye.setOnClickListener(v -> {
+            openEye.setVisibility(View.GONE);
+            closedEye.setVisibility(View.VISIBLE);
+            passUser.setTransformationMethod(new PasswordTransformationMethod());
         });
     }
 
