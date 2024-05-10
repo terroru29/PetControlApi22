@@ -9,12 +9,12 @@ import java.sql.Date;
 
 @Entity(tableName = "Pets",
         foreignKeys = @ForeignKey(entity = TypePetsPetControl.class,
-                // Columna en la entidad padre --> TypePetsPetControl
+                // Nombre columna en la entidad padre --> TypePetsPetControl
                 parentColumns = "id_type_pet",
-                // Columna en la entidad hijo --> PetsPetControl
+                // Nombre columna en la entidad hijo --> PetsPetControl
                 childColumns = "id_type_pet",
-                // Si el registro del padre se borra, el hijo también lo hará --> Cascade
-                onDelete = ForeignKey.CASCADE))
+                // Si el tipo de animal se extingue, el registro del animal se elimina --> Cascade
+                onDelete = ForeignKey.CASCADE)) //TODO pensar si poner mejor RESTRICT (VisitsVet)
 public class PetsPetControl {
     //Atributos --> Columnas
     @PrimaryKey(autoGenerate = true)
