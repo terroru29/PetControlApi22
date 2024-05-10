@@ -1,69 +1,44 @@
 package net.petcontrol.PetControlApi22;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
+import java.sql.Date;
+
+@Entity(tableName = "Pets",
+        foreignKeys = @ForeignKey(entity = TypePetsPetControl.class,
+                // Columna en la entidad padre --> TypePetsPetControl
+                parentColumns = "id_type_pet",
+                // Columna en la entidad hijo --> PetsPetControl
+                childColumns = "id_type_pet",
+                // Si el registro del padre se borra, el hijo también lo hará --> Cascade
+                onDelete = ForeignKey.CASCADE))
 public class PetsPetControl {
-    //Atributos --> Columnas tabla Pets
-    private String codigo;
-    private String nombre;
-    private String dueño;
+    //Atributos --> Columnas
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "IDPet")
+    int id_pet;
+    int id_type_pet;    // FK que referencia a la entidad TypesPetsPetControl --> Tipo animal
+    @ColumnInfo(name = "NamePet")
+    String name_pet;
+    @ColumnInfo(name = "AgePet")
+    int age_pet;
+    @ColumnInfo(name = "Breed")
+    String breed;
+    @ColumnInfo(name = "SexPet")
+    String sex_pet;
+    // Almacenamos la ruta de la imagen que se guardará en el sistema de archivos (Internal Storage)
+    // para referenciarla más tarde en la BD
+    @ColumnInfo(name = "UriPicPet")
+    String uri_pic_pet;
+    @ColumnInfo(name = "WelcomeDatePet")
+    Date welcome_date_pet;
+    @ColumnInfo(name = "DescriptionPet")
+    String description_pet;
 
-    //Creamos variable estática para poder acceder con la clase que almacenará el nombre del usuario
-    private static String user;
 
 
-    //Constructor
-    public PetsPetControl(String codigo, String nombre, String dueño) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.dueño = dueño;
-    }
-    public PetsPetControl() {}
 
-
-    //Getter
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getDueño() {
-        return dueño;
-    }
-
-    /*
-    //Nos devolverá el nombre guardado del usuario
-    public static String getUser() {
-        return MascotasPetControl.user;
-    }
-     */
-
-    //Setter
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setDueño(String dueño) {
-        this.dueño = dueño;
-    }
-
-    /*
-    //Modificará el nombre del usuario
-    public static void setUser (String user) {
-        MascotasPetControl.user = user;
-    }
-     */
-
-    //toString()
-    @Override
-    public String toString() {
-        return "*** Mascota ***\nCódigo: " + codigo + "\nNombre: " + nombre + "\nDueño: " + dueño;
-        /*return "*** Mascota ***\nCódigo: " + codigo + "\nTítulo: " + nombre + "\nDueño: " +
-                dueño;*/
-    }
 }
