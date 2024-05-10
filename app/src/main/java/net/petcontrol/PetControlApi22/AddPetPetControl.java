@@ -36,6 +36,7 @@ public class AddPetPetControl extends AppCompatActivity {
 
 
         //-Evento de botón
+        fastConfiguration.setOnClickListener(v -> next(fastConfiguration));
     }
     /**
      * Pasará a la siguiente ventana

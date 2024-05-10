@@ -70,6 +70,7 @@
     <string name="description_imageButton">Imagen PNG de un animal.</string>
 
     <!-- ADD PET -->
+    <string name="title_add_pet">Añadir animal</string>
     <string-array name="pets_names">
         <item>Perro</item>
         <item>Gato</item>
