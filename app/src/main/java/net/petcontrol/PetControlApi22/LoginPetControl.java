@@ -40,7 +40,7 @@ public class LoginPetControl extends AppCompatActivity {
     String email, savedEmail, pass, savedPassword, passwordNew, passwordConfirm, conditions,
             credentials, acceptTerms;
     boolean change = false, termsCheck;
-    OwnerPetControl opc = new OwnerPetControl();
+    //OwnerPetControl opc = new OwnerPetControl();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -237,9 +237,9 @@ public class LoginPetControl extends AppCompatActivity {
 
                 // Si la contraseña fue cambiada y se confirmó
                 if (change) {
-                    opc.setPassword(passwordConfirm);
-                    Toast.makeText(getApplicationContext(), "Change: " + opc.toString(),
-                            Toast.LENGTH_SHORT).show();
+                    //opc.setPassword(passwordConfirm);
+                    /*Toast.makeText(getApplicationContext(), "Change: " + opc.toString(),
+                            Toast.LENGTH_SHORT).show();*/
 
                     sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
                     editor = sharedPreferences.edit();

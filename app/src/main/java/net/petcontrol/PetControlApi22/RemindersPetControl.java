@@ -3,13 +3,13 @@ package net.petcontrol.PetControlApi22;
 /**
  *  MODELO de Notificaciones
  */
-public class NotificationsPetControl {
+public class RemindersPetControl {
     // Atributos
     private String date;
     private String content;
 
     // Constructor
-    public NotificationsPetControl(String date, String content) {
+    public RemindersPetControl(String date, String content) {
         this.date = date;
         this.content = content;
     }

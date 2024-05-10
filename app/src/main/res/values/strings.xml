@@ -2,7 +2,7 @@
     <string name="app_name">PetControl</string>
 
     <!-- BOTTOM VIEW -->
-    <string name="title_notifications">Notificaciones</string>
+    <string name="title_reminders">Recordatorios</string>
     <string name="title_calendar">Calendario</string>
     <string name="title_PC">PC</string>
     <string name="title_location">Ubicación</string>

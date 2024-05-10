@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.NotificationsFragment">
+    tools:context=".ui.reminders.RemindersFragment">
 
     <TextView
-        android:id="@+id/text_notifications"
+        android:id="@+id/text_reminders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notificaciones"
+        android:text="Recordatorios"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="45sp"
@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvNotifications"
+        android:id="@+id/rvReminders"
         android:layout_width="330dp"
         android:layout_height="537dp"
         app:layout_constraintBottom_toBottomOf="parent"

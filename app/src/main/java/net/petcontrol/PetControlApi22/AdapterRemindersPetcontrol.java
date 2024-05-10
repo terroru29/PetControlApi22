@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class AdapterNotificationsPetcontrol extends
-        RecyclerView.Adapter<AdapterNotificationsPetcontrol.ViewHolder> {
-    private List<NotificationsPetControl> notificationsList;
+public class AdapterRemindersPetcontrol extends
+        RecyclerView.Adapter<AdapterRemindersPetcontrol.ViewHolder> {
+    private List<RemindersPetControl> notificationsList;
 
     // Constructor del Adapter
-    public AdapterNotificationsPetcontrol(List<NotificationsPetControl> notificationsList) {
+    public AdapterRemindersPetcontrol(List<RemindersPetControl> notificationsList) {
         this.notificationsList = notificationsList;
     }
     // Crea nuevas vistas inflando el diseño para cada elemento del RecyclerView
@@ -22,14 +22,14 @@ public class AdapterNotificationsPetcontrol extends
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Infla el layout para el elemento del RecyclerView
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_notifications_petcontrol, parent, false);
+                .inflate(R.layout.adapter_reminders_petcontrol, parent, false);
         return new ViewHolder(view);
     }
 
     // Toma el elemento correspondiente de la lista y configura las vistas con los datos
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NotificationsPetControl notification = notificationsList.get(position);
+        RemindersPetControl notification = notificationsList.get(position);
         holder.date.setText(notification.getDate());
         holder.content.setText(notification.getContent());
     }
