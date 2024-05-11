@@ -20,9 +20,9 @@ public class VisitsVetPetControl {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "IDVet")
     int id_vet;
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "IDPetVet")
     int id_pet_vet;
+    @ColumnInfo(name = "IDPet")
     int id_pet; // FK que referencia a la entidad PetsPetControl --> Mascota
     @ColumnInfo(name = "NameVet")
     String name_vet;
