@@ -7,34 +7,60 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import java.sql.SQLException;
 import java.util.List;
 
-// Métodos para interactuar con la base de datos (insertar, eliminar, actualizar y consultar datos)
+/**
+ *  Interfaz DAO (Data Access Object) que define los métodos para interactuar con la base de datos
+ *  relacioanda a los tipos de mascotas.
+ *  Proporciona operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para tipos de mascotas.
+ */
 @Dao
 public interface TypesPetsDAOPetControl {
-    // Añade nuevo registro
+    /**
+     * Añade un nuevo animal a la BD.
+     *
+     * @param animal El animal que se va a insertar
+     */
     @Insert
     @Transaction
-    void addAnimal(TypePetsPetControl animal) throws SQLException;
-    // Modifica uno ya existente
+    void addAnimal(TypePetsPetControl animal);
+    /**
+     * Modifica un animal ya existente en la BD.
+     *
+     * @param animal El animal que se va a modificar
+     */
     @Update
     @Transaction
-    void updateAnimal(TypePetsPetControl animal) throws SQLException;
-    // Elimina un registro
+    void updateAnimal(TypePetsPetControl animal);
+    /**
+     * Elimina un animal de la BD.
+     *
+     * @param animal El animal que se va a eliminar
+     */
     @Delete
     @Transaction
-    void deleteAnimal(TypePetsPetControl animal) throws SQLException;
-    // Obtiene todos los tipos de mascotas almacenados en la base de datos
+    void deleteAnimal(TypePetsPetControl animal);
+    /**
+     * Obtiene todos los tipos de mascotas almacenados en la base de datos.
+     *
+     * @return Una lista de todos los tipos de mascotas almacenados en la base de datos
+     */
     @Query("SELECT * FROM TypePets")
-    @Transaction
-    List<TypePetsPetControl> getAllTypePets() throws SQLException;
-    // Obtiene un tipo de mascota según su ID
+    List<TypePetsPetControl> getAllTypePets();
+    /**
+     * Obtiene un tipo de animal según su ID de la base de datos.
+     *
+     * @param id Identificador de cada animal
+     * @return Una lista del animal con ese ID
+     */
     @Query("SELECT * FROM TypePets WHERE IDTypePet = :id")
-    @Transaction
-    TypePetsPetControl getTypePetById(int id) throws SQLException;
-    // Obtiene un tipo de mascota por su nombre
+    TypePetsPetControl getTypePetById(int id);
+    /**
+     * Obtiene un tipo de animal según su nombre almacenado en la BD.
+     *
+     * @param typePet Tipo de animal por el que buscar
+     * @return Una lista de animales que sean del mismo tipo almacenados en la base de datos.
+     */
     @Query("SELECT * FROM TypePets WHERE TypePet = :typePet")
-    @Transaction
-    TypePetsPetControl getTypePetByName(String typePet) throws SQLException;
+    TypePetsPetControl getTypePetByName(String typePet);
 }

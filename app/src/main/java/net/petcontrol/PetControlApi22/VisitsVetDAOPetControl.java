@@ -7,70 +7,126 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.time.LocalDateTime;
 
+/**
+ * Interfaz DAO (Data Access Object) que define los métodos para interactuar con la base de datos
+ * relacionada a las visitas veterinarias de las mascotas.
+ * Proporciona operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las visitas veterinarias.
+ */
 @Dao
 public interface VisitsVetDAOPetControl {
-    // Añadir una nueva visita veterinaria
+    /**
+     * Añadir una nueva visita veterinaria a la BD.
+     *
+     * @param visit Visita a insertar en la base de datos
+     */
     @Insert
     @Transaction
-    void insertVisit(VisitsVetPetControl visit) throws SQLException;
-    // Modificar los datos de una visita veterinaria existente
+    void insertVisit(VisitsVetPetControl visit);
+    /**
+     * Modificar una visita veterinaria ya existente en la BD.
+     *
+     * @param visit Visita a modificar en la base de datos
+     */
     @Update
     @Transaction
-    void updateVisit(VisitsVetPetControl visit) throws SQLException;
-    // Eliminar una visita veterinaria
+    void updateVisit(VisitsVetPetControl visit);
+    /**
+     * Eliminar una visita veterinaria de la BD.
+     *
+     * @param visit Visita a eliminar en la base de datos
+     */
     @Delete
     @Transaction
-    void deleteVisit(VisitsVetPetControl visit) throws SQLException;
-    // Seleccionar todas las visitas veterinarias realizadas
+    void deleteVisit(VisitsVetPetControl visit);
+    /**
+     * Seleccionar todas las visitas veterinarias existentes en la BD.
+     *
+     * @return Una lista de toda la información de las visitas almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet")
-    @Transaction
-    List<VisitsVetPetControl> getAllVisits() throws SQLException;
-    // Seleccionar una visita veterinaria por su ID (referencia al local)
+    List<VisitsVetPetControl> getAllVisits();
+    /**
+     * Seleccionar una visita veterinaria según su ID almacenada en la BD.
+     *
+     * @return Una lista de las visitas, a un centro específico, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE IDVet = :vetId")
-    @Transaction
-    VisitsVetPetControl getVisitById(int vetId) throws SQLException;
-    // Seleccionar todas las visitas veterinarias para una mascota específica
+    VisitsVetPetControl getVisitById(int vetId);
+    /**
+     * Seleccionar todas las visitas veterinarias para una mascota específica almacenada en la BD.
+     *
+     * @return Una lista de las mascotas que han ido al veterinario almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE IDPetVet = :petvetId")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsForPet(int petvetId) throws SQLException;
-    // Seleccionar todas las visitas veterinarias realizadas a un centro veterinario específico
+    List<VisitsVetPetControl> getVisitsForPet(int petvetId);
+    /**
+     * Seleccionar todas las visitas realizadas a un centro veterinario específico almacenada en la
+     * BD.
+     *
+     * @return Una lista de las visitas, según el nombre del local, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE NameVet = :vetName")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByName(String vetName) throws SQLException;
-    // Seleccionar todas las visitas veterinarias ubicadas en una misma localización
+    List<VisitsVetPetControl> getVisitsByName(String vetName);
+    /**
+     * Seleccionar todas las visitas veterinarias ubicadas en una misma localización almacenada en
+     * la BD.
+     *
+     * @return Una lista de las visitas, a un ubicación concreta, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE LocVet = :vetLoc")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByLoc(String vetLoc) throws SQLException;
-    // Seleccionar todas las visitas veterinarias realizadas en una fecha concreta
+    List<VisitsVetPetControl> getVisitsByLoc(String vetLoc);
+    /**
+     * Seleccionar todas las visitas realizadas en una fecha concreta almacenada en la BD.
+     *
+     * @return Una lista de las visitas, con fecha específica, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE Datevisit = :visitDate")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByDate(LocalDateTime visitDate) throws SQLException;
-    // Seleccionar todas las visitas veterinarias realizadas que compartan motivo de visita
+    List<VisitsVetPetControl> getVisitsByDate(LocalDateTime visitDate);
+    /**
+     * Seleccionar todas las visitas con mismo motivo de visita en la BD.
+     *
+     * @return Una lista de las visitas, con mismo motivo, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE ReasonVisit = :visitReason")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByReason(String visitReason) throws SQLException;
-    // Seleccionar todas las visitas veterinarias en las que se obtuviera el mismo diagnóstico
+    List<VisitsVetPetControl> getVisitsByReason(String visitReason);
+    /**
+     * Seleccionar todas las visitas con mismo diagnóstico almacenada en la BD.
+     *
+     * @return Una lista de las visitas, con mismo diagnóstico, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE Diagnosis = :diagnosis")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByDiagnosis(String diagnosis) throws SQLException;
-    // Seleccionar todas las visitas veterinarias con el mismo tratamiento
+    List<VisitsVetPetControl> getVisitsByDiagnosis(String diagnosis);
+    /**
+     * Seleccionar todas las visitas con el mismo tratamiento almacenada en la BD.
+     *
+     * @return Una lista de las visitas, con mismo tratamiento, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE Treatment = :treatment")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByTreatment(String treatment) throws SQLException;
-    // Seleccionar todas las visitas veterinarias que costaran de igual precio
+    List<VisitsVetPetControl> getVisitsByTreatment(String treatment);
+    /**
+     * Seleccionar todas las visitas con igual precio de coste, almacenada en la BD.
+     *
+     * @return Una lista de las visitas, con mismo coste, almacenadas en la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE VisitPrice = :visitPrice")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByPrice(String visitPrice) throws SQLException;
-    // Seleccionar todas las visitas veterinarias de una mascota en un centro determinado
+    List<VisitsVetPetControl> getVisitsByPrice(String visitPrice);
+    /**
+     * Seleccionar todas las visitas de una mascota a un centro determinado, almacenada en la BD.
+     *
+     * @return Una lista de las visitas, de una mascota a un centro concreto, almacenadas en la
+     *          base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE IDVet = :vetId AND IDPetVet = :petvetId")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByVetAndPet(int vetId, int petvetId) throws SQLException;
-    // Seleccionar todas las visitas veterinarias de una mascota a una localidad específica
+    List<VisitsVetPetControl> getVisitsByVetAndPet(int vetId, int petvetId);
+    /**
+     * Seleccionar todas las visitas de una mascota a una localidad específica almacenada en la BD.
+     *
+     * @return Una lista de las visitas, de una mascota a una ubicación específica, almacenadas en
+     *          la base de datos.
+     */
     @Query("SELECT * FROM VisitsVet WHERE IDPetVet = :petvetId AND LocVet = :vetLoc")
-    @Transaction
-    List<VisitsVetPetControl> getVisitsByPetAndLoc(int petvetId, String vetLoc) throws SQLException;
+    List<VisitsVetPetControl> getVisitsByPetAndLoc(int petvetId, String vetLoc);
 }
