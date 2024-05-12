@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navigation_PC"
-        android:icon="@drawable/inverted_logo_24"
+        android:icon="@drawable/inverted_logo_32"
         android:title="@string/title_PC" />
 
     <item

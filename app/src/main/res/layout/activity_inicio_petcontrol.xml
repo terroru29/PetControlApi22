@@ -195,7 +195,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.478"
-        app:srcCompat="@drawable/logo_petcontrol" />
+        app:srcCompat="@drawable/border_logo" />
 
     <TextView
         android:id="@+id/txtEslogan"
