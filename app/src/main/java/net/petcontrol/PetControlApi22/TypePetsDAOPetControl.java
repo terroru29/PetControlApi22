@@ -15,7 +15,7 @@ import java.util.List;
  *  Proporciona operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para tipos de mascotas.
  */
 @Dao
-public interface TypesPetsDAOPetControl {
+public interface TypePetsDAOPetControl {
     /**
      * Añade un nuevo animal a la BD.
      *

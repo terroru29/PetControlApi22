@@ -5,7 +5,7 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/sharp_notifications_24"
         android:title="@string/title_reminders" />
-
+ 
     <item
         android:id="@+id/navigation_calendar"
         android:icon="@drawable/outline_calendar_month_24"

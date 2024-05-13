@@ -19,25 +19,25 @@ public class PetsPetControl {
     //Atributos --> Columnas
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "IDPet")
-    int id_pet;
+    public int id_pet;
     @ColumnInfo(name = "IDTypePet")
-    int id_type_pet;    // FK que referencia a la entidad TypesPetsPetControl --> Tipo animal
+    public int id_type_pet;    // FK que referencia a la entidad TypesPetsPetControl --> Tipo animal
     @ColumnInfo(name = "NamePet")
-    String name_pet;
+    public String name_pet;
     @ColumnInfo(name = "AgePet")
-    int age_pet;
+    public int age_pet;
     @ColumnInfo(name = "Breed")
-    String breed;
+    public String breed;
     @ColumnInfo(name = "SexPet")
-    String sex_pet;
+    public String sex_pet;
     // Almacenamos la ruta de la imagen que se guardará en el sistema de archivos (Internal Storage)
     // para referenciarla más tarde en la BD
     @ColumnInfo(name = "UriPicPet")
-    String uri_pic_pet;
+    public String uri_pic_pet;
     @ColumnInfo(name = "WelcomeDatePet")
-    LocalDate welcome_date_pet;
+    public LocalDate welcome_date_pet;
     @ColumnInfo(name = "DescriptionPet")
-    String description_pet;
+    public String description_pet;
 
 
     // Constructores
@@ -58,61 +58,61 @@ public class PetsPetControl {
 
 
     // Getters
-    public int getId_pet() {
+    public int getIDPet() {
         return id_pet;
     }
-    public int getId_type_pet() {
+    public int getIDTypePet() {
         return id_type_pet;
     }
-    public String getName_pet() {
+    public String getNamePet() {
         return name_pet;
     }
-    public int getAge_pet() {
+    public int getAgePet() {
         return age_pet;
     }
     public String getBreed() {
         return breed;
     }
-    public String getSex_pet() {
+    public String getSexPet() {
         return sex_pet;
     }
-    public String getUri_pic_pet() {
+    public String getUriPicPet() {
         return uri_pic_pet;
     }
-    public LocalDate getWelcome_date_pet() {
+    public LocalDate getWelcomeDatePet() {
         return welcome_date_pet;
     }
-    public String getDescription_pet() {
+    public String getDescriptionPet() {
         return description_pet;
     }
 
 
     // Setters
-    public void setId_pet(int id_pet) {
+    public void setIDPet(int id_pet) {
         this.id_pet = id_pet;
     }
-    public void setId_type_pet(int id_type_pet) {
+    public void setIDTypePet(int id_type_pet) {
         this.id_type_pet = id_type_pet;
     }
-    public void setName_pet(String name_pet) {
+    public void setNamePet(String name_pet) {
         this.name_pet = name_pet;
     }
-    public void setAge_pet(int age_pet) {
+    public void setAgePet(int age_pet) {
         this.age_pet = age_pet;
     }
     public void setBreed(String breed) {
         this.breed = breed;
     }
-    public void setSex_pet(String sex_pet) {
+    public void setSexPet(String sex_pet) {
         this.sex_pet = sex_pet;
     }
-    public void setUri_pic_pet(String uri_pic_pet) {
+    public void setUriPicPet(String uri_pic_pet) {
         this.uri_pic_pet = uri_pic_pet;
     }
-    public void setWelcome_date_pet(LocalDate welcome_date_pet) {
+    public void setWelcomeDatePet(LocalDate welcome_date_pet) {
         this.welcome_date_pet = welcome_date_pet;
     }
-    public void setDescription_pet(String description_pet) {
+    public void setDescriptionPet(String description_pet) {
         this.description_pet = description_pet;
     }
 }
