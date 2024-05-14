@@ -44,10 +44,9 @@ public class PCFragment extends Fragment {
             petsDAO.insertPet(pets);
         }).start();
 
-        // Obtener todas ls mascotas
+        // Obtener todas las mascotas
         new Thread(() -> {
             List<PetsPetControl> myPets = petsDAO.getAllPets();
-            // Procesar datos...
         }).start();
     }
 

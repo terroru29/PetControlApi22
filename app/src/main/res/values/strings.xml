@@ -90,6 +90,20 @@
     </string-array>
     <string name="btn_description_image">Añadir animal</string>
 
+    <!-- FORM PETS -->
+    <string name="txt_age">Edad:</string>
+    <string name="hint_age">Edad</string>
+    <string name="txt_breed">Raza:</string>
+    <string name="hint_breed">Raza</string>
+    <string name="txt_sex">Sexo:</string>
+    <string name="rb_male">Macho</string>
+    <string name="rb_female">Hembra</string>
+    <string name="txt_photo">Foto:</string>
+    <string name="description_photo">Imagen de la mascota del usuario.</string>
+    <string name="txt_sterilization">Esterilización:</string>
+    <string name="txt_description">Descripción:</string>
+    <string name="hint_description">Descripción</string>
+
     <!-- FAST CONFIGURATION -->
     <string name="title_fast_configuration">Configuración rápida</string>
     <string name="voice">Lectura de acciones</string>

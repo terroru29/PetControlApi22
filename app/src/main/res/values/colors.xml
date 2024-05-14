@@ -20,6 +20,7 @@
     <color name="link_blue">#FF0C4EFA</color>
     <color name="grey_light">#FF939292</color>
     <color name="fuchsia">#FFF50057</color>
+    <color name="grey_hint_background_dark">#FFCDCDCD</color>
 
 
     <!-- Switch marcado/no marcado-->

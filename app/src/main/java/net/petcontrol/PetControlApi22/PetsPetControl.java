@@ -34,8 +34,8 @@ public class PetsPetControl {
     // para referenciarla más tarde en la BD
     @ColumnInfo(name = "UriPicPet")
     public String uri_pic_pet;
-    @ColumnInfo(name = "WelcomeDatePet")
-    public LocalDate welcome_date_pet;
+    @ColumnInfo(name = "Sterilization")
+    public boolean sterilization;
     @ColumnInfo(name = "DescriptionPet")
     public String description_pet;
 
@@ -43,7 +43,7 @@ public class PetsPetControl {
     // Constructores
     public PetsPetControl() {}
     public PetsPetControl(int id_pet, int id_type_pet, String name_pet, int age_pet, String breed,
-                          String sex_pet, String uri_pic_pet, LocalDate welcome_date_pet,
+                          String sex_pet, String uri_pic_pet, boolean sterilization,
                           String description_pet) {
         this.id_pet = id_pet;
         this.id_type_pet = id_type_pet;
@@ -52,7 +52,7 @@ public class PetsPetControl {
         this.breed = breed;
         this.sex_pet = sex_pet;
         this.uri_pic_pet = uri_pic_pet;
-        this.welcome_date_pet = welcome_date_pet;
+        this.sterilization = sterilization;
         this.description_pet = description_pet;
     }
 
@@ -79,8 +79,8 @@ public class PetsPetControl {
     public String getUriPicPet() {
         return uri_pic_pet;
     }
-    public LocalDate getWelcomeDatePet() {
-        return welcome_date_pet;
+    public boolean getSterilization() {
+        return sterilization;
     }
     public String getDescriptionPet() {
         return description_pet;
@@ -109,8 +109,8 @@ public class PetsPetControl {
     public void setUriPicPet(String uri_pic_pet) {
         this.uri_pic_pet = uri_pic_pet;
     }
-    public void setWelcomeDatePet(LocalDate welcome_date_pet) {
-        this.welcome_date_pet = welcome_date_pet;
+    public void setSterilization(boolean sterilization) {
+        this.sterilization = sterilization;
     }
     public void setDescriptionPet(String description_pet) {
         this.description_pet = description_pet;
