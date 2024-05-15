@@ -20,6 +20,7 @@ import net.petcontrol.PetControlApi22.VisitsVetDAOPetControl;
 import net.petcontrol.PetControlApi22.databinding.FragmentPcBinding;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PCFragment extends Fragment {
     private FragmentPcBinding binding;
@@ -33,7 +34,8 @@ public class PCFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Obtener la instancia de la base de datos
-        petsDAO = DatabaseClientPetControl.getInstance(getContext().getApplicationContext()).petsDAO();
+        petsDAO = DatabaseClientPetControl.getInstance(requireContext().getApplicationContext())
+                .petsDAO();
 
         // Insertar una mascota
         PetsPetControl pets = new PetsPetControl();

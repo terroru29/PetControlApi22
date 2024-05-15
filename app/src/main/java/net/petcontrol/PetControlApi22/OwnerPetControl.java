@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey;
 import java.time.LocalDate;
 
 
+/**
+ * Clase entidad (tabla de la BD) que representa al usuario de la aplicación.
+ */
 @Entity(tableName = "OwnerPet")
 public class OwnerPetControl {
     @PrimaryKey(autoGenerate = true)
@@ -29,7 +32,21 @@ public class OwnerPetControl {
 
 
     // Constructores
+    /**
+     * Constructor por defecto.
+     */
     public OwnerPetControl() {}
+    /**
+     * Constructor con parámetros.
+     *
+     * @param id_owner ID del usuario
+     * @param name_owner Nombre del usuario
+     * @param age_owner Edad del usuario
+     * @param gender_owner Género del usuario (Masculino/Femenino)
+     * @param uri_pic_owner Ruta de la imagen seleccionada para el usuario
+     * @param birthday Fecha de cumpleaños del usuario (aaaa-MM-dd)
+     * @param contact Correo electrónico del usuario
+     */
     public OwnerPetControl(int id_owner, String name_owner, int age_owner, String gender_owner,
                            String uri_pic_owner, LocalDate birthday, String contact) {
         this.id_owner = id_owner;
@@ -39,6 +56,13 @@ public class OwnerPetControl {
         this.uri_pic_owner = uri_pic_owner;
         this.birthday = birthday;
         this.contact = contact;
+        // Valida que los campos no estén vacíos o nulos
+        try {
+            validateFieldsOwners();
+        } catch(IllegalArgumentException e) {
+            // Manejo del error ~ Mostrar un mensaje
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
 
@@ -87,5 +111,30 @@ public class OwnerPetControl {
     }
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+
+    // ------------------ MÉTODOS ------------------
+    /**
+     * Valida si el usuario tiene los datos correctos.
+     * Usar antes de guardar o procesar una instancia de OwnerPetControl para asegurar que los
+     * datos son correctos.
+     *
+     * @throws IllegalArgumentException Si algún campo tiene datos incorrectos
+     */
+    public void validateFieldsOwners() {
+        if (name_owner == null || name_owner.isEmpty())
+            throw new IllegalArgumentException("El nombre del usuario no puede estar vacío.");
+        if (age_owner <= 0)
+            throw new IllegalArgumentException("La edad del usuario debe ser mayor a cero.");
+        if (gender_owner == null || (!gender_owner.equalsIgnoreCase("Masculino")
+                && !gender_owner.equalsIgnoreCase("Femenino")))
+            throw new IllegalArgumentException("El género del usuario debe ser 'Masculino' o " +
+                    "'Femenino'.");
+        // Aquí debes reemplazar `reason_visit` y `visit_price` por las variables correspondientes de la clase OwnerPetControl
+        if (uri_pic_owner == null || uri_pic_owner.isEmpty())
+            throw new IllegalArgumentException("La ruta de la imagen del usuario no puede estar vacía.");
+        if (contact == null || contact.isEmpty())
+            throw new IllegalArgumentException("El correo electrónico del usuario no puede estar vacío.");
     }
 }

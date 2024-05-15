@@ -81,14 +81,14 @@ public interface PetsDAOPetControl {
     @Query("SELECT * FROM Pets WHERE SexPet = :sexPet")
     List<PetsPetControl> getPetsBySex(String sexPet);
     /**
-     * Seleccionar todas las mascotas que compartan fecha de primera vez en la familia almacenadas
-     * en la BD.
+     * Seleccionar todas las mascotas que estén esterilizadas (o no) almacenadas en la BD.
      *
-     * @param welcomePet Fecha (dd/MM/yyyy) de primera vez en la familia de la mascota
+     * @param sterilization Indica si el animal está estirilizado, en caso de que existiera
+     *                      dicha opción
      * @return Una lista con la edad de las mascotas almacenadas en la base de datos.
      */
-    @Query("SELECT * FROM Pets WHERE WelcomeDatePet = :welcomePet")
-    List<PetsPetControl> getPetsByWelcome(LocalDate welcomePet);
+    @Query("SELECT * FROM Pets WHERE Sterilization = :sterilization")
+    List<PetsPetControl> getPetsBySterilization(boolean sterilization);
     /**
      * Seleccionar todas las mascotas que compartan descripción almacenadas en la BD.
      *

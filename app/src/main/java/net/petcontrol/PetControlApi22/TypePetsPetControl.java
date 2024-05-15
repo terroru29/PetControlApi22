@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Clase entidad (tabla de la BD) que representa los diferentes tipos de animales disponibles.
+ */
 // Indicamos que es una Entidad (tabla)
 @Entity(tableName = "TypePets")
 public class TypePetsPetControl {
@@ -15,10 +18,19 @@ public class TypePetsPetControl {
 
 
     // Constructores
+    /**
+     * Constructor por defecto.
+     */
     public TypePetsPetControl() {}
+    /**
+     * Cosntructor con parámetros.
+     *
+     * @param id_type_pet EL ID del tipo de animal
+     * @param type_pet El tipo de animal
+     */
     public TypePetsPetControl(int id_type_pet, String type_pet) {
         this.id_type_pet = id_type_pet;
-        this.type_pet = type_pet;
+        setTypePet(type_pet);
     }
 
 
@@ -35,7 +47,9 @@ public class TypePetsPetControl {
     public void setId_type_pet(int id_type_pet) {
         this.id_type_pet = id_type_pet;
     }
-    public void setType_pet(String type_pet) {
+    public void setTypePet(String type_pet) {
+        if (type_pet == null || type_pet.isEmpty())
+            throw new IllegalArgumentException("El tipo de animal no puede estar vacío.");
         this.type_pet = type_pet;
     }
 }
