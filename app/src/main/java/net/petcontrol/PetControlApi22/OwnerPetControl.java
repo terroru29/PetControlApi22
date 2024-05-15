@@ -42,13 +42,14 @@ public class OwnerPetControl {
      * @param id_owner ID del usuario
      * @param name_owner Nombre del usuario
      * @param age_owner Edad del usuario
-     * @param gender_owner Género del usuario (Masculino/Femenino)
+     * @param gender_owner Género del usuario (Masculino/Femenino/No binario)
      * @param uri_pic_owner Ruta de la imagen seleccionada para el usuario
      * @param birthday Fecha de cumpleaños del usuario (aaaa-MM-dd)
      * @param contact Correo electrónico del usuario
      */
     public OwnerPetControl(int id_owner, String name_owner, int age_owner, String gender_owner,
-                           String uri_pic_owner, LocalDate birthday, String contact) {
+                           String uri_pic_owner, LocalDate birthday, String contact)
+            throws IllegalArgumentException  {
         this.id_owner = id_owner;
         this.name_owner = name_owner;
         this.age_owner = age_owner;
@@ -57,12 +58,7 @@ public class OwnerPetControl {
         this.birthday = birthday;
         this.contact = contact;
         // Valida que los campos no estén vacíos o nulos
-        try {
-            validateFieldsOwners();
-        } catch(IllegalArgumentException e) {
-            // Manejo del error ~ Mostrar un mensaje
-            System.out.println("Error: " + e.getMessage());
-        }
+        validateFieldsOwners();
     }
 
 
@@ -125,15 +121,17 @@ public class OwnerPetControl {
     public void validateFieldsOwners() {
         if (name_owner == null || name_owner.isEmpty())
             throw new IllegalArgumentException("El nombre del usuario no puede estar vacío.");
-        if (age_owner <= 0)
-            throw new IllegalArgumentException("La edad del usuario debe ser mayor a cero.");
+        if (age_owner <= 16)
+            throw new IllegalArgumentException("La edad del usuario debe ser mayor a dieciseis.");
         if (gender_owner == null || (!gender_owner.equalsIgnoreCase("Masculino")
-                && !gender_owner.equalsIgnoreCase("Femenino")))
-            throw new IllegalArgumentException("El género del usuario debe ser 'Masculino' o " +
-                    "'Femenino'.");
-        // Aquí debes reemplazar `reason_visit` y `visit_price` por las variables correspondientes de la clase OwnerPetControl
+                && !gender_owner.equalsIgnoreCase("Femenino")
+                && !gender_owner.equalsIgnoreCase("No binario")))
+            throw new IllegalArgumentException("El género del usuario debe ser 'Masculino', " +
+                    "'Femenino' o 'No binario'.");
         if (uri_pic_owner == null || uri_pic_owner.isEmpty())
             throw new IllegalArgumentException("La ruta de la imagen del usuario no puede estar vacía.");
+        if (birthday == null)
+            throw new IllegalArgumentException("La fecha de cumpleaños del usuario no puede ser nula.");
         if (contact == null || contact.isEmpty())
             throw new IllegalArgumentException("El correo electrónico del usuario no puede estar vacío.");
     }

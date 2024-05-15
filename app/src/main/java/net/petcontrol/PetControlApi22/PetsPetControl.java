@@ -65,7 +65,7 @@ public class PetsPetControl {
      */
     public PetsPetControl(int id_pet, int id_type_pet, String name_pet, int age_pet, String breed,
                           String sex_pet, String uri_pic_pet, boolean sterilization,
-                          String description_pet) {
+                          String description_pet) throws IllegalArgumentException {
         this.id_pet = id_pet;
         this.id_type_pet = id_type_pet;
         this.name_pet = name_pet;
@@ -76,12 +76,7 @@ public class PetsPetControl {
         this.sterilization = sterilization;
         this.description_pet = description_pet;
         // Valida que los campos no estén vacíos o nulos
-        try {
-            validateFieldsPets();
-        } catch(IllegalArgumentException e) {
-            // Manejo del error ~ Mostrar un mensaje
-            System.out.println("Error: " + e.getMessage());
-        }
+        validateFieldsPets();
     }
 
 

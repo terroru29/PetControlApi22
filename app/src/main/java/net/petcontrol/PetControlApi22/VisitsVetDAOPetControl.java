@@ -60,8 +60,8 @@ public interface VisitsVetDAOPetControl {
      *
      * @return Una lista de las mascotas que han ido al veterinario almacenadas en la base de datos.
      */
-    @Query("SELECT * FROM VisitsVet WHERE IDPetVet = :petvetId")
-    List<VisitsVetPetControl> getVisitsForPet(int petvetId);
+    @Query("SELECT * FROM VisitsVet WHERE IDPet = :petId")
+    List<VisitsVetPetControl> getVisitsForPet(int petId);
     /**
      * Seleccionar todas las visitas realizadas a un centro veterinario específico almacenada en la
      * BD.
@@ -119,14 +119,14 @@ public interface VisitsVetDAOPetControl {
      * @return Una lista de las visitas, de una mascota a un centro concreto, almacenadas en la
      *          base de datos.
      */
-    @Query("SELECT * FROM VisitsVet WHERE IDVet = :vetId AND IDPetVet = :petvetId")
-    List<VisitsVetPetControl> getVisitsByVetAndPet(int vetId, int petvetId);
+    @Query("SELECT * FROM VisitsVet WHERE IDVet = :vetId AND IDPet = :petId")
+    List<VisitsVetPetControl> getVisitsByVetAndPet(int vetId, int petId);
     /**
      * Seleccionar todas las visitas de una mascota a una localidad específica almacenada en la BD.
      *
      * @return Una lista de las visitas, de una mascota a una ubicación específica, almacenadas en
      *          la base de datos.
      */
-    @Query("SELECT * FROM VisitsVet WHERE IDPetVet = :petvetId AND LocVet = :vetLoc")
-    List<VisitsVetPetControl> getVisitsByPetAndLoc(int petvetId, String vetLoc);
+    @Query("SELECT * FROM VisitsVet WHERE IDPet = :petId AND LocVet = :vetLoc")
+    List<VisitsVetPetControl> getVisitsByPetAndLoc(int petId, String vetLoc);
 }

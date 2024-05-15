@@ -25,7 +25,6 @@ public interface OwnerDAOPetControl {
     @Insert
     @Transaction
     void insertOwner(OwnerPetControl owner);
-    // Modificar algún dato de algún propietario existente
     /**
      * Modificar datos de un propietario ya existente en la BD.
      *
@@ -34,7 +33,6 @@ public interface OwnerDAOPetControl {
     @Update
     @Transaction
     void updateOwner(OwnerPetControl owner);
-    // Eliminar un propietario
     /**
      * Eliminar un propietario existente en la BD.
      *

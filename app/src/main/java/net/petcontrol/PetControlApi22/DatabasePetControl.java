@@ -14,7 +14,7 @@ import androidx.room.TypeConverters;
  */
 @Database(entities = {TypePetsPetControl.class, PetsPetControl.class, OwnerPetControl.class,
         VisitsVetPetControl.class}, version = 1)
-@TypeConverters({DataTypeConverterPetControl.class})
+@TypeConverters(DataTypeConverterPetControl.class)
 public abstract class DatabasePetControl extends RoomDatabase {
     // Los cambios serán visibles para todos los hilos inmediatamente
     private static volatile DatabasePetControl INSTANCE;    // Instancia Singleton

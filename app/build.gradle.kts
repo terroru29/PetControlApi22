@@ -1,5 +1,8 @@
 plugins {
     id("com.android.application")
+    id("androidx.room")
+    /*id("kotlin-android")
+    id("kotlin-kapt")*/
 }
 
 android {
@@ -14,6 +17,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        /*
+        // Define la ubicación del esquema de la base de datos
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/app/database".toString()
+            }
+        }
+
+         */
     }
 
     buildTypes {
@@ -32,6 +45,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    room {
+        // Ubicación donde se exportará el esquema de la base de datos --> app/database
+        // $projectDir representa la ubicación del directorio raíz del proyecto
+        schemaLocation = "$projectDir/app/database"
+    }
+
 }
 
 dependencies {
@@ -57,11 +77,16 @@ dependencies {
     // Room --> BD
     //implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
     // Procesador de anotaciones (@)
     //annotationProcessor("androidx.room:room-compiler:2.5.2")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     // Google maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    // Google anuncios
     //implementation("com.google.android.gms:play-services-ads:23.1.0")
+    //classpath("androidx.room:room-gradle-plugin:2.6.1")
+
+
 
 }
