@@ -1,6 +1,7 @@
 package net.petcontrol.PetControlApi22;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 public class FormPetsPetControl extends AppCompatActivity {
     EditText name, age, breed, description;
@@ -16,6 +18,7 @@ public class FormPetsPetControl extends AppCompatActivity {
     RadioButton male, female;
     Button accept, cancel;
     Intent i;
+    PetsDAOPetControl petsDAO; // Instancia del DAO de Pets
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +35,39 @@ public class FormPetsPetControl extends AppCompatActivity {
         accept = findViewById(R.id.btnAcceptDataPet);
         cancel = findViewById(R.id.btnCancelDataPet);
 
+        // Inicializar el DAO de Pets
+        petsDAO = Room.databaseBuilder(this, DatabasePetControl.class,
+                "database_petcontrol").build().petsDAO();
+
+
         //--EVENTO BUTTON
         //-Aceptar
         accept.setOnClickListener(v -> {
             // Enviar datos a la BD (database_petcontrol)
+            String petName = name.getText().toString();
+            int petAge = Integer.parseInt(age.getText().toString());
+            String petBreed = breed.getText().toString();
+            String petDescription = description.getText().toString();
+            String petSex = male.isChecked() ? "Macho" : "Hembra";
+            boolean petSterilization = sterilization.isChecked();
 
+            // Crear una nueva instancia de PetsPetControl con los datos del formulario
+            PetsPetControl newPet = new PetsPetControl();
+            newPet.name_pet = petName;
+            newPet.age_pet = petAge;
+            newPet.breed = petBreed;
+            newPet.sex_pet = petSex;
+            newPet.sterilization = petSterilization;
+            newPet.description_pet = petDescription;
+
+            // Insertar la nueva mascota en la base de datos
+            new Thread(() -> {
+                petsDAO.insertPet(newPet);
+            }).start();
+
+            // Mostrar mensaje de éxito
+            Toast.makeText(this, "Los datos se han añadido con éxito.",
+                    Toast.LENGTH_SHORT).show();
 
             // Retroceder de pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);
