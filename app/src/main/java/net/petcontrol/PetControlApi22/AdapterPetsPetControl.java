@@ -2,6 +2,9 @@ package net.petcontrol.PetControlApi22;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,9 +25,30 @@ public class AdapterPetsPetControl extends BaseAdapter {
     private int[] images;
     private String[] namesPets;
     private boolean[] isImageChanged;
+    private Handler mainHandler;
 
 
-    // Constructor
+    /**
+     * Constructor para AdapterPetsPetControl.
+     *
+     * @param context Contexto en el que se utiliza el adaptador (actividad que lo crea)
+     * @param images Array de ID de recursos de imágenes (las diferentes mascotas) que se mostrarán
+     *               en el adaptador
+     *
+     * Este constructor inicializa el adaptador con el contexto y las imágenes proporcionados.
+     * También configura la funcionalidad de texto a voz para dictar los nombres de las mascotas e
+     * inicializa el controlador principal para las operaciones de la interfaz de usuario.
+     *
+     * Los nombres de las mascotas se recuperan del recurso de array de String y se asocian con el
+     * adaptador.
+     * Se inicializa una array booleana para realizar un seguimiento del estado de cada ImageButton
+     * en el adaptador.
+     *
+     * La conversión de texto a voz (TTS) se inicializa para proporcionar retroalimentación auditiva
+     * cuando se selecciona una mascota. El motor TTS está configurado con la configuración regional
+     * predeterminada y se implementa el manejo de errores para registrar problemas si el idioma
+     * seleccionado no es compatible.
+     */
     public AdapterPetsPetControl(@NonNull Context context, int[] images) {
         this.context = context;
         this.images = images;
@@ -36,7 +60,10 @@ public class AdapterPetsPetControl extends BaseAdapter {
         this.isImageChanged = new boolean[images.length];
 
 
-        // Inicializar la lectura del texto con voz
+        // Inicializar el Handler para el hilo principal
+        mainHandler = new Handler(Looper.getMainLooper());
+
+        // Inicializar la dictado del texto con voz
         textInVoice = new TextToSpeech(context, status -> {
             // Verificación del estado
             if (status == TextToSpeech.SUCCESS) {
@@ -176,9 +203,19 @@ public class AdapterPetsPetControl extends BaseAdapter {
             if (textInVoice != null) {
                 // Decir el nombre del animal con voz
                 textInVoice.speak("Se ha seleccionado " + namesPets[position],
-                        TextToSpeech.QUEUE_FLUSH, null, null);
+                        TextToSpeech.QUEUE_FLUSH, null, Integer.toString(position));
             }
         });
+
+        // Establecer el listener de finalización del discurso
+        textInVoice.setOnUtteranceCompletedListener(utteranceId -> {
+            mainHandler.postDelayed(() -> {
+                // Navegar a otra pantalla después de un delay de 1 segundo
+                Intent intent = new Intent(context, FormPetsPetControl.class);
+                context.startActivity(intent);
+            }, 1000); // Delay de 1 segundo
+        });
+
         return convertView;
     }
     /**

@@ -18,6 +18,7 @@ public class AddPetPetControl extends AppCompatActivity {
     int[] imagesPets = {R.drawable.dog, R.drawable.cat, R.drawable.hamster, R.drawable.fish,
             R.drawable.mouse, R.drawable.bird, R.drawable.rabbit, R.drawable.tortoise,
             R.drawable.ferret, R.drawable.pig, R.drawable.tarantula, R.drawable.snake};
+    private AdapterPetsPetControl adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,26 @@ public class AddPetPetControl extends AppCompatActivity {
 
         //-Evento de botón
         fastConfiguration.setOnClickListener(v -> next(fastConfiguration));
+    }
+    /**
+     * Este método es parte del ciclo de vida de la actividad y se llama cuando la actividad ya no
+     * está en uso y se destruye, eliminándose de la memoria.
+     *
+     * Esta implementación garantiza que los recursos TextToSpeech se liberen correctamente para
+     * evitar pérdidas de memoria. Comprueba si el adaptador no es nulo, y si es así, llama al
+     * método {@link AdapterPetsPetControl#shutdownTextToSpeech()} para detener y apagar el motor
+     * TextToSpeech.
+     *
+     * @see AdapterPetsPetControl#shutdownTextToSpeech()
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Liberar recursos de TextToSpeech
+        if (adapter != null) {
+            adapter.shutdownTextToSpeech();
+        }
     }
     /**
      * Pasará a la siguiente ventana

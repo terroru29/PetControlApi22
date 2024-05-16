@@ -5,6 +5,7 @@ import android.widget.Toast;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -19,7 +20,9 @@ import java.time.LocalDate;
                 // Nombre columna en la entidad hijo --> PetsPetControl
                 childColumns = "IDTypePet",
                 // Si el tipo de animal se extingue, el registro del animal se elimina --> Cascade
-                onDelete = ForeignKey.CASCADE)) //TODO pensar si poner mejor RESTRICT --> VisitsVet
+                onDelete = ForeignKey.CASCADE), //TODO pensar si poner mejor RESTRICT --> VisitsVet
+        // Mejora el rendimiento de las consultas que usan esta columna como referencia de la FK
+        indices = {@Index("IDTypePet")})
 public class PetsPetControl {
     //Atributos --> Columnas
     @PrimaryKey(autoGenerate = true)

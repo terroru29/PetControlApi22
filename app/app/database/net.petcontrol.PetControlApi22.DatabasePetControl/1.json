@@ -1,0 +1,276 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "6b88082a9bd3d9398a4ed0bff7fc5598",
+    "entities": [
+      {
+        "tableName": "TypePets",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`IDTypePet` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `TypePet` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_type_pet",
+            "columnName": "IDTypePet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type_pet",
+            "columnName": "TypePet",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "IDTypePet"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Pets",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`IDPet` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `IDTypePet` INTEGER NOT NULL, `NamePet` TEXT, `AgePet` INTEGER NOT NULL, `Breed` TEXT, `SexPet` TEXT, `UriPicPet` TEXT, `Sterilization` INTEGER NOT NULL, `DescriptionPet` TEXT, FOREIGN KEY(`IDTypePet`) REFERENCES `TypePets`(`IDTypePet`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id_pet",
+            "columnName": "IDPet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_type_pet",
+            "columnName": "IDTypePet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name_pet",
+            "columnName": "NamePet",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "age_pet",
+            "columnName": "AgePet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "breed",
+            "columnName": "Breed",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sex_pet",
+            "columnName": "SexPet",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "uri_pic_pet",
+            "columnName": "UriPicPet",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sterilization",
+            "columnName": "Sterilization",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description_pet",
+            "columnName": "DescriptionPet",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "IDPet"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_Pets_IDTypePet",
+            "unique": false,
+            "columnNames": [
+              "IDTypePet"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Pets_IDTypePet` ON `${TABLE_NAME}` (`IDTypePet`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "TypePets",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "IDTypePet"
+            ],
+            "referencedColumns": [
+              "IDTypePet"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "OwnerPet",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`IDOwner` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `NameOwner` TEXT, `AgeOwner` INTEGER NOT NULL, `GenderOwner` TEXT, `UriPicOwner` TEXT, `Birthday` TEXT, `Contact` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id_owner",
+            "columnName": "IDOwner",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name_owner",
+            "columnName": "NameOwner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "age_owner",
+            "columnName": "AgeOwner",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gender_owner",
+            "columnName": "GenderOwner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "uri_pic_owner",
+            "columnName": "UriPicOwner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "birthday",
+            "columnName": "Birthday",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "contact",
+            "columnName": "Contact",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "IDOwner"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "VisitsVet",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`IDVet` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `IDPet` INTEGER NOT NULL, `NameVet` TEXT, `LocVet` TEXT, `Datevisit` TEXT, `ReasonVisit` TEXT, `Diagnosis` TEXT, `Treatment` TEXT, `VisitPrice` TEXT, FOREIGN KEY(`IDPet`) REFERENCES `Pets`(`IDPet`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id_vet",
+            "columnName": "IDVet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id_pet",
+            "columnName": "IDPet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name_vet",
+            "columnName": "NameVet",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "loc_vet",
+            "columnName": "LocVet",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_visit",
+            "columnName": "Datevisit",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reason_visit",
+            "columnName": "ReasonVisit",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diagnosis",
+            "columnName": "Diagnosis",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "treatment",
+            "columnName": "Treatment",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "visit_price",
+            "columnName": "VisitPrice",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "IDVet"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_VisitsVet_IDPet",
+            "unique": false,
+            "columnNames": [
+              "IDPet"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_VisitsVet_IDPet` ON `${TABLE_NAME}` (`IDPet`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Pets",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "IDPet"
+            ],
+            "referencedColumns": [
+              "IDPet"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6b88082a9bd3d9398a4ed0bff7fc5598')"
+    ]
+  }
+}

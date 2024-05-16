@@ -13,7 +13,8 @@ import androidx.room.TypeConverters;
  * entorno multi-hilo.
  */
 @Database(entities = {TypePetsPetControl.class, PetsPetControl.class, OwnerPetControl.class,
-        VisitsVetPetControl.class}, version = 1)
+                VisitsVetPetControl.class},
+        version = 1, exportSchema = true)
 @TypeConverters(DataTypeConverterPetControl.class)
 public abstract class DatabasePetControl extends RoomDatabase {
     // Los cambios serán visibles para todos los hilos inmediatamente
@@ -41,6 +42,7 @@ public abstract class DatabasePetControl extends RoomDatabase {
         }
         return INSTANCE;
     }
+
 
     // Métodos abstractos para los DAOs de cada entidad --> Room cree implementaciones en tiempo de compilación.
     public abstract TypePetsDAOPetControl typePetsDAO();

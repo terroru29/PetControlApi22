@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey;
 /**
  * Clase entidad (tabla de la BD) que representa los diferentes tipos de animales disponibles.
  */
-// Indicamos que es una Entidad (tabla)
 @Entity(tableName = "TypePets")
 public class TypePetsPetControl {
     @PrimaryKey(autoGenerate = true)    // No se podrá repetir y se autoincrementará
