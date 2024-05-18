@@ -68,6 +68,6 @@ public class AddPetPetControl extends AppCompatActivity {
         Intent i = new Intent(this, FastConfigurationPetControl.class);
         startActivity(i);
         // Cierra la actividad actual para evitar que el usuario regrese a ella
-        finish();
+        //finish();
     }
 }

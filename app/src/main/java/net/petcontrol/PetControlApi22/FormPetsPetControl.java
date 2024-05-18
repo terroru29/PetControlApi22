@@ -12,6 +12,12 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class FormPetsPetControl extends AppCompatActivity {
     EditText name, age, breed, description;
     CheckBox sterilization;
@@ -19,6 +25,8 @@ public class FormPetsPetControl extends AppCompatActivity {
     Button accept, cancel;
     Intent i;
     PetsDAOPetControl petsDAO; // Instancia del DAO de Pets
+    ExecutorService executorService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +46,7 @@ public class FormPetsPetControl extends AppCompatActivity {
         // Inicializar el DAO de Pets
         petsDAO = Room.databaseBuilder(this, DatabasePetControl.class,
                 "database_petcontrol").build().petsDAO();
+        executorService = Executors.newSingleThreadExecutor();
 
 
         //--EVENTO BUTTON
@@ -60,9 +69,11 @@ public class FormPetsPetControl extends AppCompatActivity {
             newPet.sterilization = petSterilization;
             newPet.description_pet = petDescription;
 
+            /*
             // Insertar la nueva mascota en la base de datos
             new Thread(() -> {
-                petsDAO.insertPet(newPet);
+                if (petsDAO != null)
+                    petsDAO.insertPet(newPet);
             }).start();
 
             // Mostrar mensaje de éxito
@@ -72,6 +83,53 @@ public class FormPetsPetControl extends AppCompatActivity {
             // Retroceder de pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);
             startActivity(i);
+             */
+
+
+            // Insertar la nueva mascota en la base de datos en un hilo de fondo
+            executorService.execute(() -> {
+                petsDAO.insertPet(newPet);
+
+                runOnUiThread(() -> {
+                    // Mostrar mensaje de éxito
+                    Toast.makeText(this, "Los datos se han añadido con éxito.",
+                            Toast.LENGTH_SHORT).show();
+
+                    // Retroceder de pantalla
+                    i = new Intent(getApplicationContext(), AddPetPetControl.class);
+                    startActivity(i);
+                });
+            });
+
+            /*
+            // Insertar la nueva mascota en la base de datos en un hilo de fondo y esperar a que termine
+            Future<Void> future = executorService.submit(new Callable<Void>() {
+                @Override
+                public Void call() {
+                    petsDAO.insertPet(newPet);
+                    return null;
+                }
+            });
+            try {
+                // Esperar a que la tarea de inserción termine
+                future.get();
+
+                // Mostrar mensaje de éxito en el hilo principal
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Los datos se han añadido con éxito.",
+                            Toast.LENGTH_SHORT).show();
+
+                    // Retroceder de pantalla
+                    i = new Intent(getApplicationContext(), AddPetPetControl.class);
+                    startActivity(i);
+                });
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+                // Manejo de errores si es necesario
+                runOnUiThread(() -> Toast.makeText(this, "Error al añadir los datos.",
+                        Toast.LENGTH_SHORT).show());
+            }
+            */
         });
         //-Cancelar
         cancel.setOnClickListener(v -> {

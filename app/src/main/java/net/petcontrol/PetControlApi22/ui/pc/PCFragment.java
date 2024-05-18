@@ -136,19 +136,17 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
         binding = null;
     }
     // Método para añadir datos a la base de datos
-    private void addDataToDatabase() {
+    public void addDataToDatabase() {
         // Aquí puedes iniciar la navegación a la Activity para añadir una nueva mascota
         Intent intent = new Intent(requireContext(), FormPetsPetControl.class);
         startActivity(intent);
     }
-
     // Método para eliminar datos de la base de datos
     private void deleteDataFromDatabase() {
         // Aquí puedes obtener el ID o cualquier otro identificador de la mascota que deseas eliminar
         // Luego, puedes usar el DAO para eliminar la mascota de la base de datos
         // Ejemplo: petsDAO.deletePetById(id);
     }
-
     // Método para modificar datos en la base de datos
     private void editDataInDatabase() {
         // Aquí puedes obtener el ID o cualquier otro identificador de la mascota que deseas modificar
@@ -157,15 +155,17 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
         // petToUpdate.setName("Nuevo nombre");
         // petsDAO.updatePet(petToUpdate);
     }
-    private void getDataFromDataBase() {
+    public void getDataFromDataBase() {
         new Thread(() -> {
-            List<PetsPetControl> myPets = petsDAO.getAllPets();
-            StringBuilder message = new StringBuilder("Mascotas almacenadas:\n");
+            if (petsDAO != null) {
+                List<PetsPetControl> myPets = petsDAO.getAllPets();
+                StringBuilder message = new StringBuilder("Mascotas almacenadas:\n");
 
-            for (PetsPetControl ppc : myPets) {
-                message.append(ppc.name_pet).append("\n");
+                for (PetsPetControl ppc : myPets) {
+                    message.append(ppc.name_pet).append("\n");
+                }
+                onDataLoaded(message.toString());
             }
-            onDataLoaded(message.toString());
         }).start();
     }
     @Override

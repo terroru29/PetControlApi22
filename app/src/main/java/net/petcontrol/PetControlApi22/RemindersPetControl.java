@@ -1,23 +1,25 @@
 package net.petcontrol.PetControlApi22;
 
+import java.time.LocalDate;
+
 /**
  *  MODELO de Recordatorios
  */
 public class RemindersPetControl {
     // Atributos
-    private String date;
+    private LocalDate date;
     private String content;
 
 
     // Constructor
-    public RemindersPetControl(String date, String content) {
+    public RemindersPetControl(LocalDate date, String content) {
         this.date = date;
         this.content = content;
     }
 
 
     // Getter
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
     public String getContent() {
@@ -26,7 +28,7 @@ public class RemindersPetControl {
 
 
     // Setter
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
     public void setContent(String content) {
