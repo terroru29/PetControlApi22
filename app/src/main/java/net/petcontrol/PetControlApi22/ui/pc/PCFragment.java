@@ -28,16 +28,19 @@ import net.petcontrol.PetControlApi22.databinding.FragmentPcBinding;
 
 import java.util.List;
 
-public class PCFragment extends Fragment implements DataLoadListenerPetControl {
+public class PCFragment extends Fragment {
+        //implements DataLoadListenerPetControl {
     private FragmentPcBinding binding;
-    private DatabasePetControl dbPetControl;
-    private PetsDAOPetControl petsDAO;
     ImageButton add, del, edit, search;
     /*
+    private DatabasePetControl dbPetControl;
+    private PetsDAOPetControl petsDAO;
+
     private TypePetsDAOPetControl typePetsDAO;
     private OwnerDAOPetControl ownerDAO;
     private VisitsVetDAOPetControl visitsVetDAO;
     */
+
 
     /**
      * Asegura que la base de datos se inicialice sólo una vez cuando se crea el fragmento.
@@ -45,9 +48,11 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
+    /*
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // Inicializar la base de datos utilizando Room.databaseBuilder()
         dbPetControl = Room.databaseBuilder(requireContext(),
@@ -57,8 +62,9 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
         // Obtener la instancia de los DAOs
         petsDAO = dbPetControl.petsDAO();
 
+
         // Insertar una mascota en un hilo diferente evita bloquear el hilo principal de la UI.
-        /*
+
         new Thread(() -> {
             PetsPetControl pets = new PetsPetControl();
             pets.name_pet = "Gaia";
@@ -67,7 +73,7 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
 
             // Obtener todas las mascotas
             List<PetsPetControl> myPets = petsDAO.getAllPets();
-            */
+
             /**
              * Salir del hilo en segundo plano y volver al hilo principal, evitando problemas de
              * concurrencia y asegurando una experiencia de usuario fluida.
@@ -85,12 +91,13 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
                 }
             });
         }).start();
-         */
+
     }
+    */
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        PCViewModel PCViewModel =
-                new ViewModelProvider(this).get(PCViewModel.class);
+        PCViewModel PCViewModel = new ViewModelProvider(this).get(PCViewModel.class);
 
         binding = FragmentPcBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -107,22 +114,30 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
         // Asociar listener de clic a cada botón
         add.setOnClickListener(v -> {
             // Acción de añadir datos a la base de datos
-            addDataToDatabase();
+            //addDataToDatabase();
         });
-
         del.setOnClickListener(v -> {
             // Acción de eliminar datos de la base de datos
-            deleteDataFromDatabase();
+            //deleteDataFromDatabase();
         });
-
         edit.setOnClickListener(v -> {
             // Acción de modificar datos en la base de datos
-            editDataInDatabase();
+            //editDataInDatabase();
         });
-        search.setOnClickListener(v -> getDataFromDataBase());
+        search.setOnClickListener(v -> {
+            // Acción de buscar datos en la base de datos
+            //getDataFromDataBase()
+        });
 
         return root;
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    /*
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -130,11 +145,7 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
         // la base de datos.
         getDataFromDataBase();
     }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+
     // Método para añadir datos a la base de datos
     public void addDataToDatabase() {
         // Aquí puedes iniciar la navegación a la Activity para añadir una nueva mascota
@@ -174,4 +185,5 @@ public class PCFragment extends Fragment implements DataLoadListenerPetControl {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
         });
     }
+     */
 }

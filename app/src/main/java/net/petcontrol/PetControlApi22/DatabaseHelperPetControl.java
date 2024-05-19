@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Clase que ayudará a gestionar la creación y actualización de la base de datos.
+ */
 public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     // --- DATOS BASE DE DATOS ---
     private static final String DATABASE_NAME = "PetControl.db";
