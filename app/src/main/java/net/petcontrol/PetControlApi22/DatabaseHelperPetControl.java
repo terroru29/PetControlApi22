@@ -62,13 +62,13 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     // --- CREACIÓN TABLAS ---
     // SQL para crear la tabla de tipos de mascotas
     private static final String TABLE_TYPES_PETS_CREATE =
-        "CREATE TABLE " + TABLE_TYPES_PETS + " (" +
+        "CREATE TABLE if not exists " + TABLE_TYPES_PETS + " (" +
                 COLUMN_TYPES_PETS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TYPES_PETS_TYPE + " TEXT);";
 
     // SQL para crear la tabla de mascotas
     private static final String TABLE_PETS_CREATE =
-        "CREATE TABLE " + TABLE_PETS + " (" +
+        "CREATE TABLE if not exists " + TABLE_PETS + " (" +
                 COLUMN_PETS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PETS_ID_TYPE + " INTEGER, " +   //TODO FK TypesPetsPetControl --> TypePet
                 COLUMN_PETS_NAME + " TEXT, " +
@@ -81,7 +81,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
 
     // SQL para crear la tabla de propietarios
     private static final String TABLE_OWNERS_CREATE =
-        "CREATE TABLE " + TABLE_OWNERS + " (" +
+        "CREATE TABLE if not exists " + TABLE_OWNERS + " (" +
                 COLUMN_OWNERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_OWNERS_NAME + " TEXT, " +
                 COLUMN_OWNERS_AGE + " INTEGER, " +
@@ -92,7 +92,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
 
     // SQL para crear la tabla de visitas veterinarias
     private static final String TABLE_VISITS_VET_CREATE =
-        "CREATE TABLE " + TABLE_VISITS_VET + " (" +
+        "CREATE TABLE if not exists " + TABLE_VISITS_VET + " (" +
                 COLUMN_VISITS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_VISITS_ID_PET + " INTEGER, " +   //TODO FK PetsPetControl --> IDPets
                 COLUMN_VISITS_NAME + " TEXT, " +
@@ -105,7 +105,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
 
     // SQL para crear la tabla de recordatorios
     private static final String TABLE_REMINDERS_CREATE =
-        "CREATE TABLE " + TABLE_REMINDERS + " (" +
+        "CREATE TABLE if not exists " + TABLE_REMINDERS + " (" +
                 COLUMN_REMINDERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_REMINDERS_DATE + " LOCALDATE, " +   //TODO Válido?
                 COLUMN_REMINDERS_CONTENT + " TEXT);";
