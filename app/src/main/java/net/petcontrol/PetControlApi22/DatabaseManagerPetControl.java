@@ -26,9 +26,11 @@ public class DatabaseManagerPetControl {
     private final Context context;
     private SQLiteDatabase database;
 
+
     public DatabaseManagerPetControl(Context context) {
         this.context = context;
     }
+
 
     // Apertura BD
     public DatabaseManagerPetControl open() throws SQLException {
@@ -36,6 +38,7 @@ public class DatabaseManagerPetControl {
         database = dbHelper.getWritableDatabase();
         return this;
     }
+
 
     // Cierre BD
     public void close() {
@@ -55,9 +58,11 @@ public class DatabaseManagerPetControl {
      */
     public void insertTypes(String type_pet) {
         // Comprobar si el tipo de animal ya existe
-        if (isTypePetExists(type_pet)) {
+        if (isValueExists(DatabaseHelperPetControl.TABLE_TYPES_PETS,
+                DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE, type_pet)) {
             // No permitir inserciones a la tabla TABLE_TYPES_PETS
-            throw new UnsupportedOperationException("No se permite la inserción de ese tipo de animal.");
+            throw new UnsupportedOperationException("No se permite la inserción de ese tipo de " +
+                    "animal.");
         }
         else {
             ContentValues contentValues = new ContentValues();
@@ -65,7 +70,8 @@ public class DatabaseManagerPetControl {
             // El tipo de animal se insertará con la primera letra mayúscula
             contentValues.put(DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE,
                     StringUtils.capitalize(type_pet));
-            database.insert(DatabaseHelperPetControl.TABLE_TYPES_PETS, null, contentValues);
+            database.insert(DatabaseHelperPetControl.TABLE_TYPES_PETS, null,
+                    contentValues);
         }
     }
     /**
@@ -79,21 +85,31 @@ public class DatabaseManagerPetControl {
      * @param pic_pet      La imagen de la mascota en formato Bitmap.
      * @param sterilization Indica si la mascota está esterilizada (0 si no lo está; 1 si lo está).
      * @param description  Una descripción física y/o personal de la mascota.
+     * @throws UnsupportedOperationException Si la mascota ya existe en la base de datos, se lanza
+     *                                          esta excepción y la inserción no se produce.
      */
     public void insertPets(int id_type, String name, int age, String breed, String sex_pet, Bitmap pic_pet,
                            int sterilization, String description) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_NAME, name);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_AGE, age);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_BREED, breed);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_SEX, sex_pet);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, pic_pet);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION, sterilization);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION, description);
+        // Verifica si el nombre de la mascota ya existe en la base de datos
+        if (isValueExists(DatabaseHelperPetControl.TABLE_PETS,
+                DatabaseHelperPetControl.COLUMN_PETS_NAME, name)) {
+            // Si el nombre de la mascota ya está guardado para otro animal, lanza una excepción
+            throw new IllegalArgumentException("El nombre de la mascota ya está guardado para otro " +
+                    "animal.");
+        } else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_NAME, name);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_AGE, age);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_BREED, breed);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_SEX, sex_pet);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, pic_pet);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION, sterilization);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION, description);
 
-        // Inserta la mascota en su respectiva tabla
-        database.insert(DatabaseHelperPetControl.TABLE_PETS, null, contentValues);
+            // Inserta la mascota en su respectiva tabla
+            database.insert(DatabaseHelperPetControl.TABLE_PETS, null, contentValues);
+        }
     }
     /**
      * Inserta un nuevo propietario en la base de datos.
@@ -104,19 +120,27 @@ public class DatabaseManagerPetControl {
      * @param pic_owner  La imagen del propietario en formato Bitmap.
      * @param birthday   La fecha de nacimiento del propietario en formato aaaa-MM-dd.
      * @param contact    La información de contacto del propietario (e-mail).
+     * @throws UnsupportedOperationException Si existe algún propietario en la base de datos, se
+     *                                          lanza esta excepción y la inserción no se produce.
      */
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String contact) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, pic_owner);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_CONTACT, contact);
+        // Verifica si ya existe un propietario almacenado
+        if (isOwnerStored()) {
+            // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
+            throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
+        } else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, pic_owner);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_CONTACT, contact);
 
-        // Inserta al propietario en su respectiva tabla
-        database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null, contentValues);
+            // Inserta al propietario en su respectiva tabla
+            database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null, contentValues);
+        }
     }
     /**
      * Inserta una nueva visita al veterinario en la base de datos.
@@ -254,7 +278,8 @@ public class DatabaseManagerPetControl {
      *                                          lanza esta excepción y la modificación no se produce.
      */
     public void updateTypePet(String type) {
-        if (isTypePetExists(type))
+        if (isValueExists(DatabaseHelperPetControl.TABLE_TYPES_PETS,
+                DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE, type))
             // No permitir actualizaciones a los tipos de animales predeterminados
             throw new UnsupportedOperationException("Las actualizaciones en este tipo de animal no " +
                     "están permitidas.");
@@ -397,18 +422,22 @@ public class DatabaseManagerPetControl {
         }
     }
     /**
-     * Verifica si un tipo de mascota específico existe en la base de datos.
+     * Verifica si un valor específico ya existe en una columna de una tabla en la base de datos.
      *
-     * @param type_pet El tipo de mascota a verificar.
-     * @return {@code true} si el tipo de mascota existe en la base de datos,
-     *          {@code false} de lo contrario.
+     * @param tableName El nombre de la tabla a verificar.
+     * @param columnName El nombre de la columna a verificar.
+     * @param value El valor a buscar en la columna.
+     * @return {@code true} si el valor ya existe en la columna de la tabla,
+     *          {@code false} lo contrario.
      */
-    private boolean isTypePetExists(String type_pet) {
-        String query = "SELECT COUNT(*) FROM " + DatabaseHelperPetControl.TABLE_TYPES_PETS +
-                " WHERE " + DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE + " = ?";
-        Cursor cursor = database.rawQuery(query, new String[]{type_pet});
+    private boolean isValueExists(String tableName, String columnName, String value) {
+        // Consulta SQL para verificar si el valor ya existe en la columna de la tabla
+        String query = "SELECT COUNT(*) FROM " + tableName + " WHERE " + columnName + " = ?";
 
-        // Verifica que el cursor no sea nulo
+        // Ejecuta la consulta
+        Cursor cursor = database.rawQuery(query, new String[]{value});
+
+        // Si el cursor no es nulo y tiene al menos una fila, significa que el valor ya existe
         if (cursor != null) {
             // Mueve el cursor a la primera fila
             cursor.moveToFirst();
@@ -416,9 +445,33 @@ public class DatabaseManagerPetControl {
             int count = cursor.getInt(0);
             // Cierra el cursor
             cursor.close();
-            // Si el conteo es positivo, indica la existencia de ese tipo de animal --> true
             return count > 0;
         }
+        // Si el cursor es nulo o no tiene filas, el valor no existe
         return false;
+    }
+    /**
+     * Verifica si ya se ha almacenado un propietario en la base de datos.
+     *
+     * @return {@code true} si ya existe al menos un propietario almacenado,
+     *          {@code false} de lo contrario.
+     */
+    private boolean isOwnerStored() {
+        // Consulta SQL para contar el número de propietarios almacenados
+        String query = "SELECT COUNT(*) FROM " + DatabaseHelperPetControl.TABLE_OWNERS;
+
+        // Ejecuta la consulta
+        Cursor cursor = database.rawQuery(query, null);
+
+        // Obtiene el número de propietarios almacenados
+        int count = 0;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            count = cursor.getInt(0);
+            cursor.close();
+        }
+
+        // Retorna true si ya existe al menos un propietario almacenado, false de lo contrario
+        return count > 0;
     }
 }
