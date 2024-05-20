@@ -103,7 +103,7 @@ public class DatabaseManagerPetControl {
             contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_AGE, age);
             contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_BREED, breed);
             contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_SEX, sex_pet);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, pic_pet);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, getBitmapAsByteArray(pic_pet));
             contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION, sterilization);
             contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION, description);
 
@@ -119,12 +119,13 @@ public class DatabaseManagerPetControl {
      * @param gender     El género del propietario (Masculino/Femenino).
      * @param pic_owner  La imagen del propietario en formato Bitmap.
      * @param birthday   La fecha de nacimiento del propietario en formato aaaa-MM-dd.
-     * @param contact    La información de contacto del propietario (e-mail).
+     * @param email      El correo electrónico (e-mail)
+     * @param pass       La contraseña para acceder a la app
      * @throws UnsupportedOperationException Si existe algún propietario en la base de datos, se
      *                                          lanza esta excepción y la inserción no se produce.
      */
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
-                            String contact) {
+                            String email, String pass) {
         // Verifica si ya existe un propietario almacenado
         if (isOwnerStored()) {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
@@ -134,9 +135,10 @@ public class DatabaseManagerPetControl {
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, pic_owner);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_CONTACT, contact);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);
 
             // Inserta al propietario en su respectiva tabla
             database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null, contentValues);
@@ -210,25 +212,28 @@ public class DatabaseManagerPetControl {
                 DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION,
                 DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION};
 
-        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_PETS, columns, null,
-                null, null, null, null);
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_PETS, columns,
+                DatabaseHelperPetControl.COLUMN_PETS_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
         return cursor;
     }
     // Obtener todos los propietarios
-    public Cursor fetchAllOwners() {
+    public Cursor fetchAllOwners(int id) {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_OWNERS_ID,
                 DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
                 DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
                 DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
                 DatabaseHelperPetControl.COLUMN_OWNERS_PIC,
                 DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY,
-                DatabaseHelperPetControl.COLUMN_OWNERS_CONTACT};
+                DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL,
+                DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD};
 
-        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS, columns, null,
-                null, null, null, null);
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS, columns,
+                DatabaseHelperPetControl.COLUMN_OWNERS_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -293,7 +298,7 @@ public class DatabaseManagerPetControl {
         contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_AGE, age);
         contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_BREED, breed);
         contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_SEX, sex_pet);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, pic_pet);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, getBitmapAsByteArray(pic_pet));
         contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION, sterilization);
         contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION, description);
         return database.update(DatabaseHelperPetControl.TABLE_PETS, contentValues,
@@ -301,14 +306,15 @@ public class DatabaseManagerPetControl {
     }
     // Actualizar propietario
     public int updateOwner(int id, String name, int age, String gender, Bitmap pic_owner,
-                           String birthday, String contact) {
+                           String birthday, String email, String pass) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, pic_owner);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_CONTACT, contact);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);
         return database.update(DatabaseHelperPetControl.TABLE_OWNERS, contentValues,
                 DatabaseHelperPetControl.COLUMN_OWNERS_ID + " = " + id, null);
     }
@@ -325,7 +331,7 @@ public class DatabaseManagerPetControl {
         contentValues.put(DatabaseHelperPetControl.COLUMN_VISITS_TREATMENT, treatment);
         contentValues.put(DatabaseHelperPetControl.COLUMN_VISITS_PRICE, price);
         return database.update(DatabaseHelperPetControl.TABLE_VISITS_VET, contentValues,
-            DatabaseHelperPetControl.COLUMN_VISITS_ID + " = " + id+ " AND " +
+            DatabaseHelperPetControl.COLUMN_VISITS_ID + " = " + id + " AND " +
                     DatabaseHelperPetControl.COLUMN_VISITS_ID_PET + " = " + id_pet + " AND " +
                     DatabaseHelperPetControl.COLUMN_VISITS_DATE + " = " + date, null);
     }
@@ -341,8 +347,9 @@ public class DatabaseManagerPetControl {
 
     // --- BORRADOS ---
     // Eliminar tipo de animal
-    public void deleteTypePet(int id) {
-        if (isDefaultType(id)) {
+    public void deleteTypePet(int id, String type_pet) {
+        if (isValueExists(DatabaseHelperPetControl.TABLE_TYPES_PETS,
+                DatabaseHelperPetControl.COLUMN_TYPES_PETS_ID, type_pet)) {
             // No permitir eliminaciones a los tipos de animales predeterminados
             throw new UnsupportedOperationException("No está permitido borrar un tipo de animal.");
         }
@@ -375,6 +382,7 @@ public class DatabaseManagerPetControl {
 
 
     // --------------- MÉTODOS ---------------
+    // Recuperar y usar la imagen
     public Bitmap getPetImage(int id) {
         Cursor cursor = fetchAllPets(id);
 
@@ -385,12 +393,24 @@ public class DatabaseManagerPetControl {
         }
         return null;
     }
+    public Bitmap getUserImage(int id) {
+        Cursor cursor = fetchAllOwners(id);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
+                    (DatabaseHelperPetControl.COLUMN_OWNERS_PIC));
+            return getBitmapFromByteArray(blob);
+        }
+        return null;
+    }
+    // Convertir Bitmap a Byte Array
     public byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
     }
+    // Convertir Byte Array a Bitmap
     public Bitmap getBitmapFromByteArray(byte[] blob) {
         return BitmapFactory.decodeByteArray(blob, 0, blob.length);
     }

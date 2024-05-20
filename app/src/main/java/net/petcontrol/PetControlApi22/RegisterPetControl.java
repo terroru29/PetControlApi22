@@ -1,42 +1,51 @@
 package net.petcontrol.PetControlApi22;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
 public class RegisterPetControl extends AppCompatActivity {
-
-    EditText name, surname, secondSurname, validationEmail, validationPass;
+    EditText name, validationEmail, validationPass;
+    Spinner genders;
     Button searchPicture, next;
-    TextView messageEmail, messagePass, pictureSelected;
+    TextView birthday, messageEmail, messagePass, pictureSelected;
     ImageView pictureUser;
-    ImageButton cleanName, cleanSurname, cleanSecondSurname, cleanEmail, closedEye, openEye;
-    String nameCorrect, surnameCorrect, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
+    ImageButton cleanName, calendar, cleanEmail, closedEye, openEye;
+    String nameCorrect, selectedItem, dateBirthday, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
             pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
+    int ageUser, age;
     boolean validateEmail, validatePass;
     private static final int PICK_IMAGE_REQUEST = 1;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
@@ -44,19 +53,27 @@ public class RegisterPetControl extends AppCompatActivity {
     //OwnerPetControl opc = new OwnerPetControl();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    DatabaseManagerPetControl dbPC;
+    Calendar cal;
+    SimpleDateFormat sdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_petcontrol);
 
+        // Abrir base de datos
+        dbPC = new DatabaseManagerPetControl(this);
+        dbPC.open();
+
+
         // Asociar variables con sus recursos
         name = findViewById(R.id.etName);
         cleanName = findViewById(R.id.imgbXName);
-        surname = findViewById(R.id.etSurname);
-        cleanSurname = findViewById(R.id.imgbXSurname);
-        secondSurname = findViewById(R.id.etSecondSurname);
-        cleanSecondSurname = findViewById(R.id.imgbXSecondSurname);
+        genders = findViewById(R.id.spinnerGender);
+        calendar = findViewById(R.id.imgbCalendar);
+        cal = Calendar.getInstance();
+        birthday = findViewById(R.id.txtDateBirthday);
         validationEmail = findViewById(R.id.etEmailUser);
         messageEmail = findViewById(R.id.txtValidationEmail);
         cleanEmail = findViewById(R.id.imgbXEmail);
@@ -68,6 +85,38 @@ public class RegisterPetControl extends AppCompatActivity {
         pictureUser = findViewById(R.id.ivUser);
         pictureSelected = findViewById(R.id.txtPictureSelected);
         next = findViewById(R.id.btnNextConfiguration);
+
+        // Formatea la fecha al formato aaaa-MM-dd --> ISO 8601
+        sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+
+        // SPINNER
+        // Crea un ArrayAdapter usando los recursos de cadena y el diseño por defecto del Spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.genders, android.R.layout.simple_spinner_item);
+        // Especifica el diseño a usar cuando se despliega la lista de opciones
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Aplica el adaptador al Spinner
+        genders.setAdapter(adapter);
+
+        //-EVENTO SPINNER
+        // Configura un listener para manejar las selecciones del Spinner
+        genders.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
+                                       int position, long id) {
+                // Obtén el elemento seleccionado
+                selectedItem = parentView.getItemAtPosition(position).toString();
+                Toast.makeText(getApplicationContext(), "Seleccionaste: " + selectedItem,
+                        Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // No hacer nada si no se selecciona nada
+            }
+        });
+        // Establece la opción vacía como la opción seleccionada por defecto
+        genders.setSelection(0, true);
 
 
         //-EVENTO EDITTEXT
@@ -138,7 +187,6 @@ public class RegisterPetControl extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 // Establecer el tipo de archivo que se puede seleccionar (todos los tipos de archivos)
                 intent.setType("*/*");
-
                 // Iniciar la actividad para seleccionar un archivo
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
@@ -169,17 +217,16 @@ public class RegisterPetControl extends AppCompatActivity {
                             + passSaved, Toast.LENGTH_SHORT).show();
 
                     nameCorrect = name.getText().toString();
-                    surnameCorrect = surname.getText().toString();
-                    if (!nameCorrect.isEmpty() && !surnameCorrect.isEmpty()) {
-                        if (withoutDigit(nameCorrect) && withoutDigit(surnameCorrect)) {
+                    if (!nameCorrect.isEmpty()) {
+                        if (withoutDigit(nameCorrect)) {
                             Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                             startActivity(i);
                             // Cierra la actividad actual para evitar que el usuario regrese a ella
                             finish();
                         }
                         else
-                            Toast.makeText(getApplicationContext(), "El campo nombre o apellido 1" +
-                                    " no puede contener dígitos.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "El campo nombre no puede " +
+                                    "contener dígitos.", Toast.LENGTH_LONG).show();
                     } else
                         Toast.makeText(getApplicationContext(), "Debe rellenar los campos " +
                                 "señalados con el símbolo *.", Toast.LENGTH_LONG).show();
@@ -187,15 +234,30 @@ public class RegisterPetControl extends AppCompatActivity {
                     access = getResources().getString(R.string.incorrect_access);
                     Toast.makeText(getApplicationContext(), access, Toast.LENGTH_LONG).show();
                 }
+                // Coger los valores insertados por el usuario en cada campo
+                String nameUser = name.getText().toString();
+                Bitmap picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
+
+                dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday, emailSaved,
+                        passSaved);
             }
         });
 
 
         //-EVENTO IMAGEBUTTON
+        //--Calendario
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Muestra el DatePickerDialog
+                new DatePickerDialog(getApplicationContext(), dateSetListener,
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         //--Limpiar campo
         cleanName.setOnClickListener(v -> name.setText(""));
-        cleanSurname.setOnClickListener(v -> surname.setText(""));
-        cleanSecondSurname.setOnClickListener(v -> secondSurname.setText(""));
         cleanEmail.setOnClickListener(v -> validationEmail.setText(""));
         //--Mostrar contraseña
         closedEye.setOnClickListener(v -> {
@@ -228,13 +290,11 @@ public class RegisterPetControl extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             // Obtenemos la URI del archivo seleccionado
             Uri selectedFileUri = data.getData();
-
             // Obtiene el nombre de la imagen seleccionada
             String namePicture = getFileName(selectedFileUri);
 
             // Obtenemos la imagen seleccionada por el usuario
             pictureUser.setImageURI(selectedFileUri);
-
             // Muestra el nombre de la imagen seleccionada
             pictureSelected.setText(namePicture);
         }
@@ -340,5 +400,50 @@ public class RegisterPetControl extends AppCompatActivity {
                 return false;
         }
         return true;
+    }
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+        /**
+         * @param view       the picker associated with the dialog
+         * @param year       the selected year
+         * @param monthOfYear      the selected month (0-11 for compatibility with
+         *                   {@link Calendar#MONTH})
+         * @param dayOfMonth the selected day of the month (1-31, depending on
+         *                   month)
+         */
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // Establece la fecha seleccionada en el calendario
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, monthOfYear);
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            // Formatea la fecha y la muestra en el TextView
+            dateBirthday = sdf.format(cal.getTime());
+            birthday.setText(dateBirthday);
+
+            // Calcula la edad basada en la fecha seleccionada
+            ageUser = calculateAge(dateBirthday);
+
+            // Almacenar la fecha en la base de datos
+        }
+    };
+    // Método para calcular la edad basándose en la fecha de nacimiento
+    private int calculateAge(String birthDate) {
+        try {
+            Calendar birthdayDate = Calendar.getInstance();
+            birthdayDate.setTime(Objects.requireNonNull(sdf.parse(birthDate)));
+
+            Calendar today = Calendar.getInstance();
+
+            age = today.get(Calendar.YEAR) - birthdayDate.get(Calendar.YEAR);
+
+            if (today.get(Calendar.DAY_OF_YEAR) < birthdayDate.get(Calendar.DAY_OF_YEAR))
+                age--;
+            return age;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

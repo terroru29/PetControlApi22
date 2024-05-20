@@ -39,7 +39,8 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     public static final String COLUMN_OWNERS_GENDER = "GenderOwner";
     public static final String COLUMN_OWNERS_PIC = "UriPicOwner";
     public static final String COLUMN_OWNERS_BIRTHDAY = "Birthday";
-    public static final String COLUMN_OWNERS_CONTACT = "Contact";
+    public static final String COLUMN_OWNERS_EMAIL = "Email";
+    public static final String COLUMN_OWNERS_PASSWORD = "Password";
 
     // Tabla de VISITAS VETERINARIAS
     public static final String TABLE_VISITS_VET = "VisitsVet";
@@ -92,7 +93,8 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 COLUMN_OWNERS_GENDER + " TEXT, " +
                 COLUMN_OWNERS_PIC + " BLOB, " +
                 COLUMN_OWNERS_BIRTHDAY + " TEXT, " +  //TODO formato ISO8601 (YYYY-MM-DD)
-                COLUMN_OWNERS_CONTACT + " TEXT);";
+                COLUMN_OWNERS_EMAIL + " TEXT, " +
+                COLUMN_OWNERS_PASSWORD + " TEXT);";
 
     // SQL para crear la tabla de visitas veterinarias
     private static final String TABLE_VISITS_VET_CREATE =

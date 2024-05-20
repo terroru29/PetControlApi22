@@ -50,10 +50,18 @@
     <string name="title_settings_user">Datos del usuario</string>
     <string name="txt_name">Nombre:</string>
     <string name="hint_name">Nombre</string>
-    <string name="txt_surname">Apellido 1:</string>
-    <string name="hint_surname">Apellido 1</string>
-    <string name="txt_second_surname">Apellido 2:</string>
-    <string name="hint_second_surname">Apellido 2</string>
+    <string name="txt_gender">Género:</string>
+    <string name="hint_gender">Género</string>
+    <string-array name="genders">
+        <item> </item>
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>No binario</item>
+        <item>Género fluído</item>
+    </string-array>
+    <string name="txt_birthday">Cumpleaños:</string>
+    <string name="hint_birthday">Cumpleaños</string>
+    <string name="description_calendar">Calendario</string>
     <string name="txt_email_user">E-mail:</string>
     <string name="hint_email_user">E-mail</string>
     <string name="validation_email">El correo tiene el formato correcto.</string>

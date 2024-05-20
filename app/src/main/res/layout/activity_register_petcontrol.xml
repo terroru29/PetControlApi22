@@ -17,7 +17,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.323"
+        app:layout_constraintHorizontal_bias="0.31"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.138" />
@@ -42,7 +42,7 @@
         android:text="@string/txt_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.14" />
@@ -78,70 +78,54 @@
         app:srcCompat="@drawable/x_paws_16" />
 
     <TextView
-        android:id="@+id/txtSurname"
+        android:id="@+id/txtGender"
         style="@style/tags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_surname"
+        android:text="@string/txt_gender"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintVertical_bias="0.24" />
 
-    <EditText
-        android:id="@+id/etSurname"
-        style="@style/edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints="name"
-        android:ems="9"
-        android:hint="@string/hint_surname"
-        android:inputType="textLongMessage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.232" />
 
-    <ImageButton
-        android:id="@+id/imgbXSurname"
-        android:layout_width="48dp"
+    <Spinner
+        android:id="@+id/spinnerGender"
+        android:layout_width="185dp"
         android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/clean_field"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.788"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.214"
-        app:srcCompat="@drawable/x_paws_16" />
+        app:layout_constraintVertical_bias="0.24" />
 
     <TextView
-        android:id="@+id/txtSecondSurname"
+        android:id="@+id/txtBirthday"
         style="@style/tags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_second_surname"
+        android:text="@string/txt_birthday"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintHorizontal_bias="0.066"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.362" />
 
     <EditText
-        android:id="@+id/etSecondSurname"
+        android:id="@+id/etBirthday"
         style="@style/edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autofillHints="name"
+        android:autofillHints="creditCardExpirationDate"
         android:ems="9"
-        android:hint="@string/hint_second_surname"
-        android:inputType="textLongMessage"
+        android:hint="@string/hint_birthday"
+        android:inputType="date"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.882"
@@ -150,11 +134,12 @@
         app:layout_constraintVertical_bias="0.357" />
 
     <ImageButton
-        android:id="@+id/imgbXSecondSurname"
+        android:id="@+id/imgbXBirthday"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/clean_field"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.956"
@@ -177,21 +162,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.493" />
-
-    <TextView
-        android:id="@+id/txtAsterikSurname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/asterik"
-        android:textColor="@color/red"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.386"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.237" />
 
     <EditText
         android:id="@+id/etEmailUser"
@@ -223,6 +193,19 @@
         app:srcCompat="@drawable/x_paws_16" />
 
     <TextView
+        android:id="@+id/txtEmailUser"
+        style="@style/tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_email_user"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <TextView
         android:id="@+id/txtValidationEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -249,19 +232,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.625" />
-
-    <TextView
-        android:id="@+id/txtEmailUser"
-        style="@style/tags"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_email_user"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498" />
 
     <TextView
         android:id="@+id/txtAsterikPass"
@@ -433,5 +403,34 @@
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtAsterik" />
+
+    <ImageButton
+        android:id="@+id/imgbCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/description_calendar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.577"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.355"
+        app:srcCompat="@drawable/outline_calendar_month_64" />
+
+    <TextView
+        android:id="@+id/txtDateBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.788"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.371" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
