@@ -115,7 +115,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     private static final String TABLE_REMINDERS_CREATE =
         "CREATE TABLE if not exists " + TABLE_REMINDERS + " (" +
                 COLUMN_REMINDERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_REMINDERS_ID_PET + "INTEGER, " +
+                COLUMN_REMINDERS_ID_PET + " INTEGER, " +
                 COLUMN_REMINDERS_DATE + " TEXT, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
                 COLUMN_REMINDERS_CONTENT + " TEXT, " +
                 "FOREIGN KEY (" + COLUMN_REMINDERS_ID_PET + ") " +

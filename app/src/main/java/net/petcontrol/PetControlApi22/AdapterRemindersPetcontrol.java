@@ -30,7 +30,7 @@ public class AdapterRemindersPetcontrol extends
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         RemindersPetControl notification = notificationsList.get(position);
-        holder.date.setText(notification.getDate());
+        //holder.date.setText(notification.getDate());
         holder.content.setText(notification.getContent());
     }
     // Devuelve el número total de elementos en la lista

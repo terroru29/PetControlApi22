@@ -1,6 +1,10 @@
 package net.petcontrol.PetControlApi22.ui.pc;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +24,8 @@ import androidx.room.Room;
 
 import net.petcontrol.PetControlApi22.AddPetPetControl;
 import net.petcontrol.PetControlApi22.DataLoadListenerPetControl;
+import net.petcontrol.PetControlApi22.DatabaseHelperPetControl;
+import net.petcontrol.PetControlApi22.DatabaseManagerPetControl;
 import net.petcontrol.PetControlApi22.DatabasePetControl;
 import net.petcontrol.PetControlApi22.FormPetsPetControl;
 import net.petcontrol.PetControlApi22.PetsDAOPetControl;
@@ -31,7 +38,9 @@ import java.util.List;
 public class PCFragment extends Fragment {
         //implements DataLoadListenerPetControl {
     private FragmentPcBinding binding;
+    TextView dataUser;
     ImageButton add, del, edit, search;
+    ImageView img;
     /*
     private DatabasePetControl dbPetControl;
     private PetsDAOPetControl petsDAO;
@@ -106,6 +115,8 @@ public class PCFragment extends Fragment {
         PCViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Asociar recursos
+        dataUser = root.findViewById(R.id.txtDataUser);
+        img = root.findViewById(R.id.imageView);
         add = root.findViewById(R.id.añadir);
         del = root.findViewById(R.id.eliminar);
         edit = root.findViewById(R.id.modificar);
@@ -127,6 +138,53 @@ public class PCFragment extends Fragment {
         search.setOnClickListener(v -> {
             // Acción de buscar datos en la base de datos
             //getDataFromDataBase()
+            DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext());
+
+            DatabaseHelperPetControl dbHelper = new DatabaseHelperPetControl(requireContext());
+            SQLiteDatabase database = dbHelper.getReadableDatabase();
+
+            try (Cursor cursor = dbManager.fetchAllOwners()) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    StringBuilder userData = new StringBuilder();
+                    do {
+                        @SuppressLint("Range") int ownerId = cursor.getInt(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_ID));
+                        @SuppressLint("Range") String ownerName = cursor.getString(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_NAME));
+                        @SuppressLint("Range") int ownerAge = cursor.getInt(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_AGE));
+                        @SuppressLint("Range") String ownerGender = cursor.getString(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER));
+                        // Dentro del método donde obtienes los datos del propietario desde el cursor
+                        @SuppressLint("Range") byte[] ownerPicByteArray = cursor.getBlob(cursor.getColumnIndex
+                                (DatabaseHelperPetControl.COLUMN_OWNERS_PIC));
+                        Bitmap ownerPic = dbManager.getBitmapFromByteArray(ownerPicByteArray);
+                        @SuppressLint("Range") String ownerBirthday = cursor.getString(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY));
+                        @SuppressLint("Range") String ownerEmail = cursor.getString(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL));
+                        @SuppressLint("Range") String ownerPass = cursor.getString(cursor.
+                                getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD));
+
+                        // Agrega los datos del propietario a la cadena de texto
+                        userData.append("ID: ").append(ownerId).append(", Nombre: ").append(ownerName)
+                                .append(", Edad: ").append(ownerAge).append(", Género: ").append(ownerGender)
+                                .append(", Birthday: ").append(ownerBirthday).append(", Email: ")
+                                .append(ownerEmail).append(", Pass: ").append(ownerPass);
+                        img.setImageBitmap(ownerPic);
+                    } while (cursor.moveToNext());
+                    //cursor.close();
+
+                    // Configura la cadena de datos en el TextView
+                    dataUser.setText(userData.toString());
+                } else
+                    // Si no hay datos en la tabla de usuarios, muestra un mensaje en el TextView
+                    dataUser.setText("No se encontraron datos de usuarios.");
+
+            } catch (Exception e) {
+                e.printStackTrace(); // Manejar la excepción apropiadamente
+            }
+            dbManager.close();
         });
 
         return root;

@@ -221,7 +221,7 @@ public class DatabaseManagerPetControl {
         return cursor;
     }
     // Obtener todos los propietarios
-    public Cursor fetchAllOwners(int id) {
+    public Cursor fetchAllOwners() {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_OWNERS_ID,
                 DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
                 DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
@@ -232,8 +232,7 @@ public class DatabaseManagerPetControl {
                 DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD};
 
         Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS, columns,
-                DatabaseHelperPetControl.COLUMN_OWNERS_ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
+                null, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -393,8 +392,8 @@ public class DatabaseManagerPetControl {
         }
         return null;
     }
-    public Bitmap getUserImage(int id) {
-        Cursor cursor = fetchAllOwners(id);
+    public Bitmap getUserImage() {
+        Cursor cursor = fetchAllOwners();
 
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow

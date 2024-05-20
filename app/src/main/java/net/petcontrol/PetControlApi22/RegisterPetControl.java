@@ -219,6 +219,13 @@ public class RegisterPetControl extends AppCompatActivity {
                     nameCorrect = name.getText().toString();
                     if (!nameCorrect.isEmpty()) {
                         if (withoutDigit(nameCorrect)) {
+                            // Coger los valores insertados por el usuario en cada campo
+                            String nameUser = name.getText().toString();
+                            Bitmap picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
+
+                            dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday, emailSaved,
+                                    passSaved);
+
                             Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                             startActivity(i);
                             // Cierra la actividad actual para evitar que el usuario regrese a ella
@@ -234,12 +241,6 @@ public class RegisterPetControl extends AppCompatActivity {
                     access = getResources().getString(R.string.incorrect_access);
                     Toast.makeText(getApplicationContext(), access, Toast.LENGTH_LONG).show();
                 }
-                // Coger los valores insertados por el usuario en cada campo
-                String nameUser = name.getText().toString();
-                Bitmap picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
-
-                dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday, emailSaved,
-                        passSaved);
             }
         });
 
@@ -250,7 +251,7 @@ public class RegisterPetControl extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Muestra el DatePickerDialog
-                new DatePickerDialog(getApplicationContext(), dateSetListener,
+                new DatePickerDialog(RegisterPetControl.this, dateSetListener,
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)).show();
