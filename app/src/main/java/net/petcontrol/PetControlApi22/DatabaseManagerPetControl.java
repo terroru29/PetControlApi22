@@ -17,6 +17,8 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -132,12 +134,11 @@ public class DatabaseManagerPetControl {
      */
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
-        /*
         // Verifica si ya existe un propietario almacenado
         if (isOwnerStored()) {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
-        } else {*/
+        } else {
             ContentValues contentValues = new ContentValues();
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
@@ -155,7 +156,7 @@ public class DatabaseManagerPetControl {
             else
                 // Inserción exitosa
                 Log.d("DatabaseManagerPetControl", "Propietario insertado correctamente");
-        //}
+        }
     }
     /**
      * Inserta una nueva visita al veterinario en la base de datos.
@@ -201,17 +202,28 @@ public class DatabaseManagerPetControl {
 
 
     // --- CONSULTAS ---
-    // Obtener todos los usuarios
-    public Cursor fetchAllTypesPets() {
-        String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_TYPES_PETS_ID,
-                DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE};
+    // Obtener todos los tipos de animales almacenados
+    public List<TypePetsPetControl> fetchAllTypesPets() {
+        List<TypePetsPetControl> typePets = new ArrayList<>();
 
-        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_TYPES_PETS, columns,
-                null, null, null, null, null);
-
-        if (cursor != null)
-            cursor.moveToFirst();
-        return cursor;
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+             Cursor cursor = db.query(DatabaseHelperPetControl.TABLE_TYPES_PETS,
+                     new String[]{DatabaseHelperPetControl.COLUMN_TYPES_PETS_ID,
+                             DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE},
+                     null, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow
+                            (DatabaseHelperPetControl.COLUMN_TYPES_PETS_ID));
+                    String type = cursor.getString(cursor.getColumnIndexOrThrow
+                            (DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE));
+                    typePets.add(new TypePetsPetControl(id, type));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("Database Error", "Error while trying to fetch types of pets from database", e);
+        }
+        return typePets;
     }
     // Obtener todas las mascotas
     public Cursor fetchAllPets(int id) {
@@ -489,7 +501,6 @@ public class DatabaseManagerPetControl {
      * @return {@code true} si ya existe al menos un propietario almacenado,
      *          {@code false} de lo contrario.
      */
-    /*
     private boolean isOwnerStored() {
         // Consulta SQL para contar el número de propietarios almacenados
         String query = "SELECT COUNT(*) FROM " + DatabaseHelperPetControl.TABLE_OWNERS;
@@ -508,5 +519,4 @@ public class DatabaseManagerPetControl {
         // Retorna true si ya existe al menos un propietario almacenado, false de lo contrario
         return count > 0;
     }
-    */
 }

@@ -136,12 +136,11 @@ public class PCFragment extends Fragment {
             //editDataInDatabase();
         });
         search.setOnClickListener(v -> {
-            // Acción de buscar datos en la base de datos
-            //getDataFromDataBase()
+            // Buscar datos en la base de datos
             DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext());
             dbManager.openRead();
 
-            try (Cursor cursor = dbManager.fetchAllOwners(2)) {
+            try (Cursor cursor = dbManager.fetchAllOwners(1)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     StringBuilder userData = new StringBuilder();
                     do {

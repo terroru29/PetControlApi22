@@ -40,8 +40,7 @@ public class LoginPetControl extends AppCompatActivity {
     String email, savedEmail, pass, savedPassword, passwordNew, passwordConfirm, conditions,
             credentials, acceptTerms;
     boolean change = false, termsCheck;
-    //OwnerPetControl opc = new OwnerPetControl();
-    SharedPreferences sharedPreferences;
+     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
     @Override

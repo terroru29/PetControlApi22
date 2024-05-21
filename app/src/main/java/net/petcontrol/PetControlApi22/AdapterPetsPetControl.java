@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
 import java.util.Locale;
 
 public class AdapterPetsPetControl extends BaseAdapter {
@@ -26,6 +27,8 @@ public class AdapterPetsPetControl extends BaseAdapter {
     private String[] namesPets;
     private boolean[] isImageChanged;
     private Handler mainHandler;
+    DatabaseManagerPetControl dbPetControl;
+    private List<TypePetsPetControl> typePets;  // Lista para almacenar los tipos de mascotas
 
 
     /**
@@ -62,6 +65,9 @@ public class AdapterPetsPetControl extends BaseAdapter {
 
         // Inicializar el Handler para el hilo principal
         mainHandler = new Handler(Looper.getMainLooper());
+
+        // Inicializar la lista de tipos de mascotas
+        this.typePets = dbPetControl.fetchAllTypesPets();
 
         // Inicializar la dictado del texto con voz
         textInVoice = new TextToSpeech(context, status -> {
@@ -206,6 +212,13 @@ public class AdapterPetsPetControl extends BaseAdapter {
                         TextToSpeech.QUEUE_FLUSH, null, Integer.toString(position));
             }
         });
+
+        // Asociar el tipo de mascota con el ImageButton usando la lista typePets
+        if (position < typePets.size()) {
+            TypePetsPetControl typePet = typePets.get(position);
+            pets.setTag(typePet.getId_type_pet());  // Asignar el ID como tag del ImageButton
+            //names.setText(typePet.getType_pet());   // Opcional: asignar el tipo como texto
+        }
 
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceCompletedListener(utteranceId -> {
