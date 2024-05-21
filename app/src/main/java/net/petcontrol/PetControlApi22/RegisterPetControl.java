@@ -43,7 +43,7 @@ public class RegisterPetControl extends AppCompatActivity {
     TextView birthday, messageEmail, messagePass, pictureSelected;
     ImageView pictureUser;
     ImageButton cleanName, calendar, cleanEmail, closedEye, openEye;
-    String nameCorrect, selectedItem, dateBirthday, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
+    String nameUser, nameCorrect, selectedItem, dateBirthday, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
             pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
     int ageUser, age;
     boolean validateEmail, validatePass;
@@ -56,6 +56,7 @@ public class RegisterPetControl extends AppCompatActivity {
     DatabaseManagerPetControl dbPC;
     Calendar cal;
     SimpleDateFormat sdf;
+    Bitmap picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,67 +181,61 @@ public class RegisterPetControl extends AppCompatActivity {
 
         //-EVENTO DE BOTÓN
         //--Buscar imagen
-        searchPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear un Intent para abrir el explorador de archivos
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                // Establecer el tipo de archivo que se puede seleccionar (todos los tipos de archivos)
-                intent.setType("*/*");
-                // Iniciar la actividad para seleccionar un archivo
-                startActivityForResult(intent, PICK_IMAGE_REQUEST);
-            }
+        searchPicture.setOnClickListener(v -> {
+            // Crear un Intent para abrir el explorador de archivos
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            // Establecer el tipo de archivo que se puede seleccionar (todos los tipos de archivos)
+            intent.setType("*/*");
+            // Iniciar la actividad para seleccionar un archivo
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);
         });
         //--Siguiente
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Log.d("Email", email);
-                //Log.d("Pass", pass);
-                sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
-                editor = sharedPreferences.edit();
+        next.setOnClickListener(v -> {
+            //Log.d("Email", email);
+            //Log.d("Pass", pass);
+            sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
+            editor = sharedPreferences.edit();
 
-                // Almacenar datos si las validaciones son correctas
-                if (validateEmail) {
-                    emailSaved = validationEmail.getText().toString();
-                    editor.putString("email", emailSaved);
-                }
-                if (validatePass) {
-                    passSaved = validationPass.getText().toString();
-                    editor.putString("password", passSaved);
-                }
-                // Aplica los cambios de forma asíncrona para que el código no se bloquee
-                editor.apply();
+            // Almacenar datos si las validaciones son correctas
+            if (validateEmail) {
+                emailSaved = validationEmail.getText().toString();
+                editor.putString("email", emailSaved);
+            }
+            if (validatePass) {
+                passSaved = validationPass.getText().toString();
+                editor.putString("password", passSaved);
+            }
+            // Aplica los cambios de forma asíncrona para que el código no se bloquee
+            editor.apply();
 
-                if (validateEmail && validatePass) {
-                    Toast.makeText(getApplicationContext(), "Datos guardados: " + emailSaved + " / "
-                            + passSaved, Toast.LENGTH_SHORT).show();
+            if (validateEmail && validatePass) {
+                Toast.makeText(getApplicationContext(), "Datos guardados: " + emailSaved + " / "
+                        + passSaved, Toast.LENGTH_SHORT).show();
 
-                    nameCorrect = name.getText().toString();
-                    if (!nameCorrect.isEmpty()) {
-                        if (withoutDigit(nameCorrect)) {
-                            // Coger los valores insertados por el usuario en cada campo
-                            String nameUser = name.getText().toString();
-                            Bitmap picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
+                nameCorrect = name.getText().toString();
+                if (!nameCorrect.isEmpty()) {
+                    if (withoutDigit(nameCorrect)) {
+                        // Coger los valores insertados por el usuario en cada campo
+                        nameUser = name.getText().toString();
+                        picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
 
-                            dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday, emailSaved,
-                                    passSaved);
+                        dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday,
+                                emailSaved, passSaved);
 
-                            Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
-                            startActivity(i);
-                            // Cierra la actividad actual para evitar que el usuario regrese a ella
-                            finish();
-                        }
-                        else
-                            Toast.makeText(getApplicationContext(), "El campo nombre no puede " +
-                                    "contener dígitos.", Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(getApplicationContext(), "Debe rellenar los campos " +
-                                "señalados con el símbolo *.", Toast.LENGTH_LONG).show();
-                } else {
-                    access = getResources().getString(R.string.incorrect_access);
-                    Toast.makeText(getApplicationContext(), access, Toast.LENGTH_LONG).show();
-                }
+                        Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
+                        startActivity(i);
+                        // Cierra la actividad actual para evitar que el usuario regrese a ella
+                        finish();
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "El campo nombre no puede " +
+                                "contener dígitos.", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "Debe rellenar los campos " +
+                            "señalados con el símbolo *.", Toast.LENGTH_LONG).show();
+            } else {
+                access = getResources().getString(R.string.incorrect_access);
+                Toast.makeText(getApplicationContext(), access, Toast.LENGTH_LONG).show();
             }
         });
 

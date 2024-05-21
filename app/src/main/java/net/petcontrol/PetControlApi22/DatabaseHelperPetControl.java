@@ -37,8 +37,8 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     public static final String COLUMN_OWNERS_NAME = "NameOwner";
     public static final String COLUMN_OWNERS_AGE = "AgeOwner";
     public static final String COLUMN_OWNERS_GENDER = "GenderOwner";
-    public static final String COLUMN_OWNERS_PIC = "UriPicOwner";
     public static final String COLUMN_OWNERS_BIRTHDAY = "Birthday";
+    public static final String COLUMN_OWNERS_PIC = "UriPicOwner";
     public static final String COLUMN_OWNERS_EMAIL = "Email";
     public static final String COLUMN_OWNERS_PASSWORD = "Password";
 
@@ -91,8 +91,8 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 COLUMN_OWNERS_NAME + " TEXT, " +
                 COLUMN_OWNERS_AGE + " INTEGER, " +
                 COLUMN_OWNERS_GENDER + " TEXT, " +
-                COLUMN_OWNERS_PIC + " BLOB, " +
                 COLUMN_OWNERS_BIRTHDAY + " TEXT, " +  //TODO formato ISO8601 (YYYY-MM-DD)
+                COLUMN_OWNERS_PIC + " BLOB, " +
                 COLUMN_OWNERS_EMAIL + " TEXT, " +
                 COLUMN_OWNERS_PASSWORD + " TEXT);";
 

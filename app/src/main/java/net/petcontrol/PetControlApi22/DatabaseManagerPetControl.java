@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,6 +37,11 @@ public class DatabaseManagerPetControl {
     public DatabaseManagerPetControl open() throws SQLException {
         dbHelper = new DatabaseHelperPetControl(context);
         database = dbHelper.getWritableDatabase();
+        return this;
+    }
+    public DatabaseManagerPetControl openRead() throws SQLException {
+        dbHelper = new DatabaseHelperPetControl(context);
+        database = dbHelper.getReadableDatabase();
         return this;
     }
 
@@ -126,23 +132,30 @@ public class DatabaseManagerPetControl {
      */
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
+        /*
         // Verifica si ya existe un propietario almacenado
         if (isOwnerStored()) {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
-        } else {
+        } else {*/
             ContentValues contentValues = new ContentValues();
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
+            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);
 
             // Inserta al propietario en su respectiva tabla
-            database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null, contentValues);
-        }
+            long result = database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null, contentValues);
+            if (result == -1)
+                // Error en la inserción
+                Log.e("DatabaseManagerPetControl", "Error al insertar el propietario");
+            else
+                // Inserción exitosa
+                Log.d("DatabaseManagerPetControl", "Propietario insertado correctamente");
+        //}
     }
     /**
      * Inserta una nueva visita al veterinario en la base de datos.
@@ -221,18 +234,19 @@ public class DatabaseManagerPetControl {
         return cursor;
     }
     // Obtener todos los propietarios
-    public Cursor fetchAllOwners() {
+    public Cursor fetchAllOwners(int id) {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_OWNERS_ID,
                 DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
                 DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
                 DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
-                DatabaseHelperPetControl.COLUMN_OWNERS_PIC,
                 DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY,
+                DatabaseHelperPetControl.COLUMN_OWNERS_PIC,
                 DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL,
                 DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD};
 
         Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS, columns,
-                null, null, null, null, null);
+                DatabaseHelperPetControl.COLUMN_OWNERS_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -310,8 +324,8 @@ public class DatabaseManagerPetControl {
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email);
         contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);
         return database.update(DatabaseHelperPetControl.TABLE_OWNERS, contentValues,
@@ -392,8 +406,8 @@ public class DatabaseManagerPetControl {
         }
         return null;
     }
-    public Bitmap getUserImage() {
-        Cursor cursor = fetchAllOwners();
+    public Bitmap getUserImage(int id) {
+        Cursor cursor = fetchAllOwners(id);
 
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
@@ -475,6 +489,7 @@ public class DatabaseManagerPetControl {
      * @return {@code true} si ya existe al menos un propietario almacenado,
      *          {@code false} de lo contrario.
      */
+    /*
     private boolean isOwnerStored() {
         // Consulta SQL para contar el número de propietarios almacenados
         String query = "SELECT COUNT(*) FROM " + DatabaseHelperPetControl.TABLE_OWNERS;
@@ -493,4 +508,5 @@ public class DatabaseManagerPetControl {
         // Retorna true si ya existe al menos un propietario almacenado, false de lo contrario
         return count > 0;
     }
+    */
 }

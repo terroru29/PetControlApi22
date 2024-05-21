@@ -139,11 +139,9 @@ public class PCFragment extends Fragment {
             // Acción de buscar datos en la base de datos
             //getDataFromDataBase()
             DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext());
+            dbManager.openRead();
 
-            DatabaseHelperPetControl dbHelper = new DatabaseHelperPetControl(requireContext());
-            SQLiteDatabase database = dbHelper.getReadableDatabase();
-
-            try (Cursor cursor = dbManager.fetchAllOwners()) {
+            try (Cursor cursor = dbManager.fetchAllOwners(2)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     StringBuilder userData = new StringBuilder();
                     do {
@@ -174,7 +172,6 @@ public class PCFragment extends Fragment {
                         img.setImageBitmap(ownerPic);
                     } while (cursor.moveToNext());
                     //cursor.close();
-
                     // Configura la cadena de datos en el TextView
                     dataUser.setText(userData.toString());
                 } else
