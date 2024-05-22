@@ -127,6 +127,8 @@ public class PCFragment extends Fragment {
             // Acción de añadir datos a la base de datos
             //addDataToDatabase();
         });
+        //TODO eliminar los demás usuarios para no petar la bd con esos datos indiferentes
+        //TODO hacer método aque cuente los usuarios que hay insertados y sus IDs para eliminarlos
         del.setOnClickListener(v -> {
             // Acción de eliminar datos de la base de datos
             //deleteDataFromDatabase();

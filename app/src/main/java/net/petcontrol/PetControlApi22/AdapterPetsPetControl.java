@@ -56,7 +56,6 @@ public class AdapterPetsPetControl extends BaseAdapter {
     public AdapterPetsPetControl(@NonNull Context context, int[] images) {
         this.context = context;
         this.images = images;
-        this.dbPetControl = new DatabaseManagerPetControl(context);
 
         // Asociamos los nombres de los animales al array indicado cuando se inicializa el adaptador
         namesPets = context.getResources().getStringArray(R.array.pets_names);
@@ -68,6 +67,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
         mainHandler = new Handler(Looper.getMainLooper());
 
         // Inicializar administrador base de datos
+        this.dbPetControl = new DatabaseManagerPetControl(context);
         dbPetControl.open();
         // Inicializar la lista de tipos de mascotas
         this.typePets = dbPetControl.fetchAllTypesPets();
@@ -225,6 +225,11 @@ public class AdapterPetsPetControl extends BaseAdapter {
             //names.setText(typePet.getTypePet());   // Opcional: asignar el tipo como texto
             Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
                     "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
+        }
+        for (int i = 0; i < typePets.size(); i++) {
+            TypePetsPetControl typePet = typePets.get(i);
+            Log.d("Lista typePets", "Elemento " + i + ": ID: " + typePet.getId_type_pet()
+                    + ", Tipo: " + typePet.getType_pet());
         }
 
         /*

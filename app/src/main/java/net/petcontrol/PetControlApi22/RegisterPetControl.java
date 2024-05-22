@@ -221,6 +221,8 @@ public class RegisterPetControl extends AppCompatActivity {
 
                         dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday,
                                 emailSaved, passSaved);
+                        // Liberar la memoria asociada al objeto Bitmap
+                        picture.recycle();
 
                         Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                         startActivity(i);

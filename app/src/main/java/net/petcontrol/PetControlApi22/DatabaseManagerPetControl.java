@@ -66,21 +66,24 @@ public class DatabaseManagerPetControl {
      *                                       se lanza esta excepción y la inserción no se produce.
      */
     public void insertTypes(String type_pet) {
-        // Comprobar si el tipo de animal ya existe
-        if (isValueExists(DatabaseHelperPetControl.TABLE_TYPES_PETS,
-                DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE, type_pet)) {
-            // No permitir inserciones a la tabla TABLE_TYPES_PETS
-            throw new UnsupportedOperationException("No se permite la inserción de ese tipo de " +
-                    "animal.");
-        }
-        else {
-            ContentValues contentValues = new ContentValues();
+        try {
+            // Comprobar si el tipo de animal ya existe
+            if (isValueExists(DatabaseHelperPetControl.TABLE_TYPES_PETS,
+                    DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE, type_pet)) {
+                // No permitir inserciones a la tabla TABLE_TYPES_PETS
+                throw new UnsupportedOperationException("No se permite la inserción de ese tipo de " +
+                        "animal.");
+            } else {
+                ContentValues contentValues = new ContentValues();
 
-            // El tipo de animal se insertará con la primera letra mayúscula
-            contentValues.put(DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE,
-                    StringUtils.capitalize(type_pet));
-            database.insert(DatabaseHelperPetControl.TABLE_TYPES_PETS, null,
-                    contentValues);
+                // El tipo de animal se insertará con la primera letra mayúscula
+                contentValues.put(DatabaseHelperPetControl.COLUMN_TYPES_PETS_TYPE,
+                        StringUtils.capitalize(type_pet));
+                database.insert(DatabaseHelperPetControl.TABLE_TYPES_PETS, null,
+                        contentValues);
+            }
+        } catch (SQLException sql) {
+            Log.e("DatabaseManagerPetControl", "Error al insertar tipo de mascota", sql);
         }
     }
     /**
@@ -416,6 +419,7 @@ public class DatabaseManagerPetControl {
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
                     (DatabaseHelperPetControl.COLUMN_PETS_PIC));
+            cursor.close();
             return getBitmapFromByteArray(blob);
         }
         return null;
@@ -426,6 +430,7 @@ public class DatabaseManagerPetControl {
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
                     (DatabaseHelperPetControl.COLUMN_OWNERS_PIC));
+            cursor.close();
             return getBitmapFromByteArray(blob);
         }
         return null;
