@@ -2,8 +2,11 @@ package net.petcontrol.PetControlApi22;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.NonNull;
 
 /**
  * Clase que ayudará a gestionar la creación y actualización de la base de datos.
@@ -131,14 +134,29 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     // --- EJECUTAR CREACIÓN TABLAS ---
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_TYPES_PETS_CREATE);
-        db.execSQL(TABLE_PETS_CREATE);
-        db.execSQL(TABLE_OWNERS_CREATE);
-        db.execSQL(TABLE_VISITS_VET_CREATE);
-        db.execSQL(TABLE_REMINDERS_CREATE);
-
-        // Inserción de tipos de animales predeterminados
-        insertDefaultTypes(db);
+        // Verificar si la tabla tipo de animales existe
+        if (!isTableExists(db, TABLE_TYPES_PETS)) {
+            // Si no existe, se crea
+            db.execSQL(TABLE_TYPES_PETS_CREATE);
+            // Inserción de tipos de animales predeterminados
+            insertDefaultTypes(db);
+        }
+        // Verificar si la tabla mascotas existe
+        if (!isTableExists(db, TABLE_PETS))
+            // Si no existe, se crea
+            db.execSQL(TABLE_PETS_CREATE);
+        // Verificar si la tabla usuarios existe
+        if (!isTableExists(db, TABLE_OWNERS))
+            // Si no existe, se crea
+            db.execSQL(TABLE_OWNERS_CREATE);
+        // Verificar si la tabla visitas veterinarias existe
+        if (!isTableExists(db, TABLE_VISITS_VET))
+            // Si no existe, se crea
+            db.execSQL(TABLE_VISITS_VET_CREATE);
+        // Verificar si la tabla recordatorios existe
+        if (!isTableExists(db, TABLE_REMINDERS))
+            // Si no existe, se crea
+            db.execSQL(TABLE_REMINDERS_CREATE);
     }
 
 
@@ -155,6 +173,28 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
 
 
     // --------------- MÉTODOS ---------------
+    // Método para verificar si una tabla existe en la base de datos
+    private boolean isTableExists(@NonNull SQLiteDatabase db, String tableName) {
+        /**
+         * La consulta se adapta a los nombres de las tablas definidos en tu clase y te permite
+         * verificar la existencia de cualquier tabla según sea necesario.
+         *
+         * name: Columna que contiene los nombres de las tablas en la tabla de sistema específica.
+         * sqlite_master: Tabla de sistema específica que contiene información sobre las tablas.
+         * type='table': Identificar las entradas que representan tablas en la tabla de sistema
+         *                  específica.
+         */
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+                new String[]{tableName});
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
     private void insertDefaultTypes(SQLiteDatabase db) {
         ContentValues contentValues = new ContentValues();
         String[] defaultTypes = {"Perro", "Gato", "Hamster", "Pez", "Raton", "Pajaro", "Conejo",

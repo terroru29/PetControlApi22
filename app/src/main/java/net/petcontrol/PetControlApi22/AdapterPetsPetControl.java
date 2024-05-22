@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
     public AdapterPetsPetControl(@NonNull Context context, int[] images) {
         this.context = context;
         this.images = images;
+        this.dbPetControl = new DatabaseManagerPetControl(context);
 
         // Asociamos los nombres de los animales al array indicado cuando se inicializa el adaptador
         namesPets = context.getResources().getStringArray(R.array.pets_names);
@@ -62,12 +64,15 @@ public class AdapterPetsPetControl extends BaseAdapter {
         // Inicializar el array booleano para mantener el estado de cada ImageButton
         this.isImageChanged = new boolean[images.length];
 
-
         // Inicializar el Handler para el hilo principal
         mainHandler = new Handler(Looper.getMainLooper());
 
+        // Inicializar administrador base de datos
+        dbPetControl.open();
         // Inicializar la lista de tipos de mascotas
         this.typePets = dbPetControl.fetchAllTypesPets();
+        // Cerrar la base de datos después de obtener los datos
+        dbPetControl.close();
 
         // Inicializar la dictado del texto con voz
         textInVoice = new TextToSpeech(context, status -> {
@@ -217,9 +222,12 @@ public class AdapterPetsPetControl extends BaseAdapter {
         if (position < typePets.size()) {
             TypePetsPetControl typePet = typePets.get(position);
             pets.setTag(typePet.getId_type_pet());  // Asignar el ID como tag del ImageButton
-            //names.setText(typePet.getType_pet());   // Opcional: asignar el tipo como texto
+            //names.setText(typePet.getTypePet());   // Opcional: asignar el tipo como texto
+            Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
+                    "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
         }
 
+        /*
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceCompletedListener(utteranceId -> {
             mainHandler.postDelayed(() -> {
@@ -228,7 +236,21 @@ public class AdapterPetsPetControl extends BaseAdapter {
                 context.startActivity(intent);
             }, 1000); // Delay de 1 segundo
         });
-
+        */
+        // Establecer el listener de finalización del discurso
+        textInVoice.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {}
+            @Override
+            public void onDone(String utteranceId) {
+                mainHandler.postDelayed(() -> {
+                    Intent intent = new Intent(context, FormPetsPetControl.class);
+                    context.startActivity(intent);
+                }, 1000);
+            }
+            @Override
+            public void onError(String utteranceId) {}
+        });
         return convertView;
     }
     /**

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -134,11 +135,12 @@ public class DatabaseManagerPetControl {
      */
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
+        /*
         // Verifica si ya existe un propietario almacenado
         if (isOwnerStored()) {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
-        } else {
+        } else {*/
             ContentValues contentValues = new ContentValues();
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
             contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
@@ -156,7 +158,7 @@ public class DatabaseManagerPetControl {
             else
                 // Inserción exitosa
                 Log.d("DatabaseManagerPetControl", "Propietario insertado correctamente");
-        }
+        //}
     }
     /**
      * Inserta una nueva visita al veterinario en la base de datos.
@@ -479,20 +481,18 @@ public class DatabaseManagerPetControl {
         // Consulta SQL para verificar si el valor ya existe en la columna de la tabla
         String query = "SELECT COUNT(*) FROM " + tableName + " WHERE " + columnName + " = ?";
 
-        // Ejecuta la consulta
-        Cursor cursor = database.rawQuery(query, new String[]{value});
-
-        // Si el cursor no es nulo y tiene al menos una fila, significa que el valor ya existe
-        if (cursor != null) {
-            // Mueve el cursor a la primera fila
-            cursor.moveToFirst();
-            // Obtiene el valor de la primera columna de dicha fila
-            int count = cursor.getInt(0);
-            // Cierra el cursor
-            cursor.close();
-            return count > 0;
+        // Inicializar el cursor
+        try (Cursor cursor = database.rawQuery(query, new String[]{value})) {
+            // Si el cursor no es nulo y tiene al menos una fila, significa que el valor ya existe
+            if (cursor != null && cursor.moveToFirst()) {
+                // Obtiene el valor de la primera columna de dicha fila
+                int count = cursor.getInt(0);
+                return count > 0;
+            }
+        } catch (SQLiteException e) {
+            Log.e("Database Error", "Error while checking value existence in database", e);
         }
-        // Si el cursor es nulo o no tiene filas, el valor no existe
+        // Si el cursor es nulo o no tiene filas, el valor no existe o ha ocurrido un error
         return false;
     }
     /**
