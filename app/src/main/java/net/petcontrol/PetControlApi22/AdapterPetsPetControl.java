@@ -166,6 +166,15 @@ public class AdapterPetsPetControl extends BaseAdapter {
             names.setVisibility(View.GONE);
         }
 
+        // Asociar el tipo de mascota con el ImageButton usando la lista typePets
+        if (position < typePets.size()) {
+            TypePetsPetControl typePet = typePets.get(position);
+            pets.setTag(typePet.getId_type_pet());  // Asignar el ID como tag del ImageButton
+            //names.setText(typePet.getTypePet());   // Opcional: asignar el tipo como texto
+            Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
+                    "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
+        }
+
         //-Evento de botón de cada animal
         pets.setOnClickListener(v -> {
             // Rotación horizontal (tridimensional)
@@ -218,29 +227,16 @@ public class AdapterPetsPetControl extends BaseAdapter {
             }
         });
 
-        // Asociar el tipo de mascota con el ImageButton usando la lista typePets
-        if (position < typePets.size()) {
-            TypePetsPetControl typePet = typePets.get(position);
-            pets.setTag(typePet.getId_type_pet());  // Asignar el ID como tag del ImageButton
-            //names.setText(typePet.getTypePet());   // Opcional: asignar el tipo como texto
-            Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
-                    "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
-        }
+        // Capturar el ID y el tipo de animal seleccionado
+        int typeID = (int) pets.getTag();
+        String typeName = typePets.get(position).getType_pet();
+
+        /*
         for (int i = 0; i < typePets.size(); i++) {
             TypePetsPetControl typePet = typePets.get(i);
             Log.d("Lista typePets", "Elemento " + i + ": ID: " + typePet.getId_type_pet()
                     + ", Tipo: " + typePet.getType_pet());
         }
-
-        /*
-        // Establecer el listener de finalización del discurso
-        textInVoice.setOnUtteranceCompletedListener(utteranceId -> {
-            mainHandler.postDelayed(() -> {
-                // Navegar a otra pantalla después de un delay de 1 segundo
-                Intent intent = new Intent(context, FormPetsPetControl.class);
-                context.startActivity(intent);
-            }, 1000); // Delay de 1 segundo
-        });
         */
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -249,7 +245,11 @@ public class AdapterPetsPetControl extends BaseAdapter {
             @Override
             public void onDone(String utteranceId) {
                 mainHandler.postDelayed(() -> {
+                    // Pasar la información a la siguiente pantalla
                     Intent intent = new Intent(context, FormPetsPetControl.class);
+
+                    intent.putExtra("typeID", typeID);
+                    intent.putExtra("typeName", typeName);
                     context.startActivity(intent);
                 }, 1000);
             }

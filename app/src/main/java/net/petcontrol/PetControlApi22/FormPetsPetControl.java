@@ -43,15 +43,22 @@ public class FormPetsPetControl extends AppCompatActivity {
         accept = findViewById(R.id.btnAcceptDataPet);
         cancel = findViewById(R.id.btnCancelDataPet);
 
+        // Recuperar el ID y tipo de animal pasados de la actividad anterior
+        Intent intent = getIntent();
+        int typeId = intent.getIntExtra("typeID", -1);
+        String typeName = intent.getStringExtra("typeName");
+
+        /*
         // Inicializar el DAO de Pets
         petsDAO = Room.databaseBuilder(this, DatabasePetControl.class,
                 "database_petcontrol").build().petsDAO();
         executorService = Executors.newSingleThreadExecutor();
-
+        */
 
         //--EVENTO BUTTON
         //-Aceptar
         accept.setOnClickListener(v -> {
+            /*
             // Enviar datos a la BD (database_petcontrol)
             String petName = name.getText().toString();
             int petAge = Integer.parseInt(age.getText().toString());
@@ -68,6 +75,7 @@ public class FormPetsPetControl extends AppCompatActivity {
             newPet.sex_pet = petSex;
             newPet.sterilization = petSterilization;
             newPet.description_pet = petDescription;
+            */
 
             /*
             // Insertar la nueva mascota en la base de datos
@@ -85,7 +93,7 @@ public class FormPetsPetControl extends AppCompatActivity {
             startActivity(i);
              */
 
-
+            /*
             // Insertar la nueva mascota en la base de datos en un hilo de fondo
             executorService.execute(() -> {
                 petsDAO.insertPet(newPet);
@@ -100,6 +108,7 @@ public class FormPetsPetControl extends AppCompatActivity {
                     startActivity(i);
                 });
             });
+            */
 
             /*
             // Insertar la nueva mascota en la base de datos en un hilo de fondo y esperar a que termine
@@ -137,11 +146,11 @@ public class FormPetsPetControl extends AppCompatActivity {
             name.setText("");
             age.setText("");
             breed.setText("");
+            description.setText("");
             // Desmarcar RadioButton y CheckBox
             male.setChecked(false);
             female.setChecked(false);
             sterilization.setChecked(false);
-            description.setText("");
 
             // Retroceder la pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);

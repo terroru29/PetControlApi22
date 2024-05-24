@@ -128,6 +128,8 @@ public class PCFragment extends Fragment {
         add.setOnClickListener(v -> {
             // Acción de añadir datos a la base de datos
             //addDataToDatabase();
+            Intent i = new Intent(requireContext(), AddPetPetControl.class);
+            startActivity(i);
         });
         //TODO eliminar los demás usuarios para no petar la bd con esos datos indiferentes
         //TODO hacer método aque cuente los usuarios que hay insertados y sus IDs para eliminarlos
