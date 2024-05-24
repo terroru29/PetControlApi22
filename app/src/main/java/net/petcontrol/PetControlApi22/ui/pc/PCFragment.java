@@ -3,11 +3,13 @@ package net.petcontrol.PetControlApi22.ui.pc;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +134,29 @@ public class PCFragment extends Fragment {
         del.setOnClickListener(v -> {
             // Acción de eliminar datos de la base de datos
             //deleteDataFromDatabase();
+            try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())){
+                // Intentar abrir la base de datos
+                dbManager.open();
+
+                // Contar todos los propietarios
+                int ownerCount = dbManager.countAllOwners();
+                Log.d("OwnerCount", "Total Owners: " + ownerCount);
+
+                // Eliminar todos los propietarios
+                // dbManager.deleteAllOwners();
+                Log.d("DeleteAllOwners", "DeleteAllOwners");
+
+                // Eliminar un propietario específico
+                // dbManager.deleteOwner(3);
+                Log.d("DeleteOwner", "DeleteOwner");
+
+            } catch (SQLException e) {
+                // Manejar errores de la base de datos
+                Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
+            } catch (Exception e) {
+                // Manejar otros tipos de errores
+                Log.e("GeneralError", "Ocurrió un error", e);
+            }
         });
         edit.setOnClickListener(v -> {
             // Acción de modificar datos en la base de datos
@@ -142,8 +167,9 @@ public class PCFragment extends Fragment {
             DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext());
             dbManager.openRead();
 
-            try (Cursor cursor = dbManager.fetchAllOwners(1)) {
+            try (Cursor cursor = dbManager.fetchAllOwners()) {
                 if (cursor != null && cursor.moveToFirst()) {
+                    // Datos a mostrar
                     StringBuilder userData = new StringBuilder();
                     do {
                         @SuppressLint("Range") int ownerId = cursor.getInt(cursor.
@@ -241,5 +267,5 @@ public class PCFragment extends Fragment {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
         });
     }
-     */
+    */
 }

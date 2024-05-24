@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Clase que maneja las operaciones CRUD para interactuar con la base de datos.
  */
-public class DatabaseManagerPetControl {
+public class DatabaseManagerPetControl implements AutoCloseable {
     private DatabaseHelperPetControl dbHelper;
     private final Context context;
     private SQLiteDatabase database;
@@ -251,7 +251,25 @@ public class DatabaseManagerPetControl {
         return cursor;
     }
     // Obtener todos los propietarios
-    public Cursor fetchAllOwners(int id) {
+    public Cursor fetchAllOwners() {
+        String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_OWNERS_ID,
+                DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
+                DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
+                DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
+                DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY,
+                DatabaseHelperPetControl.COLUMN_OWNERS_PIC,
+                DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL,
+                DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD};
+
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS, columns,
+                null, null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        return cursor;
+    }
+    // Obtener un propietario
+    public Cursor fetchOneOwner(int id) {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_OWNERS_ID,
                 DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
                 DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
@@ -425,7 +443,7 @@ public class DatabaseManagerPetControl {
         return null;
     }
     public Bitmap getUserImage(int id) {
-        Cursor cursor = fetchAllOwners(id);
+        Cursor cursor = fetchAllOwners();
 
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
@@ -523,5 +541,18 @@ public class DatabaseManagerPetControl {
 
         // Retorna true si ya existe al menos un propietario almacenado, false de lo contrario
         return count > 0;
+    }
+    // Contar todos los propietarios
+    public int countAllOwners() {
+        String query = "SELECT COUNT(*) FROM " + DatabaseHelperPetControl.TABLE_OWNERS;
+        Cursor cursor = database.rawQuery(query, null);
+        int count = 0;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        return count;
     }
 }
