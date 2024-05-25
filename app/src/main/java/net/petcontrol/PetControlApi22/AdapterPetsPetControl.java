@@ -180,6 +180,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
 
         // Obtener el ID y tipo de la mascota desde la base de datos
         TypePetsPetControl typePet = typePets.get(position);
+
         int petId = typePet.getId_type_pet();
         String petType = typePet.getType_pet();
 
@@ -191,9 +192,9 @@ public class AdapterPetsPetControl extends BaseAdapter {
         //-Evento de botón de cada animal
         pets.setOnClickListener(v -> {
             // Obtener el ID y tipo del tag
-            int id = (int) v.getTag(R.id.pet_id);
+            /*int id = (int) v.getTag(R.id.pet_id);
             String type = (String) v.getTag(R.id.pet_type);
-            Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);
+            Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);*/
 
             // Rotación horizontal (tridimensional)
             ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
@@ -246,17 +247,12 @@ public class AdapterPetsPetControl extends BaseAdapter {
 
 
         // Capturar el ID y el tipo de animal seleccionado
-        int typeID = (int) pets.getTag();
+        //int typeID = (int) pets.getTag(R.id.pet_id);
+        int typeID = (int) typePets.get(position).getId_type_pet();
         String typeName = typePets.get(position).getType_pet();
-        Log.i("ID-Type", "ID: " + typePet.getId_type_pet() + "\nType: " + typePet.getType_pet());
+        Log.i("ID-Type", "ID: " + typeID + "\nType: " + typeName);
 
-/*
-        for (int i = 0; i < typePets.size(); i++) {
-            TypePetsPetControl typePet = typePets.get(i);
-            Log.d("Lista typePets", "Elemento " + i + ": ID: " + typePet.getId_type_pet()
-                    + ", Tipo: " + typePet.getType_pet());
-        }
-        */
+
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
@@ -294,6 +290,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
     public void verifyData() {
         for (int i = 0; i < getCount(); i++) {
             TypePetsPetControl typePet = typePets.get(i);
+
             int expectedId = typePet.getId_type_pet();
             String expectedType = typePet.getType_pet();
 

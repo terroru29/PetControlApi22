@@ -110,6 +110,9 @@ public class FormPetsPetControl extends AppCompatActivity {
                 // Añadir al animal a la base de datos
                 dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
                         petSterilization, petDescription);
+                Toast.makeText(this, "Se han insertado los datos correctamente.",
+                        Toast.LENGTH_SHORT).show();
+
                 // Liberar la memoria asociada al objeto Bitmap
                 petPic.recycle();
 
@@ -121,13 +124,7 @@ public class FormPetsPetControl extends AppCompatActivity {
                 // Manejar otros tipos de errores
                 Log.e("GeneralError", "Ocurrió un error", e);
             }
-            /*
-            } finally {
-                if (dbManager != null) {
-                    dbManager.close();
-                }
-            }
-             */
+
             // Retroceder la pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);
             startActivity(i);
