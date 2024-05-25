@@ -42,7 +42,7 @@ public class OwnerPetControl {
      * @param id_owner ID del usuario
      * @param name_owner Nombre del usuario
      * @param age_owner Edad del usuario
-     * @param gender_owner Género del usuario (Masculino/Femenino/No binario)
+     * @param gender_owner Género del usuario (Masculino/Femenino/No binario/Gender fluid)
      * @param uri_pic_owner Ruta de la imagen seleccionada para el usuario
      * @param birthday Fecha de cumpleaños del usuario (aaaa-MM-dd)
      * @param contact Correo electrónico del usuario
@@ -125,7 +125,8 @@ public class OwnerPetControl {
             throw new IllegalArgumentException("La edad del usuario debe ser mayor a dieciseis.");
         if (gender_owner == null || (!gender_owner.equalsIgnoreCase("Masculino")
                 && !gender_owner.equalsIgnoreCase("Femenino")
-                && !gender_owner.equalsIgnoreCase("No binario")))
+                && !gender_owner.equalsIgnoreCase("No binario")
+                && !gender_owner.equalsIgnoreCase("Genero fluido")))
             throw new IllegalArgumentException("El género del usuario debe ser 'Masculino', " +
                     "'Femenino' o 'No binario'.");
         if (uri_pic_owner == null || uri_pic_owner.isEmpty())

@@ -57,7 +57,7 @@
         <item>Femenino</item>
         <item>Masculino</item>
         <item>No binario</item>
-        <item>Género fluído</item>
+        <item>Genero fluido</item>
     </string-array>
     <string name="txt_birthday">Cumpleaños:</string>
     <string name="hint_birthday">Cumpleaños</string>

@@ -340,20 +340,24 @@ public class RegisterPetControl extends AppCompatActivity {
         boolean correct = false;
         int countLow = 0, countUp = 0, countNum = 0, countSpe = 0;
 
-        if (pass != null) {
-            for (int i = 0; i < pass.length(); i++) {
-                if (pass.charAt(i) >= 'a' && pass.charAt(i) <= 'z')
-                    countLow++;
-                else if (pass.charAt(i) >= 'A' && pass.charAt(i) <= 'Z')
-                    countUp++;
-                else if (pass.charAt(i) >= '0' && pass.charAt(i) <= '9')
-                    countNum++;
-                else
-                    countSpe++;
+        try {
+            if (pass != null) {
+                for (int i = 0; i < pass.length(); i++) {
+                    if (pass.charAt(i) >= 'a' && pass.charAt(i) <= 'z')
+                        countLow++;
+                    else if (pass.charAt(i) >= 'A' && pass.charAt(i) <= 'Z')
+                        countUp++;
+                    else if (pass.charAt(i) >= '0' && pass.charAt(i) <= '9')
+                        countNum++;
+                    else
+                        countSpe++;
+                }
+                if (countLow >= 1 && countUp >= 1 && countNum >= 1 &&
+                        (pass.length() >= 8 && pass.length() <= 12) && countSpe >= 1)
+                    correct = true;
             }
-            if (countLow >= 1 && countUp >= 1 && countNum >= 1 &&
-                    (pass.length() >= 8 && pass.length() <= 12) && countSpe >= 1)
-                correct = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return correct;
     }

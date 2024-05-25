@@ -1,7 +1,5 @@
 package net.petcontrol.PetControlApi22;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,6 +27,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class LoginPetControl extends AppCompatActivity {
 
     ImageButton clean, closedEye, openEye;
@@ -42,7 +42,7 @@ public class LoginPetControl extends AppCompatActivity {
     boolean change = false, termsCheck;
      SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    RegisterPetControl rpc;
+    private RegisterPetControl rpc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,8 @@ public class LoginPetControl extends AppCompatActivity {
         logIn = findViewById(R.id.btnLogIn);
         signUp = findViewById(R.id.txtSignUp);
 
+        // Inicializar el objeto para validar las contraseñas
+        rpc = new RegisterPetControl();
 
         //-EVENTO EDITTEXT
         //--Email
@@ -165,14 +167,11 @@ public class LoginPetControl extends AppCompatActivity {
         savedEmail = sharedPreferences.getString("email", "");
         savedPassword = sharedPreferences.getString("password", "");
         // Verificar que los datos recuperados son correctos
-        //Toast.makeText(this, "Email recuperado: " + savedEmail, Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, "Password recuperado: " + savedPassword, Toast.LENGTH_SHORT).show();
         Log.d("Email recuperado", savedEmail);
         Log.d("Password recuperado", savedPassword);
 
         // Si las credenciales coinciden
         if (email.equals(savedEmail) && pass.equals(savedPassword)) {
-            //Toast.makeText(this, email + "···" + pass, Toast.LENGTH_LONG).show();
             Log.i("Credenciales", email + "···" + pass);
             Toast.makeText(this, "¡Acceso permitido!", Toast.LENGTH_LONG).show();
 
@@ -224,10 +223,10 @@ public class LoginPetControl extends AppCompatActivity {
                 passwordConfirm = confirmPassword.getText().toString();
 
                 if (TextUtils.isEmpty(passwordNew) || TextUtils.isEmpty(passwordConfirm))
-                    Toast.makeText(getApplicationContext(), "Por favor ingresa ambos campos",
+                    Toast.makeText(getApplicationContext(), "Algún campo se encuentra vacío.",
                             Toast.LENGTH_SHORT).show();
                 else if (!TextUtils.equals(passwordNew, passwordConfirm))
-                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden",
+                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden.",
                             Toast.LENGTH_SHORT).show();
                 else {
                     try {
@@ -235,10 +234,14 @@ public class LoginPetControl extends AppCompatActivity {
                             change = true;
                             Toast.makeText(getApplicationContext(), "Contraseña cambiada con " +
                                             "éxito", Toast.LENGTH_SHORT).show();
-                        }
+                        } else
+                            Toast.makeText(getApplicationContext(), "Las contraseñas no cumplen" +
+                                    " los requisitos.", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Las contraseñas no cumplen " +
-                                "los requisitos.", Toast.LENGTH_SHORT).show();
+                        Log.d("Fallo", Objects.requireNonNull(e.getMessage()));
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error al validar las " +
+                                        "contraseñas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -252,7 +255,6 @@ public class LoginPetControl extends AppCompatActivity {
                 }
             }
         });
-
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
