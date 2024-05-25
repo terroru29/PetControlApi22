@@ -4,11 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,31 +13,21 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.room.Room;
 
 import net.petcontrol.PetControlApi22.AddPetPetControl;
-import net.petcontrol.PetControlApi22.DataLoadListenerPetControl;
 import net.petcontrol.PetControlApi22.DatabaseHelperPetControl;
 import net.petcontrol.PetControlApi22.DatabaseManagerPetControl;
-import net.petcontrol.PetControlApi22.DatabasePetControl;
-import net.petcontrol.PetControlApi22.FormPetsPetControl;
-import net.petcontrol.PetControlApi22.PetsDAOPetControl;
-import net.petcontrol.PetControlApi22.PetsPetControl;
 import net.petcontrol.PetControlApi22.R;
 import net.petcontrol.PetControlApi22.databinding.FragmentPcBinding;
-
-import java.util.List;
 
 public class PCFragment extends Fragment {
         //implements DataLoadListenerPetControl {
     private FragmentPcBinding binding;
-    TextView dataUser;
+    TextView data;
     ImageButton add, del, edit, search;
     ImageView img;
     /*
@@ -117,7 +104,7 @@ public class PCFragment extends Fragment {
         PCViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Asociar recursos
-        dataUser = root.findViewById(R.id.txtDataUser);
+        data = root.findViewById(R.id.txtDataUser);
         img = root.findViewById(R.id.imageView);
         add = root.findViewById(R.id.añadir);
         del = root.findViewById(R.id.eliminar);
@@ -131,8 +118,6 @@ public class PCFragment extends Fragment {
             Intent i = new Intent(requireContext(), AddPetPetControl.class);
             startActivity(i);
         });
-        //TODO eliminar los demás usuarios para no petar la bd con esos datos indiferentes
-        //TODO hacer método aque cuente los usuarios que hay insertados y sus IDs para eliminarlos
         del.setOnClickListener(v -> {
             // Acción de eliminar datos de la base de datos
             //deleteDataFromDatabase();
@@ -163,6 +148,53 @@ public class PCFragment extends Fragment {
         edit.setOnClickListener(v -> {
             // Acción de modificar datos en la base de datos
             //editDataInDatabase();
+            // Buscar datos en la base de datos
+            try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())) {
+                dbManager.openRead();
+                try (Cursor cursor = dbManager.fetchAllPets()) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        // Datos a mostrar
+                        StringBuilder petData = new StringBuilder();
+                        do {
+                            @SuppressLint("Range") int petId = cursor.getInt(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_ID));
+                            @SuppressLint("Range") int petIdType = cursor.getInt(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE));
+                            @SuppressLint("Range") String petName = cursor.getString(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_NAME));
+                            @SuppressLint("Range") int petAge = cursor.getInt(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_AGE));
+                            @SuppressLint("Range") String petBreed = cursor.getString(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_BREED));
+                            @SuppressLint("Range") String petSex = cursor.getString(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_SEX));
+                            @SuppressLint("Range") byte[] petPicByteArray = cursor.getBlob(cursor.getColumnIndex
+                                    (DatabaseHelperPetControl.COLUMN_PETS_PIC));
+                            Bitmap petPic = dbManager.getBitmapFromByteArray(petPicByteArray);
+                            @SuppressLint("Range") int petSterilization = cursor.getInt(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION));
+                            @SuppressLint("Range") String petDescription = cursor.getString(cursor.
+                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION));
+
+                            // Agrega los datos de la mascota a la cadena de texto
+                            petData.append("ID: ").append(petId).append(", Tipo: ").append(petIdType)
+                                    .append(", Nombre: ").append(petName).append(", Edad: ")
+                                    .append(petAge).append(", Raza: ").append(petBreed)
+                                    .append(", Sexo: ").append(petSex).append(", Esterilización: ")
+                                    .append(petSterilization) .append(", Descripción: ")
+                                    .append(petDescription);
+                            img.setImageBitmap(petPic);
+                        } while (cursor.moveToNext());
+                        // Configura la cadena de datos en el TextView
+                        data.setText(petData.toString());
+                    } else
+                    // Si no hay datos en la tabla de mascotas, muestra un mensaje en el TextView
+                    data.setText("No se encontraron datos de mascotas.");
+
+                } catch (Exception e) {
+                    e.printStackTrace(); // Manejar la excepción apropiadamente
+                }
+            }
         });
         search.setOnClickListener(v -> {
             // Buscar datos en la base de datos
@@ -202,10 +234,10 @@ public class PCFragment extends Fragment {
                     } while (cursor.moveToNext());
                     //cursor.close();
                     // Configura la cadena de datos en el TextView
-                    dataUser.setText(userData.toString());
+                    data.setText(userData.toString());
                 } else
                     // Si no hay datos en la tabla de usuarios, muestra un mensaje en el TextView
-                    dataUser.setText("No se encontraron datos de usuarios.");
+                    data.setText("No se encontraron datos de usuarios.");
 
             } catch (Exception e) {
                 e.printStackTrace(); // Manejar la excepción apropiadamente

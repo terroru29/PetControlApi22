@@ -100,8 +100,8 @@ public class DatabaseManagerPetControl implements AutoCloseable {
      * @throws UnsupportedOperationException Si la mascota ya existe en la base de datos, se lanza
      *                                          esta excepción y la inserción no se produce.
      */
-    public void insertPets(int id_type, String name, int age, String breed, String sex_pet, Bitmap pic_pet,
-                           int sterilization, String description) {
+    public void insertPets(int id_type, String name, int age, String breed, String sex_pet,
+                           Bitmap pic_pet, int sterilization, String description) {
         // Verifica si el nombre de la mascota ya existe en la base de datos
         if (isValueExists(DatabaseHelperPetControl.TABLE_PETS,
                 DatabaseHelperPetControl.COLUMN_PETS_NAME, name)) {
@@ -136,6 +136,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
      * @throws UnsupportedOperationException Si existe algún propietario en la base de datos, se
      *                                          lanza esta excepción y la inserción no se produce.
      */
+    // TODO controlar que si no se insertan valores en los campos obligatorios, pueda seguir avanzando
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
         /*
@@ -231,7 +232,26 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         return typePets;
     }
     // Obtener todas las mascotas
-    public Cursor fetchAllPets(int id) {
+    public Cursor fetchAllPets() {
+        String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_PETS_ID,
+                DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE,
+                DatabaseHelperPetControl.COLUMN_PETS_NAME,
+                DatabaseHelperPetControl.COLUMN_PETS_AGE,
+                DatabaseHelperPetControl.COLUMN_PETS_BREED,
+                DatabaseHelperPetControl.COLUMN_PETS_SEX,
+                DatabaseHelperPetControl.COLUMN_PETS_PIC,
+                DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION,
+                DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION};
+
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_PETS, columns, null,
+                null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        return cursor;
+    }
+    // Obtener una mascota concreta
+    public Cursor fetchOnePet(int id) {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_PETS_ID,
                 DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE,
                 DatabaseHelperPetControl.COLUMN_PETS_NAME,
@@ -430,9 +450,9 @@ public class DatabaseManagerPetControl implements AutoCloseable {
 
 
     // --------------- MÉTODOS ---------------
-    // Recuperar y usar la imagen
+    // Recuperar y usar la imagen de un registro específico
     public Bitmap getPetImage(int id) {
-        Cursor cursor = fetchAllPets(id);
+        Cursor cursor = fetchOnePet(id);
 
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
@@ -443,7 +463,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         return null;
     }
     public Bitmap getUserImage(int id) {
-        Cursor cursor = fetchAllOwners();
+        Cursor cursor = fetchOneOwner(id);
 
         if (cursor != null && cursor.getCount() > 0) {
             byte[] blob = cursor.getBlob(cursor.getColumnIndexOrThrow
