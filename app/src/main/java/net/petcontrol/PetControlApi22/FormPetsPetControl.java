@@ -72,8 +72,14 @@ public class FormPetsPetControl extends AppCompatActivity {
 
         //--EVENTO IMAGEVIEW
         photo.setOnClickListener(v -> {
-            Intent gallery = new Intent(Intent.ACTION_PICK);
+            /*Intent gallery = new Intent(Intent.ACTION_PICK);
             gallery.setType("image/*");
+            startActivityForResult(gallery, PICK_IMAGE_REQUEST);*/
+            // Crear un Intent para abrir el explorador de archivos
+            Intent gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            // Establecer el tipo de archivo que se puede seleccionar (todos los tipos de archivos)
+            gallery.setType("image/*");
+            // Iniciar la actividad para seleccionar un archivo
             startActivityForResult(gallery, PICK_IMAGE_REQUEST);
         });
 
@@ -82,27 +88,32 @@ public class FormPetsPetControl extends AppCompatActivity {
         accept.setOnClickListener(v -> {
             // Se inicializa el objeto DatabaseManagerPetControl
             try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(this)) {
+                // Abrir en modo escritura la base de datos
+                dbManager.open();
+
                 // Enviar datos a la BD (database_petcontrol)
-                // Recoger los datos escritor por el usuario
+                // Recoger los datos escritos por el usuario
                 String petName = name.getText().toString();
                 int petAge = Integer.parseInt(age.getText().toString());
                 String petBreed = breed.getText().toString();
                 String petSex = male.isChecked() ? "Macho" : "Hembra";
                 Bitmap petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
-                //byte[] petPicByte = dbManager.getBitmapAsByteArray(petPicBitmap);
                 boolean isSterilization = sterilization.isChecked();
+                String petDescription = description.getText().toString();
+
                 int petSterilization;
                 if (isSterilization)
                     petSterilization = 1;
                 else
                     petSterilization = 0;
-                String petDescription = description.getText().toString();
 
-                // Abrir en modo escritura la base de datos
-                dbManager.open();
                 // Añadir al animal a la base de datos
                 dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
                         petSterilization, petDescription);
+                // Liberar la memoria asociada al objeto Bitmap
+                petPic.recycle();
+
+                Log.i("Success", "Se han insertado los datos correctamente.");
             } catch (SQLException e) {
                 // Manejar errores de la base de datos
                 Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
@@ -110,6 +121,13 @@ public class FormPetsPetControl extends AppCompatActivity {
                 // Manejar otros tipos de errores
                 Log.e("GeneralError", "Ocurrió un error", e);
             }
+            /*
+            } finally {
+                if (dbManager != null) {
+                    dbManager.close();
+                }
+            }
+             */
             // Retroceder la pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);
             startActivity(i);

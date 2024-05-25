@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Definir identificadores personalizados -->
+    <item name="pet_id" type="id"/>
+    <item name="pet_type" type="id"/>
+</resources>

@@ -166,17 +166,35 @@ public class AdapterPetsPetControl extends BaseAdapter {
             names.setVisibility(View.GONE);
         }
 
+        /*
         // Asociar el tipo de mascota con el ImageButton usando la lista typePets
         if (position < typePets.size()) {
             TypePetsPetControl typePet = typePets.get(position);
             pets.setTag(typePet.getId_type_pet());  // Asignar el ID como tag del ImageButton
-            //names.setText(typePet.getTypePet());   // Opcional: asignar el tipo como texto
-            Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
-                    "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
+            //names.setText(typePet.getType_pet());   // Opcional: asignar el tipo como texto
+            //Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
+                 //   "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
+            Log.i("ID-Type", "ID: " + typePet.getId_type_pet() + "\nType: " + typePet.getType_pet());
         }
+        */
+
+        // Obtener el ID y tipo de la mascota desde la base de datos
+        TypePetsPetControl typePet = typePets.get(position);
+        int petId = typePet.getId_type_pet();
+        String petType = typePet.getType_pet();
+
+        // Asociar el ID y tipo al ImageButton usando tags
+        pets.setTag(R.id.pet_id, petId);
+        pets.setTag(R.id.pet_type, petType);
+
 
         //-Evento de botón de cada animal
         pets.setOnClickListener(v -> {
+            // Obtener el ID y tipo del tag
+            int id = (int) v.getTag(R.id.pet_id);
+            String type = (String) v.getTag(R.id.pet_type);
+            Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);
+
             // Rotación horizontal (tridimensional)
             ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
                     "rotationY", 0f, 100f).setDuration(1000);
@@ -216,10 +234,9 @@ public class AdapterPetsPetControl extends BaseAdapter {
                 isImageChanged[position] = !isImageChanged[position];
             }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
 
-            // Dirá el nombre de cada animal según su posición del elemento pulsado
-            Toast.makeText(context.getApplicationContext(), "Elemento de la posición " +
-                    position + " que corresponde al animal " + namesPets[position], Toast.LENGTH_SHORT)
-                    .show();
+            // Mostrará el nombre de cada animal según su posición del elemento pulsado
+            Log.d("Position", "Elemento de la posición " + position + " que corresponde al " +
+                            "animal " + namesPets[position]);
             if (textInVoice != null) {
                 // Decir el nombre del animal con voz
                 textInVoice.speak("Se ha seleccionado " + namesPets[position],
@@ -227,11 +244,13 @@ public class AdapterPetsPetControl extends BaseAdapter {
             }
         });
 
+
         // Capturar el ID y el tipo de animal seleccionado
         int typeID = (int) pets.getTag();
         String typeName = typePets.get(position).getType_pet();
+        Log.i("ID-Type", "ID: " + typePet.getId_type_pet() + "\nType: " + typePet.getType_pet());
 
-        /*
+/*
         for (int i = 0; i < typePets.size(); i++) {
             TypePetsPetControl typePet = typePets.get(i);
             Log.d("Lista typePets", "Elemento " + i + ": ID: " + typePet.getId_type_pet()
@@ -270,6 +289,28 @@ public class AdapterPetsPetControl extends BaseAdapter {
             // Apaga el servicio de texto a voz liberando cualquier recurso asociado y evitando las
             // fugas de memoria
             textInVoice.shutdown();
+        }
+    }
+    public void verifyData() {
+        for (int i = 0; i < getCount(); i++) {
+            TypePetsPetControl typePet = typePets.get(i);
+            int expectedId = typePet.getId_type_pet();
+            String expectedType = typePet.getType_pet();
+
+            View view = getView(i, null, null);
+            ImageButton pets = view.findViewById(R.id.imbPets);
+
+            int actualId = (int) pets.getTag(R.id.pet_id);
+            String actualType = (String) pets.getTag(R.id.pet_type);
+
+            if (expectedId != actualId || !expectedType.equals(actualType)) {
+                Log.e("Verification Error", "Error en la posición " + i + ": se esperaba " +
+                        "ID " + expectedId + " y tipo " + expectedType + ", pero se obtuvo ID " +
+                        actualId + " y tipo " + actualType);
+            } else {
+                Log.i("Verification Success", "Correcto en la posición " + i + ": ID " +
+                        actualId + " y tipo " + actualType);
+            }
         }
     }
 }

@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -30,6 +33,7 @@ public class PCFragment extends Fragment {
     TextView data;
     ImageButton add, del, edit, search;
     ImageView img;
+    LinearLayout contain;
     /*
     private DatabasePetControl dbPetControl;
     private PetsDAOPetControl petsDAO;
@@ -93,8 +97,11 @@ public class PCFragment extends Fragment {
     }
     */
 
+    @Nullable
+    @Override
+    @SuppressLint("SuspiciousIndentation")
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             @Nullable ViewGroup container, Bundle savedInstanceState) {
         PCViewModel PCViewModel = new ViewModelProvider(this).get(PCViewModel.class);
 
         binding = FragmentPcBinding.inflate(inflater, container, false);
@@ -110,6 +117,7 @@ public class PCFragment extends Fragment {
         del = root.findViewById(R.id.eliminar);
         edit = root.findViewById(R.id.modificar);
         search = root.findViewById(R.id.consultar);
+        contain = root.findViewById(R.id.imageContainer);
 
         // Asociar listener de clic a cada botón
         add.setOnClickListener(v -> {
@@ -145,6 +153,7 @@ public class PCFragment extends Fragment {
                 Log.e("GeneralError", "Ocurrió un error", e);
             }
         });
+        //ViewGroup finalContainer = container;
         edit.setOnClickListener(v -> {
             // Acción de modificar datos en la base de datos
             //editDataInDatabase();
@@ -155,45 +164,66 @@ public class PCFragment extends Fragment {
                     if (cursor != null && cursor.moveToFirst()) {
                         // Datos a mostrar
                         StringBuilder petData = new StringBuilder();
-                        do {
-                            @SuppressLint("Range") int petId = cursor.getInt(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_ID));
-                            @SuppressLint("Range") int petIdType = cursor.getInt(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE));
-                            @SuppressLint("Range") String petName = cursor.getString(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_NAME));
-                            @SuppressLint("Range") int petAge = cursor.getInt(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_AGE));
-                            @SuppressLint("Range") String petBreed = cursor.getString(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_BREED));
-                            @SuppressLint("Range") String petSex = cursor.getString(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_SEX));
-                            @SuppressLint("Range") byte[] petPicByteArray = cursor.getBlob(cursor.getColumnIndex
-                                    (DatabaseHelperPetControl.COLUMN_PETS_PIC));
-                            Bitmap petPic = dbManager.getBitmapFromByteArray(petPicByteArray);
-                            @SuppressLint("Range") int petSterilization = cursor.getInt(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION));
-                            @SuppressLint("Range") String petDescription = cursor.getString(cursor.
-                                    getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION));
 
-                            // Agrega los datos de la mascota a la cadena de texto
+                        int idIndex = cursor.getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_ID);
+                        int idTypeIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_ID_TYPE);
+                        int nameIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_NAME);
+                        int ageIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_AGE);
+                        int breedIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_BREED);
+                        int sexIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_SEX);
+                        int picIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_PIC);
+                        int sterilizationIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_STERILIZATION);
+                        int descriptionIndex = cursor.getColumnIndex(DatabaseHelperPetControl
+                                .COLUMN_PETS_DESCRIPTION);
+
+                        contain.removeAllViews(); // Limpiar el contenedor de imágenes
+
+                        do {
+                            int petId = cursor.getInt(idIndex);
+                            int petIdType = cursor.getInt(idTypeIndex);
+                            String petName = cursor.getString(nameIndex);
+                            int petAge = cursor.getInt(ageIndex);
+                            String petBreed = cursor.getString(breedIndex);
+                            String petSex = cursor.getString(sexIndex);
+                            byte[] petPicByteArray = cursor.getBlob(picIndex);
+                            Bitmap petPic = dbManager.getBitmapFromByteArray(petPicByteArray);
+                            int petSterilization = cursor.getInt(sterilizationIndex);
+                            String petDescription = cursor.getString(descriptionIndex);
+
+                            // Agregar los datos de la mascota a la cadena de texto
                             petData.append("ID: ").append(petId).append(", Tipo: ").append(petIdType)
-                                    .append(", Nombre: ").append(petName).append(", Edad: ")
-                                    .append(petAge).append(", Raza: ").append(petBreed)
-                                    .append(", Sexo: ").append(petSex).append(", Esterilización: ")
-                                    .append(petSterilization) .append(", Descripción: ")
-                                    .append(petDescription);
-                            img.setImageBitmap(petPic);
+                                    .append(", Nombre: ").append(petName).append(", Edad: ").append(petAge)
+                                    .append(", Raza: ").append(petBreed).append(", Sexo: ").append(petSex)
+                                    .append(", Esterilización: ").append(petSterilization)
+                                    .append(", Descripción: ").append(petDescription).append("\n");
+                            //img.setImageBitmap(petPic);
+                            // Añadir la imagen a un ImageView dinámicamente
+                            ImageView petImageView = new ImageView(requireContext());
+                            petImageView.setImageBitmap(petPic);
+                            // Añadir el ImageView a un layout existente (por ejemplo, un LinearLayout)
+                            contain.addView(petImageView);
                         } while (cursor.moveToNext());
                         // Configura la cadena de datos en el TextView
                         data.setText(petData.toString());
                     } else
-                    // Si no hay datos en la tabla de mascotas, muestra un mensaje en el TextView
-                    data.setText("No se encontraron datos de mascotas.");
-
+                        // Si no hay datos en la tabla de mascotas, muestra un mensaje en el TextView
+                        data.setText("No se encontraron datos de mascotas.");
                 } catch (Exception e) {
                     e.printStackTrace(); // Manejar la excepción apropiadamente
                 }
+            } catch (SQLException e) {
+                // Manejar errores de la base de datos
+                Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
+            } catch (Exception e) {
+                // Manejar otros tipos de errores
+                Log.e("GeneralError", "Ocurrió un error", e);
             }
         });
         search.setOnClickListener(v -> {
@@ -244,7 +274,6 @@ public class PCFragment extends Fragment {
             }
             dbManager.close();
         });
-
         return root;
     }
     @Override

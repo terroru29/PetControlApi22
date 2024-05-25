@@ -34,6 +34,8 @@ public class AddPetPetControl extends AppCompatActivity {
         AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets);
         // Enlazamos el GridView con el adaptador personalizado
         pets.setAdapter(adapterPets);
+        // Verificar que los ID y tipos corresponden con los seleccionados
+        adapterPets.verifyData();
 
 
         //-Evento de botón

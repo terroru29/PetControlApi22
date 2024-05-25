@@ -42,6 +42,7 @@ public class LoginPetControl extends AppCompatActivity {
     boolean change = false, termsCheck;
      SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    RegisterPetControl rpc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,15 +165,15 @@ public class LoginPetControl extends AppCompatActivity {
         savedEmail = sharedPreferences.getString("email", "");
         savedPassword = sharedPreferences.getString("password", "");
         // Verificar que los datos recuperados son correctos
-        Toast.makeText(this, "Email recuperado: " + savedEmail, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Password recuperado: " + savedPassword, Toast.LENGTH_SHORT).show();
-
-        Log.d(TAG, savedEmail);
-        Log.d(TAG, savedPassword);
+        //Toast.makeText(this, "Email recuperado: " + savedEmail, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Password recuperado: " + savedPassword, Toast.LENGTH_SHORT).show();
+        Log.d("Email recuperado", savedEmail);
+        Log.d("Password recuperado", savedPassword);
 
         // Si las credenciales coinciden
         if (email.equals(savedEmail) && pass.equals(savedPassword)) {
-            Toast.makeText(this, email + "···" + pass, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, email + "···" + pass, Toast.LENGTH_LONG).show();
+            Log.i("Credenciales", email + "···" + pass);
             Toast.makeText(this, "¡Acceso permitido!", Toast.LENGTH_LONG).show();
 
             if (termsCheck) {
@@ -200,7 +201,7 @@ public class LoginPetControl extends AppCompatActivity {
     /**
      * Aparece cuadro de diálogo para cambiar la contraseña.
      *
-     * @param v
+     * @param v Vista a recibir
      */
     public void forgotPassword(View v) {
         forgotPassword = (TextView) v;
@@ -229,17 +230,20 @@ public class LoginPetControl extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden",
                             Toast.LENGTH_SHORT).show();
                 else {
-                    Toast.makeText(getApplicationContext(), "Contraseña cambiada con éxito",
-                            Toast.LENGTH_SHORT).show();
-                    change = true;
+                    try {
+                        if (rpc.passValidation(passwordNew) && rpc.passValidation(passwordConfirm)) {
+                            change = true;
+                            Toast.makeText(getApplicationContext(), "Contraseña cambiada con " +
+                                            "éxito", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Las contraseñas no cumplen " +
+                                "los requisitos.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 // Si la contraseña fue cambiada y se confirmó
                 if (change) {
-                    //opc.setPassword(passwordConfirm);
-                    /*Toast.makeText(getApplicationContext(), "Change: " + opc.toString(),
-                            Toast.LENGTH_SHORT).show();*/
-
                     sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
                     editor = sharedPreferences.edit();
                     editor.putString("password", passwordConfirm);
