@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -30,13 +29,12 @@ import android.widget.Toast;
 import java.util.Objects;
 
 public class LoginPetControl extends AppCompatActivity {
-
     ImageButton clean, closedEye, openEye;
     Button logIn;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch termsAndConditions;
     TextView forgotPassword, terms, signUp;
-    EditText emailUser, passUser, newPassword, confirmPassword;
+    EditText emailUser, passUser;
     String email, savedEmail, pass, savedPassword, passwordNew, passwordConfirm, conditions,
             credentials, acceptTerms;
     boolean change = false, termsCheck;
@@ -44,6 +42,12 @@ public class LoginPetControl extends AppCompatActivity {
     SharedPreferences.Editor editor;
     private RegisterPetControl rpc;
 
+    // CUADRO DE DIÁLOGO
+    EditText newPassword, confirmPassword;
+    ImageButton close, closed, open, opened;
+
+
+    @SuppressLint({"MissingInflatedId", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,13 +211,28 @@ public class LoginPetControl extends AppCompatActivity {
         View design = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
         builder.setView(design);
 
+        // Asociar variables con los recursos del diseño inflado
+        newPassword = design.findViewById(R.id.etNewPassword);
+        confirmPassword = design.findViewById(R.id.etConfirmPassword);
+        close = design.findViewById(R.id.imgbClosedEyeNew);
+        open = design.findViewById(R.id.imgbOpenEyeNew);
+        closed = design.findViewById(R.id.imgbClosedEye);
+        opened = design.findViewById(R.id.imgbOpenEye);
+
+        // Configurar evento para mostrar/ocultar contraseña
+        close.setOnClickListener(v1 -> togglePasswordVisibility(design, R.id.etNewPassword,
+                R.id.imgbClosedEyeNew, R.id.imgbOpenEyeNew));
+        open.setOnClickListener(v1 -> togglePasswordVisibility(design, R.id.etNewPassword,
+                R.id.imgbClosedEyeNew, R.id.imgbOpenEyeNew));
+        closed.setOnClickListener(v1 -> togglePasswordVisibility(design, R.id.etConfirmPassword,
+                R.id.imgbClosedEye, R.id.imgbOpenEye));
+        opened.setOnClickListener(v1 -> togglePasswordVisibility(design, R.id.etConfirmPassword,
+                R.id.imgbClosedEye, R.id.imgbOpenEye));
+
 
         //--Configuración de los botones
         //-Aceptar
         builder.setPositiveButton("Aceptar", (dialog, which) -> {
-            newPassword = design.findViewById(R.id.etNewPassword);
-            confirmPassword = design.findViewById(R.id.etConfirmPassword);
-
             passwordNew = newPassword.getText().toString();
             passwordConfirm = confirmPassword.getText().toString();
 
@@ -267,5 +286,34 @@ public class LoginPetControl extends AppCompatActivity {
             );
         });
         dialog.show();
+    }
+    private void togglePasswordVisibility(View rootView, int editTextId, int closedEyeId, int openEyeId) {
+        EditText passwordEditText = rootView.findViewById(editTextId);
+        ImageButton closedEyeButton = rootView.findViewById(closedEyeId);
+        ImageButton openEyeButton = rootView.findViewById(openEyeId);
+
+        // Verificar que las vistas no son null
+        if (passwordEditText == null) {
+            Log.e("TogglePassword", "EditText con ID " + editTextId + " no se encontró.");
+            return;
+        }
+        if (closedEyeButton == null) {
+            Log.e("TogglePassword", "ImageButton con ID " + closedEyeId + " no se encontró.");
+            return;
+        }
+        if (openEyeButton == null) {
+            Log.e("TogglePassword", "ImageButton con ID " + openEyeId + " no se encontró.");
+            return;
+        }
+
+        if (passwordEditText.getTransformationMethod() instanceof PasswordTransformationMethod) {
+            passwordEditText.setTransformationMethod(null);
+            closedEyeButton.setVisibility(View.GONE);
+            openEyeButton.setVisibility(View.VISIBLE);
+        } else {
+            passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            closedEyeButton.setVisibility(View.VISIBLE);
+            openEyeButton.setVisibility(View.GONE);
+        }
     }
 }
