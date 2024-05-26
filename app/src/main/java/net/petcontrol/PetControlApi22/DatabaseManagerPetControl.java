@@ -430,10 +430,18 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         database.delete(DatabaseHelperPetControl.TABLE_PETS,
                 DatabaseHelperPetControl.COLUMN_PETS_ID + " = " + id, null);
     }
+    // Eliminar todas las mascotas
+    public void deleteAllPets() {
+        database.delete(DatabaseHelperPetControl.TABLE_PETS, null, null);
+    }
     // Eliminar propietario
     public void deleteOwner(int id) {
         database.delete(DatabaseHelperPetControl.TABLE_OWNERS,
                 DatabaseHelperPetControl.COLUMN_OWNERS_ID + " = " + id, null);
+    }
+    // Eliminar todos los propietarios
+    public void deleteAllOwners() {
+        database.delete(DatabaseHelperPetControl.TABLE_OWNERS, null, null);
     }
     // Eliminar visita veterinaria  TODO revisar PK
     public void deleteVisitVet(int id, int id_pet, LocalDateTime date) {

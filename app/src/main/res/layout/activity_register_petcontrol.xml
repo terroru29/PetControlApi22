@@ -169,7 +169,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints="emailAddress"
-        android:ems="9"
+        android:ems="11"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"

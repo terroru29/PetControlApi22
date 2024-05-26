@@ -127,8 +127,6 @@ public class PCFragment extends Fragment {
             startActivity(i);
         });
         del.setOnClickListener(v -> {
-            // Acción de eliminar datos de la base de datos
-            //deleteDataFromDatabase();
             try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())){
                 // Intentar abrir la base de datos
                 dbManager.open();
@@ -139,11 +137,15 @@ public class PCFragment extends Fragment {
 
                 // Eliminar todos los propietarios
                 // dbManager.deleteAllOwners();
-                Log.d("DeleteAllOwners", "DeleteAllOwners");
-
+                //Log.d("DeleteAllOwners", "DeleteAllOwners");
                 // Eliminar un propietario específico
-                // dbManager.deleteOwner(3);
-                Log.d("DeleteOwner", "DeleteOwner");
+                //dbManager.deleteOwner(9);
+                //Log.d("DeleteOwner", "DeleteOwner");
+
+                // Eliminar todas las mascotas
+                //dbManager.deleteAllPets();
+                //Log.d("DeleteAllPets", "DeleteAllPets");
+
 
             } catch (SQLException e) {
                 // Manejar errores de la base de datos
@@ -153,10 +155,8 @@ public class PCFragment extends Fragment {
                 Log.e("GeneralError", "Ocurrió un error", e);
             }
         });
-        //ViewGroup finalContainer = container;
         edit.setOnClickListener(v -> {
             // Acción de modificar datos en la base de datos
-            //editDataInDatabase();
             // Buscar datos en la base de datos
             try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())) {
                 dbManager.openRead();

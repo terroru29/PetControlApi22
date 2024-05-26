@@ -19,7 +19,9 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AdapterPetsPetControl extends BaseAdapter {
     private TextToSpeech textInVoice;
@@ -30,6 +32,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
     private Handler mainHandler;
     DatabaseManagerPetControl dbPetControl;
     private List<TypePetsPetControl> typePets;  // Lista para almacenar los tipos de mascotas
+    private volatile AtomicInteger id = new AtomicInteger();
 
 
     /**
@@ -114,14 +117,11 @@ public class AdapterPetsPetControl extends BaseAdapter {
      * @param position The position of the item within the adapter's data set whose row id we want.
      * @return The id of the item at the specified position.
      */
-    /*
     @Override
     public long getItemId(int position) {
         return position;
     }
-    */
-    @Override
-    public long getItemId(int position) {
+    public long getItemPositionId(int position) {
         return typePets.get(position).getId_type_pet();
     }
     /**
@@ -181,100 +181,109 @@ public class AdapterPetsPetControl extends BaseAdapter {
             names.setVisibility(View.GONE);
         }
 
-        /*
-        // Asociar el tipo de mascota con el ImageButton usando la lista typePets
-        if (position < typePets.size()) {
-            TypePetsPetControl typePet = typePets.get(position);
-            pets.setTag(typePet.getId_type_pet());  // Asignar el ID como tag del ImageButton
-            //names.setText(typePet.getType_pet());   // Opcional: asignar el tipo como texto
-            //Toast.makeText(context.getApplicationContext(), "ID: " + typePet.getId_type_pet() +
-                 //   "\nType: " + typePet.getType_pet(), Toast.LENGTH_SHORT).show();
-            Log.i("ID-Type", "ID: " + typePet.getId_type_pet() + "\nType: " + typePet.getType_pet());
-        }
-        */
-
 
         // Obtener el ID y tipo de la mascota desde la base de datos
         TypePetsPetControl typePet = typePets.get(position);
-
         int petId = typePet.getId_type_pet();
-        String petType = typePet.getType_pet();
+        //String petType = typePet.getType_pet();
 
         // Asociar el ID y tipo al ImageButton usando tags
         pets.setTag(R.id.pet_id, petId);
-        pets.setTag(R.id.pet_type, petType);
+        //pets.setTag(R.id.pet_type, petType);
+        Log.i("Before Click", "ID: " + petId);
 
+        // Asegura la visibilidad y la actualización segura del valor entre los hilos
         //AtomicInteger id = new AtomicInteger();
+        // Asegura que la actualización del valor del AtomicInteger se complete antes de proceder
+        // con la navegación a la siguiente pantalla
+        // Se decrementará cuando el OnClickListener termine de ejecutar y actualizar el valor de id
+        //CountDownLatch latch = new CountDownLatch(1);
+
+        //AtomicReference<String> type = new AtomicReference<>();
         //-Evento de botón de cada animal
         pets.setOnClickListener(v -> {
-            // Obtener el ID y tipo del tag
-            /*int id = (int) v.getTag(R.id.pet_id);
-            String type = (String) v.getTag(R.id.pet_type);
-            Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);*/
-            /*
-            id.set((int) v.getTag());
-            Log.d("ID de la mascota", "ID: " + id + "\nType: " + typePet.getType_pet());
-             */
+            // Todas las operaciones se realizan en el hilo main, evitando problemas de concurrencia
+            mainHandler.post(() -> {
+                /*
+                // Obtener el ID y tipo del tag
+                id.set((int) v.getTag(R.id.pet_id));
+                type.set((String) v.getTag(R.id.pet_type));
+                Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);
+                */
+                // Obtener el ID y tipo del tag
+                int pet_id = (int) v.getTag(R.id.pet_id);
+                //String pet_type = (String) v.getTag(R.id.pet_type);
+                // Establecer los valores en los AtomicReferences
+                id.set(pet_id);
+                //type.set(pet_type);
+                //Log.i("ID-Type TAG", "ID: " + id.get() + "\nType: " + type.get());
+                Log.i("OnClick", "ID: " + id.get());
+                Log.i("OnClickListener", "ID: " + pet_id);
+                Log.i("AtomicReferences", "Atomic ID: " + id.get());
 
-            // Rotación horizontal (tridimensional)
-            ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
-                    "rotationY", 0f, 100f).setDuration(1000);
-            ObjectAnimator rotationNames = ObjectAnimator.ofFloat(names,
-                    "rotationY", 0f, 100f).setDuration(1000);
-            // Iniciar la animación
-            rotationAnimator.start();
-            rotationNames.start();
+                // Rotación horizontal (tridimensional)
+                ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
+                        "rotationY", 0f, 100f).setDuration(1000);
+                ObjectAnimator rotationNames = ObjectAnimator.ofFloat(names,
+                        "rotationY", 0f, 100f).setDuration(1000);
+                // Iniciar la animación
+                rotationAnimator.start();
+                rotationNames.start();
 
-            pets.postDelayed(() -> {
-                if (isImageChanged[position]) {
-                    // Principal
-                    pets.setBackgroundResource(R.drawable.circle_button);
-                    // Vuelve a la imagen original
-                    pets.setImageResource(images[position]);
-                    // Ocultamos el texto
-                    names.setVisibility(View.GONE);
-                } else {
-                    // Alternativa
-                    pets.setBackgroundResource(R.drawable.button_names_pets);
-                    // Muestra el texto
-                    names.setVisibility(View.VISIBLE);
-                    names.setText(namesPets[position]);
-                    // Ocultamos la imagen
-                    pets.setImageResource(0);
+                pets.postDelayed(() -> {
+                    if (isImageChanged[position]) {
+                        // Principal
+                        pets.setBackgroundResource(R.drawable.circle_button);
+                        // Vuelve a la imagen original
+                        pets.setImageResource(images[position]);
+                        // Ocultamos el texto
+                        names.setVisibility(View.GONE);
+                    } else {
+                        // Alternativa
+                        pets.setBackgroundResource(R.drawable.button_names_pets);
+                        // Muestra el texto
+                        names.setVisibility(View.VISIBLE);
+                        names.setText(namesPets[position]);
+                        // Ocultamos la imagen
+                        pets.setImageResource(0);
+                    }
+
+                    // Seguir el giro hasta colocar la imagen normal
+                    ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
+                            "rotationY", 100f, 360f).setDuration(1500);
+                    ObjectAnimator rotationNames1 = ObjectAnimator.ofFloat(names,
+                            "rotationY", 100f, 360f).setDuration(1500);
+                    rotationAnimator1.start();
+                    rotationNames1.start();
+
+                    // Cambiar el estado en cada click
+                    isImageChanged[position] = !isImageChanged[position];
+                }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
+
+                // Mostrará el nombre de cada animal según su posición del elemento pulsado
+                Log.d("Position", "Elemento de la posición " + position + " que corresponde al " +
+                                "animal " + namesPets[position]);
+                if (textInVoice != null) {
+                    // Decir el nombre del animal con voz
+                    textInVoice.speak("Se ha seleccionado " + namesPets[position],
+                            TextToSpeech.QUEUE_FLUSH, null, Integer.toString(position));
                 }
-
-                // Seguir el giro hasta colocar la imagen normal
-                ObjectAnimator rotationAnimator1 = ObjectAnimator.ofFloat(pets,
-                        "rotationY", 100f, 360f).setDuration(1500);
-                ObjectAnimator rotationNames1 = ObjectAnimator.ofFloat(names,
-                        "rotationY", 100f, 360f).setDuration(1500);
-                rotationAnimator1.start();
-                rotationNames1.start();
-
-                // Cambiar el estado en cada click
-                isImageChanged[position] = !isImageChanged[position];
-            }, 1100); // Tiempo de retraso que espera que el giro complete antes de cambiar la imagen
-
-            // Mostrará el nombre de cada animal según su posición del elemento pulsado
-            Log.d("Position", "Elemento de la posición " + position + " que corresponde al " +
-                            "animal " + namesPets[position]);
-            if (textInVoice != null) {
-                // Decir el nombre del animal con voz
-                textInVoice.speak("Se ha seleccionado " + namesPets[position],
-                        TextToSpeech.QUEUE_FLUSH, null, Integer.toString(position));
-            }
+                // Contamos de manera descendietne el latch para indicar que la variable se ha actualizado
+                //latch.countDown();
+            });
         });
 
 
-
+        /*
         // Capturar el ID y el tipo de animal seleccionado
         //int typeID = (int) pets.getTag(R.id.pet_id);
         int typeID = (int) typePets.get(position).getId_type_pet();
         String typeName = typePets.get(position).getType_pet();
         Log.i("ID-Type", "ID: " + typeID + "\nType: " + typeName);
+         */
 
+        //Log.i("ID y tipo BD", "ID: " + petId + "\nType: " + petType);
 
-        Log.i("ID y tipo BD", "ID: " + petId + "\nType: " + petType);
 
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -282,12 +291,32 @@ public class AdapterPetsPetControl extends BaseAdapter {
             public void onStart(String utteranceId) {}
             @Override
             public void onDone(String utteranceId) {
+                Log.i("onDone", "Entrando a onDone");
+                /*
+                // Esperamos a que el latch cuente hasta cero
+                try {
+                    latch.await();
+                    Log.d("Latch", String.valueOf(latch));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Log.d("Error en latch", "Se ha producido un error en la cuenta atrás de latch.");
+                }
+                 */
+
                 mainHandler.postDelayed(() -> {
+                    int idPet = id.get();
+
+                    // Log para verificar los valores obtenidos
+                    Log.i("UtteranceProgressListener", "Retrieved ID: " + idPet);
+
                     // Pasar la información a la siguiente pantalla
                     Intent intent = new Intent(context, FormPetsPetControl.class);
 
-                    intent.putExtra("typeID", typeID);
-                    intent.putExtra("typeName", typeName);
+                    Log.i("Before Intent", "ID: " + idPet);
+                    // Extraemos los valores
+                    intent.putExtra("typeID", idPet);
+                    Log.d("PutExtra", String.valueOf(idPet));
+                    //intent.putExtra("typeName", type.get());
                     context.startActivity(intent);
                 }, 1000);
             }
