@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingConstraints"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schemas.android.com/apk/res/android
+                        http://schemas.android.com/tools ">
+    <method android:name="showPassword">
+        <parameter android:name="view" android:type="android.view.View" />
+        <void android:name="showPassword">
+            <!-- Evento del ImageButton del ojo abierto para la nueva contraseña -->
+            <invoke android:methodName="setOnClickListener">
+                <argument android:type="android.view.View" android:value="@id/imgbOpenEyeNew" />
+                <callback android:type="java.lang.Object">
+                    <method android:methodName="onClick" android:parameters="android.view.View" />
+                    <arg android:eval="v" />
+                </callback>
+            </invoke>
+            <!-- Evento del ImageButton del ojo cerrado para la nueva contraseña -->
+            <invoke android:methodName="setOnClickListener">
+                <argument android:type="android.view.View" android:value="@id/imgbClosedEyeNew" />
+                <callback android:type="java.lang.Object">
+                    <method android:methodName="onClick" android:parameters="android.view.View" />
+                    <arg android:eval="v" />
+                </callback>
+            </invoke>
+            <!-- Evento del ImageButton del ojo abierto para confirmar contraseña -->
+            <invoke android:methodName="setOnClickListener">
+                <argument android:type="android.view.View" android:value="@id/imgbOpenEye" />
+                <callback android:type="java.lang.Object">
+                    <method android:methodName="onClick" android:parameters="android.view.View" />
+                    <arg android:eval="v" />
+                </callback>
+            </invoke>
+            <!-- Evento del ImageButton del ojo cerrado para confirmar contraseña -->
+            <invoke android:methodName="setOnClickListener">
+                <argument android:type="android.view.View" android:value="@id/imgbClosedEye" />
+                <callback android:type="java.lang.Object">
+                    <method android:methodName="onClick" android:parameters="android.view.View" />
+                    <arg android:eval="v" />
+                </callback>
+            </invoke>
+            <!-- LÓGICA -->
+            <method android:name="onClick">
+                <parameter android:name="v" android:type="android.view.View" />
+                <!-- Lógica para mostrar u ocultar la contraseña en contraseña nueva -->
+                <if>
+                    <condition>
+                        <not>
+                            <reference android:to="@id/imgbOpenEyeNew" />
+                            <method android:methodName="isShown" />
+                        </not>
+                    </condition>
+                    <then>
+                        <!-- Lógica para mostrar contraseña -->
+                        <invoke android:target="@id/imgbClosedEyeNew"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.GONE" />
+                        </invoke>
+                        <invoke android:target="@id/imgbOpenEyeNew"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.VISIBLE" />
+                        </invoke>
+                        <invoke android:target="@id/etNewPassword"
+                            android:methodName="setTransformationMethod">
+                            <argument android:type="java.lang.Object" android:value="null" />
+                        </invoke>
+                    </then>
+                    <else>
+                        <!-- Lógica para ocultar contraseña -->
+                        <invoke android:target="@id/imgbOpenEyeNew"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.GONE" />
+                        </invoke>
+                        <invoke android:target="@id/imgbClosedEyeNew"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.VISIBLE" />
+                        </invoke>
+                        <invoke android:target="@id/etNewPassword"
+                            android:methodName="setTransformationMethod">
+                            <argument android:type="java.lang.Object"
+                                android:value="new android.text.method.PasswordTransformationMethod()" />
+                        </invoke>
+                    </else>
+                </if>
+                <!-- Lógica para mostrar u ocultar la contraseña en confirmar contraseña -->
+                <if>
+                    <condition>
+                        <not>
+                            <reference android:to="@id/imgbOpenEye" />
+                            <method android:methodName="isShown" />
+                        </not>
+                    </condition>
+                    <then>
+                        <!-- Lógica para mostrar contraseña -->
+                        <invoke android:target="@id/imgbClosedEye"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.GONE" />
+                        </invoke>
+                        <invoke android:target="@id/imgbOpenEye"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.VISIBLE" />
+                        </invoke>
+                        <invoke android:target="@id/etConfirmPassword"
+                            android:methodName="setTransformationMethod">
+                            <argument android:type="java.lang.Object" android:value="null" />
+                        </invoke>
+                    </then>
+                    <else>
+                        <!-- Lógica para ocultar contraseña -->
+                        <invoke android:target="@id/imgbOpenEye"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.GONE" />
+                        </invoke>
+                        <invoke android:target="@id/imgbClosedEye"
+                            android:methodName="setVisibility">
+                            <argument android:type="int" android:value="android.view.View.VISIBLE" />
+                        </invoke>
+                        <invoke android:target="@id/etConfirmPassword"
+                            android:methodName="setTransformationMethod">
+                            <argument android:type="java.lang.Object"
+                                android:value="new android.text.method.PasswordTransformationMethod()" />
+                        </invoke>
+                    </else>
+                </if>
+            </method>
+        </void>
+    </method>
+</resources>

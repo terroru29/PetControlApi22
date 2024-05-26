@@ -64,6 +64,7 @@ public class LoginPetControl extends AppCompatActivity {
         // Inicializar el objeto para validar las contraseñas
         rpc = new RegisterPetControl();
 
+
         //-EVENTO EDITTEXT
         //--Email
         emailUser.addTextChangedListener(new TextWatcher() {
@@ -94,6 +95,7 @@ public class LoginPetControl extends AppCompatActivity {
             }
         });
 
+
         // ----- CAMBIAR COLOR DEL TEXTO DEL SWITCH -----
         // Obtener String del Switch
         conditions = getResources().getString(R.string.terms);
@@ -122,6 +124,7 @@ public class LoginPetControl extends AppCompatActivity {
         // Subrayar Olvidar contraseña
         forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         forgotPassword.setText(R.string.forgot_password);
+
 
         //-EVENTO BOTÓN
         //--Iniciar sesión
@@ -204,71 +207,64 @@ public class LoginPetControl extends AppCompatActivity {
         View design = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
         builder.setView(design);
 
-        // Configuración de los botones
+
+        //--Configuración de los botones
         //-Aceptar
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                newPassword = design.findViewById(R.id.etNewPassword);
-                confirmPassword = design.findViewById(R.id.etConfirmPassword);
+        builder.setPositiveButton("Aceptar", (dialog, which) -> {
+            newPassword = design.findViewById(R.id.etNewPassword);
+            confirmPassword = design.findViewById(R.id.etConfirmPassword);
 
-                passwordNew = newPassword.getText().toString();
-                passwordConfirm = confirmPassword.getText().toString();
+            passwordNew = newPassword.getText().toString();
+            passwordConfirm = confirmPassword.getText().toString();
 
-                if (TextUtils.isEmpty(passwordNew) || TextUtils.isEmpty(passwordConfirm))
-                    Toast.makeText(getApplicationContext(), "Algún campo se encuentra vacío.",
-                            Toast.LENGTH_SHORT).show();
-                else if (!TextUtils.equals(passwordNew, passwordConfirm))
-                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden.",
-                            Toast.LENGTH_SHORT).show();
-                else {
-                    try {
-                        if (rpc.passValidation(passwordNew) && rpc.passValidation(passwordConfirm)) {
-                            change = true;
-                            Toast.makeText(getApplicationContext(), "Contraseña cambiada con " +
-                                            "éxito", Toast.LENGTH_SHORT).show();
-                        } else
-                            Toast.makeText(getApplicationContext(), "Las contraseñas no cumplen" +
-                                    " los requisitos.", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Log.d("Fallo", Objects.requireNonNull(e.getMessage()));
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error al validar las " +
-                                        "contraseñas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                // Si la contraseña fue cambiada y se confirmó
-                if (change) {
-                    sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
-                    editor = sharedPreferences.edit();
-                    editor.putString("password", passwordConfirm);
-                    // Aplica los cambios
-                    editor.apply();
+            if (TextUtils.isEmpty(passwordNew) || TextUtils.isEmpty(passwordConfirm))
+                Toast.makeText(getApplicationContext(), "Algún campo se encuentra vacío.",
+                        Toast.LENGTH_SHORT).show();
+            else if (!TextUtils.equals(passwordNew, passwordConfirm))
+                Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden.",
+                        Toast.LENGTH_SHORT).show();
+            else {
+                try {
+                    if (rpc.passValidation(passwordNew) && rpc.passValidation(passwordConfirm)) {
+                        change = true;
+                        Toast.makeText(getApplicationContext(), "Contraseña cambiada con " +
+                                        "éxito", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(getApplicationContext(), "Las contraseñas no cumplen" +
+                                " los requisitos.", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Log.d("Fallo", Objects.requireNonNull(e.getMessage()));
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error al validar las " +
+                                    "contraseñas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Cierra el diálogo sin hacer nada
-                dialog.dismiss();
+
+            // Si la contraseña fue cambiada y se confirmó
+            if (change) {
+                sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("password", passwordConfirm);
+                // Aplica los cambios
+                editor.apply();
             }
         });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> {
+            // Cierra el diálogo sin hacer nada
+            dialog.dismiss();
+        });
+
 
         // Muestra el diálogo
         AlertDialog dialog = builder.create();
         // Configurar el tamaño deseado del diálogo
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                // Establecer el tamaño del diálogo
-                Objects.requireNonNull(dialog.getWindow()).setLayout(
-                        // 90% del ancho de la pantalla
-                        (int) (getResources().getDisplayMetrics().widthPixels * 0.9),
-                        WindowManager.LayoutParams.WRAP_CONTENT
-                );
-            }
+        dialog.setOnShowListener(dialogInterface -> {
+            // Establecer el tamaño del diálogo
+            Objects.requireNonNull(dialog.getWindow()).setLayout(
+                    // 90% del ancho de la pantalla
+                    (int) (getResources().getDisplayMetrics().widthPixels * 0.9),
+                    WindowManager.LayoutParams.WRAP_CONTENT
+            );
         });
         dialog.show();
     }
