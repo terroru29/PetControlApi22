@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class AddPetPetControl extends AppCompatActivity {
@@ -19,6 +21,7 @@ public class AddPetPetControl extends AppCompatActivity {
             R.drawable.mouse, R.drawable.bird, R.drawable.rabbit, R.drawable.tortoise,
             R.drawable.ferret, R.drawable.pig, R.drawable.tarantula, R.drawable.snake};
     private AdapterPetsPetControl adapter;
+    List<TypePetsPetControl> typePets = new ArrayList<TypePetsPetControl>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class AddPetPetControl extends AppCompatActivity {
 
 
         // Creamos objeto de la clase del adaptador, pasando los dos arrays de imágenes a intercambiar
-        AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets);
+        AdapterPetsPetControl adapterPets = new AdapterPetsPetControl(this, imagesPets, typePets);
         // Enlazamos el GridView con el adaptador personalizado
         pets.setAdapter(adapterPets);
         // Verificar que los ID y tipos corresponden con los seleccionados

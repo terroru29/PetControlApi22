@@ -61,7 +61,7 @@ public class FormPetsPetControl extends AppCompatActivity {
         // Recuperar el ID y tipo de animal pasados de la actividad anterior
         @SuppressLint("UnsafeIntentLaunch") Intent intent = getIntent();
         int typeID = intent.getIntExtra("typeID", -1);
-        String typeName = intent.getStringExtra("typeName");
+        //String typeName = intent.getStringExtra("typeName");
 
         /*
         // Inicializar el DAO de Pets

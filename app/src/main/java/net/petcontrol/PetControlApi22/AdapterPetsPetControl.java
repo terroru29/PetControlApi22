@@ -14,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AdapterPetsPetControl extends BaseAdapter {
     private TextToSpeech textInVoice;
@@ -53,7 +53,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
      * predeterminada y se implementa el manejo de errores para registrar problemas si el idioma
      * seleccionado no es compatible.
      */
-    public AdapterPetsPetControl(@NonNull Context context, int[] images) {
+    public AdapterPetsPetControl(@NonNull Context context, int[] images, List<TypePetsPetControl> typePets) {
         this.context = context;
         this.images = images;
 
@@ -114,9 +114,15 @@ public class AdapterPetsPetControl extends BaseAdapter {
      * @param position The position of the item within the adapter's data set whose row id we want.
      * @return The id of the item at the specified position.
      */
+    /*
     @Override
     public long getItemId(int position) {
         return position;
+    }
+    */
+    @Override
+    public long getItemId(int position) {
+        return typePets.get(position).getId_type_pet();
     }
     /**
      * Get a View that displays the data at the specified position in the data set. You can either
@@ -150,6 +156,15 @@ public class AdapterPetsPetControl extends BaseAdapter {
         ImageButton pets = convertView.findViewById(R.id.imbPets);
         TextView names = convertView.findViewById(R.id.txtNamesPets);
 
+        /*
+        TypePetsPetControl typePet = typePets.get(position);
+        Log.d("AdapterPetsPetControl", "Position: " + position + " ID: " +
+                typePet.getId_type_pet() + " Type: " + typePet.getType_pet());
+
+        pets.setTag(typePet.getId_type_pet());
+        names.setText(typePet.getType_pet());
+         */
+
         // Establecer la imagen según el estado actual
         if (isImageChanged[position]) {
             // Alternativo
@@ -178,6 +193,7 @@ public class AdapterPetsPetControl extends BaseAdapter {
         }
         */
 
+
         // Obtener el ID y tipo de la mascota desde la base de datos
         TypePetsPetControl typePet = typePets.get(position);
 
@@ -188,13 +204,17 @@ public class AdapterPetsPetControl extends BaseAdapter {
         pets.setTag(R.id.pet_id, petId);
         pets.setTag(R.id.pet_type, petType);
 
-
+        //AtomicInteger id = new AtomicInteger();
         //-Evento de botón de cada animal
         pets.setOnClickListener(v -> {
             // Obtener el ID y tipo del tag
             /*int id = (int) v.getTag(R.id.pet_id);
             String type = (String) v.getTag(R.id.pet_type);
             Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);*/
+            /*
+            id.set((int) v.getTag());
+            Log.d("ID de la mascota", "ID: " + id + "\nType: " + typePet.getType_pet());
+             */
 
             // Rotación horizontal (tridimensional)
             ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(pets,
@@ -246,12 +266,15 @@ public class AdapterPetsPetControl extends BaseAdapter {
         });
 
 
+
         // Capturar el ID y el tipo de animal seleccionado
         //int typeID = (int) pets.getTag(R.id.pet_id);
         int typeID = (int) typePets.get(position).getId_type_pet();
         String typeName = typePets.get(position).getType_pet();
         Log.i("ID-Type", "ID: " + typeID + "\nType: " + typeName);
 
+
+        Log.i("ID y tipo BD", "ID: " + petId + "\nType: " + petType);
 
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceProgressListener(new UtteranceProgressListener() {
