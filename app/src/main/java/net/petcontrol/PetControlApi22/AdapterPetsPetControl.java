@@ -32,6 +32,8 @@ public class AdapterPetsPetControl extends BaseAdapter {
     private Handler mainHandler;
     DatabaseManagerPetControl dbPetControl;
     private List<TypePetsPetControl> typePets;  // Lista para almacenar los tipos de mascotas
+
+    // Se garantiza que los cambios realizados por un hilo sean visibles para los demás hilos
     private volatile AtomicInteger id = new AtomicInteger();
 
 
@@ -156,14 +158,6 @@ public class AdapterPetsPetControl extends BaseAdapter {
         ImageButton pets = convertView.findViewById(R.id.imbPets);
         TextView names = convertView.findViewById(R.id.txtNamesPets);
 
-        /*
-        TypePetsPetControl typePet = typePets.get(position);
-        Log.d("AdapterPetsPetControl", "Position: " + position + " ID: " +
-                typePet.getId_type_pet() + " Type: " + typePet.getType_pet());
-
-        pets.setTag(typePet.getId_type_pet());
-        names.setText(typePet.getType_pet());
-         */
 
         // Establecer la imagen según el estado actual
         if (isImageChanged[position]) {
@@ -182,43 +176,24 @@ public class AdapterPetsPetControl extends BaseAdapter {
         }
 
 
-        // Obtener el ID y tipo de la mascota desde la base de datos
+        // Obtener el ID de la mascota desde la base de datos
         TypePetsPetControl typePet = typePets.get(position);
         int petId = typePet.getId_type_pet();
-        //String petType = typePet.getType_pet();
 
-        // Asociar el ID y tipo al ImageButton usando tags
+        // Asociar el ID al ImageButton usando tags
         pets.setTag(R.id.pet_id, petId);
-        //pets.setTag(R.id.pet_type, petType);
         Log.i("Before Click", "ID: " + petId);
 
-        // Asegura la visibilidad y la actualización segura del valor entre los hilos
-        //AtomicInteger id = new AtomicInteger();
-        // Asegura que la actualización del valor del AtomicInteger se complete antes de proceder
-        // con la navegación a la siguiente pantalla
-        // Se decrementará cuando el OnClickListener termine de ejecutar y actualizar el valor de id
-        //CountDownLatch latch = new CountDownLatch(1);
-
-        //AtomicReference<String> type = new AtomicReference<>();
         //-Evento de botón de cada animal
         pets.setOnClickListener(v -> {
             // Todas las operaciones se realizan en el hilo main, evitando problemas de concurrencia
             mainHandler.post(() -> {
-                /*
-                // Obtener el ID y tipo del tag
-                id.set((int) v.getTag(R.id.pet_id));
-                type.set((String) v.getTag(R.id.pet_type));
-                Log.i("ID-Type (v)", "ID: " + id + "\nType: " + type);
-                */
-                // Obtener el ID y tipo del tag
+                // Obtener el ID del tag
                 int pet_id = (int) v.getTag(R.id.pet_id);
-                //String pet_type = (String) v.getTag(R.id.pet_type);
-                // Establecer los valores en los AtomicReferences
-                id.set(pet_id);
-                //type.set(pet_type);
-                //Log.i("ID-Type TAG", "ID: " + id.get() + "\nType: " + type.get());
-                Log.i("OnClick", "ID: " + id.get());
                 Log.i("OnClickListener", "ID: " + pet_id);
+                // Establecer el valor en el objeto AtomicReferences
+                id.set(pet_id);
+                Log.i("OnClick", "ID: " + id.get());
                 Log.i("AtomicReferences", "Atomic ID: " + id.get());
 
                 // Rotación horizontal (tridimensional)
@@ -268,22 +243,8 @@ public class AdapterPetsPetControl extends BaseAdapter {
                     textInVoice.speak("Se ha seleccionado " + namesPets[position],
                             TextToSpeech.QUEUE_FLUSH, null, Integer.toString(position));
                 }
-                // Contamos de manera descendietne el latch para indicar que la variable se ha actualizado
-                //latch.countDown();
             });
         });
-
-
-        /*
-        // Capturar el ID y el tipo de animal seleccionado
-        //int typeID = (int) pets.getTag(R.id.pet_id);
-        int typeID = (int) typePets.get(position).getId_type_pet();
-        String typeName = typePets.get(position).getType_pet();
-        Log.i("ID-Type", "ID: " + typeID + "\nType: " + typeName);
-         */
-
-        //Log.i("ID y tipo BD", "ID: " + petId + "\nType: " + petType);
-
 
         // Establecer el listener de finalización del discurso
         textInVoice.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -292,31 +253,17 @@ public class AdapterPetsPetControl extends BaseAdapter {
             @Override
             public void onDone(String utteranceId) {
                 Log.i("onDone", "Entrando a onDone");
-                /*
-                // Esperamos a que el latch cuente hasta cero
-                try {
-                    latch.await();
-                    Log.d("Latch", String.valueOf(latch));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Log.d("Error en latch", "Se ha producido un error en la cuenta atrás de latch.");
-                }
-                 */
-
                 mainHandler.postDelayed(() -> {
                     int idPet = id.get();
-
                     // Log para verificar los valores obtenidos
                     Log.i("UtteranceProgressListener", "Retrieved ID: " + idPet);
 
                     // Pasar la información a la siguiente pantalla
                     Intent intent = new Intent(context, FormPetsPetControl.class);
-
                     Log.i("Before Intent", "ID: " + idPet);
                     // Extraemos los valores
                     intent.putExtra("typeID", idPet);
                     Log.d("PutExtra", String.valueOf(idPet));
-                    //intent.putExtra("typeName", type.get());
                     context.startActivity(intent);
                 }, 1000);
             }

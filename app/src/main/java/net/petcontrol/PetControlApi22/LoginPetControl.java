@@ -125,12 +125,7 @@ public class LoginPetControl extends AppCompatActivity {
 
         //-EVENTO BOTÓN
         //--Iniciar sesión
-        logIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextWindow(logIn);
-            }
-        });
+        logIn.setOnClickListener(v -> nextWindow(logIn));
 
 
         //-EVENTO IMAGEBUTTON
@@ -152,8 +147,6 @@ public class LoginPetControl extends AppCompatActivity {
 
     // Pasar a la pantalla de inicio de sesión
     public void nextWindow(View view) {
-        //logIn = (Button) view;
-
         if (termsAndConditions.isChecked())
             termsCheck = true;
         else {
@@ -270,7 +263,7 @@ public class LoginPetControl extends AppCompatActivity {
             @Override
             public void onShow(DialogInterface dialogInterface) {
                 // Establecer el tamaño del diálogo
-                dialog.getWindow().setLayout(
+                Objects.requireNonNull(dialog.getWindow()).setLayout(
                         // 90% del ancho de la pantalla
                         (int) (getResources().getDisplayMetrics().widthPixels * 0.9),
                         WindowManager.LayoutParams.WRAP_CONTENT
