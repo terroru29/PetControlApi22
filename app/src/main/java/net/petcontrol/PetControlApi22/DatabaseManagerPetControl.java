@@ -102,25 +102,49 @@ public class DatabaseManagerPetControl implements AutoCloseable {
      */
     public void insertPets(int id_type, String name, int age, String breed, String sex_pet,
                            Bitmap pic_pet, int sterilization, String description) {
-        // Verifica si el nombre de la mascota ya existe en la base de datos
-        if (isValueExists(DatabaseHelperPetControl.TABLE_PETS,
-                DatabaseHelperPetControl.COLUMN_PETS_NAME, name)) {
-            // Si el nombre de la mascota ya está guardado para otro animal, lanza una excepción
-            throw new IllegalArgumentException("El nombre de la mascota ya está guardado para otro " +
-                    "animal.");
-        } else {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_NAME, name);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_AGE, age);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_BREED, breed);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_SEX, sex_pet);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC, getBitmapAsByteArray(pic_pet));
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION, sterilization);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION, description);
+        try {
+            // Verifica si el nombre de la mascota ya existe en la base de datos
+            if (isValueExists(DatabaseHelperPetControl.TABLE_PETS,
+                    DatabaseHelperPetControl.COLUMN_PETS_NAME, name)) {
+                // Si el nombre de la mascota ya está guardado para otro animal, lanza una excepción
+                throw new IllegalArgumentException("El nombre de la mascota ya está guardado para otro " +
+                        "animal.");
+            } else {
+                // Validar el campo de la imagen
+                if (pic_pet == null) {
+                    // Cargar la imagen predeterminada desde los recursos
+                    pic_pet = BitmapFactory.decodeResource(context.getResources(), R.drawable.pig);
+                }
 
-            // Inserta la mascota en su respectiva tabla
-            database.insert(DatabaseHelperPetControl.TABLE_PETS, null, contentValues);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_NAME, name); // Obligatorio
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_AGE, age);   //0 por defecto
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_BREED,
+                        breed != null ? breed : ""); // Si no se indica raza, inserta cadena vacía
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_SEX,
+                        sex_pet != null ? sex_pet : ""); // Si no se proporciona sexo, inserta cadena vacía
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_PIC,
+                        pic_pet != null ? getBitmapAsByteArray(pic_pet) : null); // Si no se proporciona imagen, insertar null
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_STERILIZATION, sterilization);   //0 por defecto
+                contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_DESCRIPTION,
+                        description != null ? description : ""); // Si no se proporciona una descripción, inserta una cadena vacía
+
+                // Inserta la mascota en su respectiva tabla
+                long result = database.insert(DatabaseHelperPetControl.TABLE_PETS, null,
+                        contentValues);
+
+                if (result == -1) {
+                    // Error en la inserción
+                    Log.e("DatabaseManagerPetControl", "Error al insertar la mascota.");
+                } else {
+                    // Inserción exitosa
+                    Log.d("DatabaseManagerPetControl", "Mascota insertada correctamente.");
+                }
+            }
+        } catch (Exception e) {
+            // Manejo de cualquier excepción que pueda ocurrir
+            Log.e("DatabaseManagerPetControl", "Exception: " + e.getMessage(), e);
         }
     }
     /**
@@ -136,7 +160,6 @@ public class DatabaseManagerPetControl implements AutoCloseable {
      * @throws UnsupportedOperationException Si existe algún propietario en la base de datos, se
      *                                          lanza esta excepción y la inserción no se produce.
      */
-    // TODO controlar que si no se insertan valores en los campos obligatorios, pueda seguir avanzando
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
         /*
@@ -145,23 +168,40 @@ public class DatabaseManagerPetControl implements AutoCloseable {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
         } else {*/
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER, gender);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY, birthday);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC, getBitmapAsByteArray(pic_owner));
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email);
-            contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);
+            try {
+                // Validar el campo de la imagen
+                if (pic_owner == null) {
+                    // Cargar la imagen predeterminada desde los recursos
+                    pic_owner = BitmapFactory.decodeResource(context.getResources(), R.drawable.ferret);
+                }
 
-            // Inserta al propietario en su respectiva tabla
-            long result = database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null, contentValues);
-            if (result == -1)
-                // Error en la inserción
-                Log.e("DatabaseManagerPetControl", "Error al insertar el propietario");
-            else
-                // Inserción exitosa
-                Log.d("DatabaseManagerPetControl", "Propietario insertado correctamente");
+                ContentValues contentValues = new ContentValues();
+                // Verifica cada campo y si es nulo, inserta un valor por defecto o null
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);   // Obligatorio
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age); //0 por defecto
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
+                        gender != null ? gender : ""); // Si no se elige género, inserta cadena vacía
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY,
+                        birthday != null ? birthday : ""); // Si no se indica fecha de cumpleaños, insertar una cadena vacía
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC,
+                        pic_owner != null ? getBitmapAsByteArray(pic_owner) : null); // Si no hay imagen, insertar null
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email); // Obligatorio
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);   // Obligatorio
+
+                // Inserta al propietario en su respectiva tabla
+                long result = database.insert(DatabaseHelperPetControl.TABLE_OWNERS, null,
+                        contentValues);
+
+                if (result == -1)
+                    // Error en la inserción
+                    Log.e("DatabaseManagerPetControl", "Error al insertar el propietario.");
+                else
+                    // Inserción exitosa
+                    Log.d("DatabaseManagerPetControl", "Propietario insertado correctamente.");
+            } catch (Exception e) {
+                // Manejo de cualquier excepción que pueda ocurrir
+                Log.e("DatabaseManagerPetControl", "Exception: " + e.getMessage(), e);
+            }
         //}
     }
     /**

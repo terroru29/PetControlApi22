@@ -21,11 +21,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.046" />
 
+    <TextView
+        android:id="@+id/txtAsterikName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asterik"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.044" />
+
     <EditText
         android:id="@+id/etNamePet"
         style="@style/edit_text"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:autofillHints="name"
         android:ems="10"
         android:hint="@string/hint_name"
@@ -57,7 +72,7 @@
         android:id="@+id/etAgePet"
         style="@style/edit_text"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:autofillHints="creditCardSecurityCode"
         android:ems="10"
         android:hint="@string/hint_age"
@@ -89,7 +104,7 @@
         android:id="@+id/etBreedPet"
         style="@style/edit_text"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:ems="10"
         android:inputType="textMultiLine"
         android:autofillHints="name"
@@ -120,7 +135,7 @@
     <RadioButton
         android:id="@+id/rbMalePet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:text="@string/rb_male"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -133,7 +148,7 @@
     <RadioButton
         android:id="@+id/rbFemalePet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:text="@string/rb_female"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -174,7 +189,7 @@
     <CheckBox
         android:id="@+id/chkbSterilizationPet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:text=""
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -233,7 +248,7 @@
     <Button
         android:id="@+id/btnAcceptDataPet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:backgroundTint="@color/pink_pastel"
         android:text="@string/btn_accept"
         android:textColor="@color/black"
@@ -243,12 +258,12 @@
         app:layout_constraintHorizontal_bias="0.858"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.978" />
+        app:layout_constraintVertical_bias="0.95" />
 
     <Button
         android:id="@+id/btnCancelDataPet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:backgroundTint="@color/pink_pastel"
         android:text="@string/btn_cancel"
         android:textColor="@color/black"
@@ -258,6 +273,34 @@
         app:layout_constraintHorizontal_bias="0.165"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.978" />
+        app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/txtAsterik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asterik"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.99" />
+
+    <TextView
+        android:id="@+id/txtFieldsRequired"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fields_required"
+        android:textSize="13sp"
+        android:textColor="@color/grey_hint_background_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/txtAsterik"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtAsterik" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class FormPetsPetControl extends AppCompatActivity {
     RadioButton male, female;
     Button accept, cancel;
     Intent i;
+    int yearsPet;
     // Define un código de solicitud para identificar la respuesta de la galería
     private static final int PICK_IMAGE_REQUEST = 1;
     /*
@@ -101,6 +103,17 @@ public class FormPetsPetControl extends AppCompatActivity {
                 boolean isSterilization = sterilization.isChecked();
                 String petDescription = description.getText().toString();
 
+                /* ===VALIDACIONES=== */
+                // Validar el campo de edad
+                try {
+                    if (petAge > 0)
+                        yearsPet = Integer.parseInt(String.valueOf(petAge));
+                } catch (NumberFormatException e) {
+                    // Manejar el caso donde la cadena es vacía o no es un número válido
+                    yearsPet = 0;  // o cualquier valor predeterminado que tenga sentido en tu aplicación
+                    Log.e("insertPets", "La edad no es válida: " + e.getMessage());
+                }
+                // Validar el campo esterilización
                 int petSterilization;
                 if (isSterilization)
                     petSterilization = 1;
@@ -108,7 +121,7 @@ public class FormPetsPetControl extends AppCompatActivity {
                     petSterilization = 0;
 
                 // Añadir al animal a la base de datos
-                dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
+                dbManager.insertPets(typeID, petName, yearsPet, petBreed, petSex, petPic,
                         petSterilization, petDescription);
                 Toast.makeText(this, "Se han insertado los datos correctamente.",
                         Toast.LENGTH_SHORT).show();

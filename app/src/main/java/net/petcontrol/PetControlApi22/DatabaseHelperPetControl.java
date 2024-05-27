@@ -77,7 +77,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
         "CREATE TABLE if not exists " + TABLE_PETS + " (" +
                 COLUMN_PETS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PETS_ID_TYPE + " INTEGER, " +
-                COLUMN_PETS_NAME + " TEXT, " +
+                COLUMN_PETS_NAME + " TEXT NOT NULL, " +
                 COLUMN_PETS_AGE + " INTEGER, " +
                 COLUMN_PETS_BREED + " TEXT, " +
                 COLUMN_PETS_SEX + " TEXT, " +
@@ -91,13 +91,13 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     private static final String TABLE_OWNERS_CREATE =
         "CREATE TABLE if not exists " + TABLE_OWNERS + " (" +
                 COLUMN_OWNERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_OWNERS_NAME + " TEXT, " +
+                COLUMN_OWNERS_NAME + " TEXT NOT NULL, " +
                 COLUMN_OWNERS_AGE + " INTEGER, " +
                 COLUMN_OWNERS_GENDER + " TEXT, " +
                 COLUMN_OWNERS_BIRTHDAY + " TEXT, " +  //TODO formato ISO8601 (YYYY-MM-DD)
                 COLUMN_OWNERS_PIC + " BLOB, " +
-                COLUMN_OWNERS_EMAIL + " TEXT, " +
-                COLUMN_OWNERS_PASSWORD + " TEXT);";
+                COLUMN_OWNERS_EMAIL + " TEXT NOT NULL, " +
+                COLUMN_OWNERS_PASSWORD + " TEXT NOT NULL);";
 
     // SQL para crear la tabla de visitas veterinarias
     private static final String TABLE_VISITS_VET_CREATE =

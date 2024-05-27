@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,9 +49,9 @@ public class RegisterPetControl extends AppCompatActivity {
     ImageView pictureUser;
     ImageButton cleanName, calendar, cleanEmail, closedEye, openEye;
     ImageFilterButton info;
-    String nameUser, nameCorrect, selectedItem, dateBirthday, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
-            pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
-    int ageUser, age;
+    String nameUser, nameCorrect, selectedGender, dateBirthday, email, msgEmailCorrect,
+            msgEmailIncorrect, emailSaved, pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
+    int ageUser, age, yearsUser;
     boolean validateEmail, validatePass;
     private static final int PICK_IMAGE_REQUEST = 1;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
@@ -111,8 +113,8 @@ public class RegisterPetControl extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
                                        int position, long id) {
                 // Obtén el elemento seleccionado
-                selectedItem = parentView.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(), "Seleccionaste: " + selectedItem,
+                selectedGender = parentView.getItemAtPosition(position).toString();
+                Toast.makeText(getApplicationContext(), "Seleccionaste: " + selectedGender,
                         Toast.LENGTH_SHORT).show();
             }
             @Override
@@ -223,7 +225,18 @@ public class RegisterPetControl extends AppCompatActivity {
                         nameUser = name.getText().toString();
                         picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
 
-                        dbPC.insertOwner(nameUser, ageUser, selectedItem, picture, dateBirthday,
+                        /* ===VALIDACIONES=== */
+                        // Validar el campo de edad
+                        try {
+                            if (ageUser > 16)
+                                yearsUser = Integer.parseInt(String.valueOf(ageUser));
+                        } catch (NumberFormatException e) {
+                            // Manejar el caso donde la cadena está vacía o no es un número válido
+                            yearsUser = 0;
+                            Log.e("insertOwner", "La edad no es válida: " + e.getMessage());
+                        }
+
+                        dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture, dateBirthday,
                                 emailSaved, passSaved);
                         // Liberar la memoria asociada al objeto Bitmap
                         picture.recycle();

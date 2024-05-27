@@ -4,19 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class AddPetPetControl extends AppCompatActivity {
     GridView pets;
-    Button fastConfiguration;
+    Button mainWindow;
     int[] imagesPets = {R.drawable.dog, R.drawable.cat, R.drawable.hamster, R.drawable.fish,
             R.drawable.mouse, R.drawable.bird, R.drawable.rabbit, R.drawable.tortoise,
             R.drawable.ferret, R.drawable.pig, R.drawable.tarantula, R.drawable.snake};
@@ -30,7 +27,7 @@ public class AddPetPetControl extends AppCompatActivity {
 
         // Asociamos recursos con sus variables
         pets = findViewById(R.id.gvPets);
-        fastConfiguration = findViewById(R.id.btnNextFastConfiguration);
+        mainWindow = findViewById(R.id.btnNextMainWindow);
 
 
         // Creamos objeto de la clase del adaptador, pasando los dos arrays de imágenes a intercambiar
@@ -42,7 +39,7 @@ public class AddPetPetControl extends AppCompatActivity {
 
 
         //-Evento de botón
-        fastConfiguration.setOnClickListener(v -> next(fastConfiguration));
+        mainWindow.setOnClickListener(v -> next(mainWindow));
     }
     /**
      * Este método es parte del ciclo de vida de la actividad y se llama cuando la actividad ya no
@@ -70,7 +67,7 @@ public class AddPetPetControl extends AppCompatActivity {
      * @param view Elemento sobre el que se ejecutará la acción
      */
     public void next(View view) {
-        Intent i = new Intent(this, FastConfigurationPetControl.class);
+        Intent i = new Intent(this, MenuInferiorPetControl.class);
         startActivity(i);
         // Cierra la actividad actual para evitar que el usuario regrese a ella
         //finish();
