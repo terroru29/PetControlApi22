@@ -39,12 +39,19 @@
     <string name="sign_up">Regístrate</string>
 
     <!-- CHANGE PASSWORD -->
+    <string name="description_info">Información sobre los requisitos de la contraseña.</string>
+    <string name="requirements">Requerimientos de contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="hint_new_password">Contraseña nueva</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="hint_confirm_password">Confirmar contraseña</string>
     <string name="btn_accept">Aceptar</string>
     <string name="btn_cancel">Cancelar</string>
+
+    <!-- REQUIREMENTS PASSWORD -->
+    <string name="required_pass">• Al menos una minúscula.\n• Al menos una mayúscula.
+        \n• Al menos un dígito.\n• Al menos un cartácter especial.
+        \n• Una longitud entre 8 y 12 caracteres, ambos inclusive.</string>
 
     <!-- REGISTER -->
     <string name="title_settings_user">Datos del usuario</string>

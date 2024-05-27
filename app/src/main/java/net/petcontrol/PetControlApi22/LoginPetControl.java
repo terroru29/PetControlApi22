@@ -2,6 +2,7 @@ package net.petcontrol.PetControlApi22;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -45,6 +47,7 @@ public class LoginPetControl extends AppCompatActivity {
     // CUADRO DE DIÁLOGO
     EditText newPassword, confirmPassword;
     ImageButton close, closed, open, opened;
+    ImageFilterButton info;
 
 
     @SuppressLint({"MissingInflatedId", "CutPasteId"})
@@ -218,6 +221,7 @@ public class LoginPetControl extends AppCompatActivity {
         open = design.findViewById(R.id.imgbOpenEyeNew);
         closed = design.findViewById(R.id.imgbClosedEye);
         opened = design.findViewById(R.id.imgbOpenEye);
+        info = design.findViewById(R.id.imgfbInfo);
 
         // Configurar evento para mostrar/ocultar contraseña
         close.setOnClickListener(v1 -> togglePasswordVisibility(design, R.id.etNewPassword,
@@ -228,6 +232,9 @@ public class LoginPetControl extends AppCompatActivity {
                 R.id.imgbClosedEye, R.id.imgbOpenEye));
         opened.setOnClickListener(v1 -> togglePasswordVisibility(design, R.id.etConfirmPassword,
                 R.id.imgbClosedEye, R.id.imgbOpenEye));
+
+        //Configurar evento al clicar sobre el icono de información (ImageFilterButton)
+        info.setOnClickListener(view -> showPasswordDialog());
 
 
         //--Configuración de los botones
@@ -315,5 +322,20 @@ public class LoginPetControl extends AppCompatActivity {
             closedEyeButton.setVisibility(View.VISIBLE);
             openEyeButton.setVisibility(View.GONE);
         }
+    }
+    private void showPasswordDialog() {
+        // Inflar el layout del diálogo
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_requirements_password, null);
+
+        String requeriments = getResources().getString(R.string.requirements);
+        // Crear el cuadro de diálogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setTitle(requeriments)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        // Mostrar el cuadro de diálogo
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
