@@ -1,7 +1,9 @@
 package net.petcontrol.PetControlApi22;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -18,6 +20,7 @@ import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,6 +46,7 @@ public class RegisterPetControl extends AppCompatActivity {
     TextView birthday, messageEmail, messagePass, pictureSelected;
     ImageView pictureUser;
     ImageButton cleanName, calendar, cleanEmail, closedEye, openEye;
+    ImageFilterButton info;
     String nameUser, nameCorrect, selectedItem, dateBirthday, email, msgEmailCorrect, msgEmailIncorrect, emailSaved,
             pass, msgPassCorrect, msgPassIncorrect, passSaved, access;
     int ageUser, age;
@@ -50,7 +54,6 @@ public class RegisterPetControl extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
-    //OwnerPetControl opc = new OwnerPetControl();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     DatabaseManagerPetControl dbPC;
@@ -78,6 +81,7 @@ public class RegisterPetControl extends AppCompatActivity {
         validationEmail = findViewById(R.id.etEmailUser);
         messageEmail = findViewById(R.id.txtValidationEmail);
         cleanEmail = findViewById(R.id.imgbXEmail);
+        info = findViewById(R.id.imgfbInfo);
         validationPass = findViewById(R.id.etPasswordUser);
         closedEye = findViewById(R.id.imgbClosedEye);
         openEye = findViewById(R.id.imgbOpenEye);
@@ -269,6 +273,10 @@ public class RegisterPetControl extends AppCompatActivity {
             closedEye.setVisibility(View.VISIBLE);
             validationPass.setTransformationMethod(new PasswordTransformationMethod());
         });
+
+        //--EVENTO IMAGEFILTERBUTTON
+        // Mostrar en un cuadro de diálogo los requisitos de la contraseña
+        info.setOnClickListener(v1 -> showPasswordDialog());
     }
     /**
      * Manejar el resultado cuando el usuario seleccione un archivo.
@@ -403,7 +411,7 @@ public class RegisterPetControl extends AppCompatActivity {
         }
         return true;
     }
-    private DatePickerDialog.OnDateSetListener dateSetListener =
+    private final DatePickerDialog.OnDateSetListener dateSetListener =
             new DatePickerDialog.OnDateSetListener() {
         /**
          * @param view       the picker associated with the dialog
@@ -447,5 +455,20 @@ public class RegisterPetControl extends AppCompatActivity {
             e.printStackTrace();
         }
         return 0;
+    }
+    private void showPasswordDialog() {
+        // Inflar el layout del diálogo
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_requirements_password, null);
+
+        String requeriments = getResources().getString(R.string.requirements);
+        // Crear el cuadro de diálogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setTitle(requeriments)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        // Mostrar el cuadro de diálogo
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
