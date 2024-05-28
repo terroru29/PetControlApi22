@@ -99,7 +99,7 @@ public class PCFragment extends Fragment {
 
     @Nullable
     @Override
-    @SuppressLint("SuspiciousIndentation")
+    @SuppressLint({"SuspiciousIndentation", "SetTextI18n"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, Bundle savedInstanceState) {
         PCViewModel PCViewModel = new ViewModelProvider(this).get(PCViewModel.class);
@@ -139,19 +139,12 @@ public class PCFragment extends Fragment {
                 // dbManager.deleteAllOwners();
                 //Log.d("DeleteAllOwners", "DeleteAllOwners");
                 // Eliminar un propietario específico
-                dbManager.deleteOwner(11);
-                Log.d("DeleteOwner", "DeleteOwner");
-                dbManager.deleteOwner(12);
-                Log.d("DeleteOwner", "DeleteOwner");
-                dbManager.deleteOwner(13);
-                Log.d("DeleteOwner", "DeleteOwner");
-                dbManager.deleteOwner(14);
-                Log.d("DeleteOwner", "DeleteOwner");
+                //dbManager.deleteOwner(11);
+                //Log.d("DeleteOwner", "DeleteOwner");
 
                 // Eliminar todas las mascotas
                 //dbManager.deleteAllPets();
                 //Log.d("DeleteAllPets", "DeleteAllPets");
-
 
             } catch (SQLException e) {
                 // Manejar errores de la base de datos
@@ -250,7 +243,6 @@ public class PCFragment extends Fragment {
                                 getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_AGE));
                         @SuppressLint("Range") String ownerGender = cursor.getString(cursor.
                                 getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER));
-                        // Dentro del método donde obtienes los datos del propietario desde el cursor
                         @SuppressLint("Range") byte[] ownerPicByteArray = cursor.getBlob(cursor.getColumnIndex
                                 (DatabaseHelperPetControl.COLUMN_OWNERS_PIC));
                         Bitmap ownerPic = dbManager.getBitmapFromByteArray(ownerPicByteArray);
@@ -266,7 +258,12 @@ public class PCFragment extends Fragment {
                                 .append(", Edad: ").append(ownerAge).append(", Género: ").append(ownerGender)
                                 .append(", Birthday: ").append(ownerBirthday).append(", Email: ")
                                 .append(ownerEmail).append(", Pass: ").append(ownerPass);
-                        img.setImageBitmap(ownerPic);
+                        // Verificar si ownerPic es nulo
+                        if (ownerPic != null) {
+                            img.setImageBitmap(ownerPic);
+                        } else {
+                            img.setImageResource(R.drawable.ferret); // Imagen por defecto si ownerPic es nulo
+                        }
                     } while (cursor.moveToNext());
                     //cursor.close();
                     // Configura la cadena de datos en el TextView
@@ -274,11 +271,12 @@ public class PCFragment extends Fragment {
                 } else
                     // Si no hay datos en la tabla de usuarios, muestra un mensaje en el TextView
                     data.setText("No se encontraron datos de usuarios.");
-
             } catch (Exception e) {
                 e.printStackTrace(); // Manejar la excepción apropiadamente
+                data.setText("Error al obtener los datos.");
+            } finally {
+                dbManager.close();
             }
-            dbManager.close();
         });
         return root;
     }

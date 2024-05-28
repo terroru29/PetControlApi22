@@ -110,11 +110,13 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 throw new IllegalArgumentException("El nombre de la mascota ya está guardado para otro " +
                         "animal.");
             } else {
+                /*
                 // Validar el campo de la imagen
                 if (pic_pet == null) {
                     // Cargar la imagen predeterminada desde los recursos
                     pic_pet = BitmapFactory.decodeResource(context.getResources(), R.drawable.pig);
                 }
+                 */
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
@@ -169,11 +171,13 @@ public class DatabaseManagerPetControl implements AutoCloseable {
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
         } else {*/
             try {
+                /*
                 // Validar el campo de la imagen
                 if (pic_owner == null) {
                     // Cargar la imagen predeterminada desde los recursos
                     pic_owner = BitmapFactory.decodeResource(context.getResources(), R.drawable.ferret);
                 }
+                */
 
                 ContentValues contentValues = new ContentValues();
                 // Verifica cada campo y si es nulo, inserta un valor por defecto o null
@@ -529,11 +533,17 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+        // quality 100
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
     }
     // Convertir Byte Array a Bitmap
     public Bitmap getBitmapFromByteArray(byte[] blob) {
+        if (blob == null || blob.length == 0) {
+            // Manejar el caso en el que byteArray es null o está vacío
+            Log.e("DatabaseError", "ByteArray es null o está vacío");
+            return null;
+        }
         return BitmapFactory.decodeByteArray(blob, 0, blob.length);
     }
     @SuppressLint("Range")

@@ -119,6 +119,7 @@
     <string name="txt_sterilization">Esterilización:</string>
     <string name="txt_description">Descripción:</string>
     <string name="hint_description">Descripción</string>
+    <string name="correct_data">Se han insertado los datos correctamente.</string>
 
     <!-- FAST CONFIGURATION -->
     <string name="title_fast_configuration">Configuración rápida</string>

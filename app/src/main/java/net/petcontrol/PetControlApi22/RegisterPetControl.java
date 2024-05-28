@@ -13,8 +13,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -225,16 +227,40 @@ public class RegisterPetControl extends AppCompatActivity {
                             yearsUser = 0;
                             Log.e("insertOwner", "La edad no es válida: " + e.getMessage());
                         }
+                        /*
                         // Valida la imagen del ImageView
                         if (pictureUser.getDrawable() != null) {
                             //picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
                             if (picture != null) {
                                 dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture,
                                         dateBirthday, emailSaved, passSaved);
+                                Log.i("Success", "Se han insertado los datos correctamente.");
                                 // Liberar la memoria asociada al objeto Bitmap
                                 picture.recycle();
                             }
                         }
+                        */
+                        Drawable drawable = pictureUser.getDrawable();
+                        if (drawable instanceof BitmapDrawable) {
+                            // Si ya es un BitmapDrawable, simplemente obtenemos el Bitmap
+                            picture = ((BitmapDrawable) drawable).getBitmap();
+                        } else {
+                            // Manejar el caso en el que no es un BitmapDrawable
+                            Log.e("DrawableError", "La imagen seleccionada no es un " +
+                                    "BitmapDrawable.");
+                            // Si no es un BitmapDrawable, lo convertimos a Bitmap
+                            picture = convertToBitmap(drawable);
+                            Log.d("convertToBitmap", "La imagen seleccionada ya es un " +
+                                    "BitmapDrawable.");
+                            // Asignar una imagen por defecto
+                            picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
+                            Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                        }
+                        dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture,
+                                dateBirthday, emailSaved, passSaved);
+                        Log.i("Success", "Se han insertado los datos correctamente.");
+                        // Liberar la memoria asociada al objeto Bitmap
+                        picture.recycle();
 
                         Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                         startActivity(i);
@@ -256,15 +282,12 @@ public class RegisterPetControl extends AppCompatActivity {
 
         //-EVENTO IMAGEBUTTON
         //--Calendario
-        calendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Muestra el DatePickerDialog
-                new DatePickerDialog(RegisterPetControl.this, dateSetListener,
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH),
-                        cal.get(Calendar.DAY_OF_MONTH)).show();
-            }
+        calendar.setOnClickListener(v -> {
+            // Muestra el DatePickerDialog
+            new DatePickerDialog(RegisterPetControl.this, dateSetListener,
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show();
         });
         //--Limpiar campo
         cleanName.setOnClickListener(v -> name.setText(""));
@@ -309,10 +332,12 @@ public class RegisterPetControl extends AppCompatActivity {
             String namePicture = getFileName(selectedFileUri);
 
             // Obtenemos la imagen seleccionada por el usuario
-            pictureUser.setImageURI(selectedFileUri);
+            //pictureUser.setImageURI(selectedFileUri);
             // Convertimos la URI a Bitmap y lo asignamos a picture
             try {
-                picture = BitmapFactory.decodeStream(getContentResolver().openInputStream(Objects.requireNonNull(selectedFileUri)));
+                picture = BitmapFactory.decodeStream(getContentResolver()
+                        .openInputStream(Objects.requireNonNull(selectedFileUri)));
+                pictureUser.setImageDrawable(new BitmapDrawable(getResources(), picture));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -324,6 +349,14 @@ public class RegisterPetControl extends AppCompatActivity {
             // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
             picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
             pictureSelected.setText(R.string.default_image_name);
+            /*
+            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
+            @SuppressLint("UseCompatLoadingForDrawables")
+            Drawable defaultDrawable = getResources().getDrawable(R.drawable.ferret, null);
+            pictureUser.setImageDrawable(defaultDrawable);
+            picture = convertToBitmap(defaultDrawable);
+            pictureSelected.setText(R.string.default_image_name);
+             */
         }
     }
 /*
@@ -491,5 +524,25 @@ public class RegisterPetControl extends AppCompatActivity {
         // Mostrar el cuadro de diálogo
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private Bitmap convertToBitmap(Drawable drawable) {
+        if (drawable == null) {
+            // Maneja el caso en que drawable es null, devolviendo un bitmap predeterminado o lanzando una excepción
+            Log.e("DrawableErrorNull", "Drawable es null");
+            // O devolver un bitmap predeterminado
+            return BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
+            // O puedes lanzar una excepción si quieres manejar esto en un nivel superior
+            // throw new IllegalArgumentException("Drawable no puede ser null");
+        }
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+        // Especifica el tamaño del bitmap
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 }

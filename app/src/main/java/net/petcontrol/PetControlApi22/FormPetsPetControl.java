@@ -8,9 +8,14 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +27,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -36,9 +42,13 @@ public class FormPetsPetControl extends AppCompatActivity {
     Button accept, cancel;
     Intent i;
     Bitmap petPic;
-    int yearsPet;
+    String petSex, message;
+    int petAge, yearsPet;
     // Define un código de solicitud para identificar la respuesta de la galería
     private static final int PICK_IMAGE_REQUEST = 1;
+    // Constantes para identificar los mensajes
+    private static final int INSERTION_COMPLETED = 1;
+    private static final int INSERTION_ERROR = 2;
     /*
     PetsDAOPetControl petsDAO; // Instancia del DAO de Pets
     ExecutorService executorService;
@@ -89,57 +99,111 @@ public class FormPetsPetControl extends AppCompatActivity {
         //--EVENTO BUTTON
         //-Aceptar
         accept.setOnClickListener(v -> {
-            // Se inicializa el objeto DatabaseManagerPetControl
-            try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(this)) {
-                // Abrir en modo escritura la base de datos
-                dbManager.open();
+            // Crear un nuevo hilo para realizar la inserción en segundo plano
+            new Thread(() -> {
+                // Se inicializa el objeto DatabaseManagerPetControl
+                try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(FormPetsPetControl.this)) {
+                    // Abrir en modo escritura la base de datos
+                    dbManager.open();
 
-                // Recoger los datos escritos por el usuario
-                String petName = name.getText().toString();
-                int petAge = Integer.parseInt(age.getText().toString());
-                String petBreed = breed.getText().toString();
-                String petSex = male.isChecked() ? "Macho" : "Hembra";
-                //Bitmap petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
-                boolean isSterilization = sterilization.isChecked();
-                String petDescription = description.getText().toString();
+                    // Recoger los datos escritos por el usuario
+                    String petName = name.getText().toString();
+                    //int petAge = Integer.parseInt(age.getText().toString());
+                    String petBreed = breed.getText().toString();
+                    //String petSex = male.isChecked() ? "Macho" : "Hembra";
+                    //Bitmap petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
+                    boolean isSterilization = sterilization.isChecked();
+                    String petDescription = description.getText().toString();
 
-                /* ===VALIDACIONES=== */
-                // Validar el campo de edad
-                try {
-                    if (petAge > 0)
-                        yearsPet = Integer.parseInt(String.valueOf(petAge));
-                } catch (NumberFormatException e) {
-                    // Manejar el caso donde la cadena es vacía o no es un número válido
-                    yearsPet = 0;  // o cualquier valor predeterminado que tenga sentido en tu aplicación
-                    Log.e("insertPets", "La edad no es válida: " + e.getMessage());
+                    /* ===VALIDACIONES=== */
+                    // Validar el campo de edad
+                    try {
+                        if (!age.getText().toString().isEmpty())
+                            petAge = Integer.parseInt(age.getText().toString());
+                        //if (petAge > 0)
+                            //yearsPet = Integer.parseInt(String.valueOf(petAge));
+                    } catch (NumberFormatException e) {
+                        // Manejar el caso donde la cadena es vacía o no es un número válido
+                        yearsPet = 0;
+                        Log.e("insertPets", "La edad no es válida: " + e.getMessage());
+                    }
+                    // Validar campo sexo
+                    if (male.isChecked())
+                        petSex = "Macho";
+                    else if (female.isChecked())
+                        petSex = "Hembra";
+                    else
+                        // Si no se ha seleccionado ningún sexo, establece el valor como vacío
+                        petSex = "";
+                    // Validar el campo esterilización
+                    int petSterilization;
+                    if (isSterilization)
+                        petSterilization = 1;
+                    else
+                        petSterilization = 0;
+                    /*
+                    // Valida la imagen del ImageView
+                    if (photo.getDrawable() != null) {
+                        //petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
+                        if (petPic != null) {
+                            // Validar que se haya proporcionado al menos el nombre
+                            if (!petName.isEmpty()) {
+                                // Añadir al animal a la base de datos
+                                dbManager.insertPets(typeID, petName, yearsPet, petBreed, petSex, petPic,
+                                        petSterilization, petDescription);
+                                Toast.makeText(this, "Se han insertado los datos correctamente.",
+                                        Toast.LENGTH_SHORT).show();
+                                Log.i("Success", "Se han insertado los datos correctamente.");
+                                // Liberar la memoria asociada al objeto Bitmap
+                                petPic.recycle();
+                                // Informar al hilo de la interfaz de usuario que la inserción se ha completado
+                                uiHandler.sendEmptyMessage(INSERTION_COMPLETED);
+                            } else {
+                                // Mostrar un mensaje indicando que se requiere al menos el nombre
+                                Toast.makeText(this, "Por favor, ingrese el nombre del animal.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                    */
+
+                    Drawable drawable = photo.getDrawable();
+                    if (drawable instanceof BitmapDrawable) {
+                        // Si ya es un BitmapDrawable, simplemente obtenemos el Bitmap
+                        petPic = ((BitmapDrawable) drawable).getBitmap();
+                    } else {
+                        // Manejar el caso en el que no es un BitmapDrawable
+                        Log.e("DrawableError", "La imagen seleccionada no es un " +
+                                "BitmapDrawable.");
+                        // Si no es un BitmapDrawable, lo convertimos a Bitmap
+                        petPic = convertToBitmap(drawable);
+                        Log.d("convertToBitmap", "La imagen seleccionada ya es un " +
+                                "BitmapDrawable.");
+                        // Asignar una imagen por defecto
+                        petPic = BitmapFactory.decodeResource(getResources(), R.drawable.pig);
+                        Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                    }
+                    // Añadir al animal a la base de datos
+                    dbManager.insertPets(typeID, petName, yearsPet, petBreed, petSex, petPic,
+                            petSterilization, petDescription);
+                    //Toast.makeText(this, "Se han insertado los datos correctamente.",
+                            //Toast.LENGTH_SHORT).show();
+                    message = getResources().getString(R.string.correct_data);
+                    showToast(message);
+                    Log.i("Success", "Se han insertado los datos correctamente.");
+                    // Liberar la memoria asociada al objeto Bitmap
+                    petPic.recycle();
+                } catch (SQLException e) {
+                    // Manejar errores de la base de datos
+                    Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
+                    uiHandler.sendEmptyMessage(INSERTION_ERROR);
+                } catch (Exception ex) {
+                    // Manejar otros tipos de errores
+                    Log.e("GeneralError", "Ocurrió un error", ex);
+                    // Informar al hilo de la interfaz de usuario que se ha producido un error
+                    uiHandler.sendEmptyMessage(INSERTION_ERROR);
                 }
-                // Valida la imagen del ImageView
-                if (photo.getDrawable() != null) {
-                    petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
-                }
-                // Validar el campo esterilización
-                int petSterilization;
-                if (isSterilization)
-                    petSterilization = 1;
-                else
-                    petSterilization = 0;
-
-                // Añadir al animal a la base de datos
-                dbManager.insertPets(typeID, petName, yearsPet, petBreed, petSex, petPic,
-                        petSterilization, petDescription);
-                Toast.makeText(this, "Se han insertado los datos correctamente.",
-                        Toast.LENGTH_SHORT).show();
-                // Liberar la memoria asociada al objeto Bitmap
-                petPic.recycle();
-
-                Log.i("Success", "Se han insertado los datos correctamente.");
-            } catch (SQLException e) {
-                // Manejar errores de la base de datos
-                Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
-            } catch (Exception e) {
-                // Manejar otros tipos de errores
-                Log.e("GeneralError", "Ocurrió un error", e);
-            }
+            }).start();
 
             // Retroceder la pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);
@@ -240,7 +304,7 @@ public class FormPetsPetControl extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        /*
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
@@ -255,6 +319,101 @@ public class FormPetsPetControl extends AppCompatActivity {
                 Toast.makeText(this, "Error al cargar la imagen", Toast.LENGTH_SHORT)
                         .show();
             }
+        } else {
+            // Si el usuario no selecciona ninguna imagen, establece una imagen predeterminada
+            Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pig);
+            photo.setImageBitmap(defaultBitmap);
+        }
+        */
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            // Obtenemos la URI del archivo seleccionado
+            Uri selectedFileUri = data.getData();
+            // Obtiene el nombre de la imagen seleccionada
+            //String namePicture = getFileName(selectedFileUri);
+
+            // Obtenemos la imagen seleccionada por el usuario
+            //photo.setImageURI(selectedFileUri);
+            // Convertimos la URI a Bitmap y lo asignamos a petPic
+            try {
+                petPic = BitmapFactory.decodeStream(getContentResolver()
+                        .openInputStream(Objects.requireNonNull(selectedFileUri)));
+                photo.setImageDrawable(new BitmapDrawable(getResources(), petPic));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
+            photo.setImageResource(R.drawable.pig);
+            // Convertimos el recurso predeterminado a Bitmap y lo asignamos a petPic
+            petPic = BitmapFactory.decodeResource(getResources(), R.drawable.pig);
+        }
+    }
+    // Handler para manejar mensajes del hilo de fondo y actualizar la UI
+    private final Handler uiHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case INSERTION_COMPLETED:
+                    // Actualizar la interfaz de usuario si la inserción se ha completado correctamente
+                    Toast.makeText(FormPetsPetControl.this, "Se han insertado los datos " +
+                            "correctamente.", Toast.LENGTH_SHORT).show();
+                    break;
+                case INSERTION_ERROR:
+                    // Informar al usuario si se ha producido un error durante la inserción
+                    Toast.makeText(FormPetsPetControl.this, "Error al insertar los datos.",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    };
+
+    private Bitmap convertToBitmap(Drawable drawable) {
+        if (drawable == null) {
+            // Maneja el caso en que drawable es null, devolviendo un bitmap predeterminado o lanzando una excepción
+            Log.e("DrawableErrorNull", "Drawable es null");
+            // O devolver un bitmap predeterminado
+            return BitmapFactory.decodeResource(getResources(), R.drawable.pig);
+            // O puedes lanzar una excepción si quieres manejar esto en un nivel superior
+            // throw new IllegalArgumentException("Drawable no puede ser null");
+        }
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        // Verifica que el ancho y alto sean mayores que 0
+        if (width <= 0 || height <= 0) {
+            Log.e("DrawableErrorSize", "Drawable tiene dimensiones no válidas: width=" +
+                    width + ", height=" + height);
+            // Devuelve un bitmap predeterminado o lanza una excepción
+            Log.d("DrawableSizeDefault", "Bitmap predeterminado.");
+            return BitmapFactory.decodeResource(getResources(), R.drawable.pig);
+            // O puedes lanzar una excepción si quieres manejar esto en un nivel superior
+            // throw new IllegalArgumentException("Drawable tiene dimensiones no válidas: width=" +
+            // width + ", height=" + height);
+        }
+        // Especifica el tamaño del bitmap
+        //Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+    private void showToast(String message) {
+        // Verifica si estamos en el hilo principal
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            // Estamos en el hilo principal, muestra el Toast directamente
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        } else {
+            // No estamos en el hilo principal, así que usa runOnUiThread para mostrar el Toast
+            runOnUiThread(() -> Toast.makeText(FormPetsPetControl.this, message,
+                    Toast.LENGTH_SHORT).show());
         }
     }
 }
