@@ -523,6 +523,10 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     }
     // Convertir Bitmap a Byte Array
     public byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        if (bitmap == null) {
+            Log.e("getBitmapAsByteArray", "Bitmap es null.");
+            return new byte[0]; // Devuelve un array vacío o maneja el caso de manera adecuada
+        }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);

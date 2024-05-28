@@ -35,6 +35,7 @@ public class FormPetsPetControl extends AppCompatActivity {
     RadioButton male, female;
     Button accept, cancel;
     Intent i;
+    Bitmap petPic;
     int yearsPet;
     // Define un código de solicitud para identificar la respuesta de la galería
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -93,13 +94,12 @@ public class FormPetsPetControl extends AppCompatActivity {
                 // Abrir en modo escritura la base de datos
                 dbManager.open();
 
-                // Enviar datos a la BD (database_petcontrol)
                 // Recoger los datos escritos por el usuario
                 String petName = name.getText().toString();
                 int petAge = Integer.parseInt(age.getText().toString());
                 String petBreed = breed.getText().toString();
                 String petSex = male.isChecked() ? "Macho" : "Hembra";
-                Bitmap petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
+                //Bitmap petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
                 boolean isSterilization = sterilization.isChecked();
                 String petDescription = description.getText().toString();
 
@@ -113,6 +113,10 @@ public class FormPetsPetControl extends AppCompatActivity {
                     yearsPet = 0;  // o cualquier valor predeterminado que tenga sentido en tu aplicación
                     Log.e("insertPets", "La edad no es válida: " + e.getMessage());
                 }
+                // Valida la imagen del ImageView
+                if (photo.getDrawable() != null) {
+                    petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
+                }
                 // Validar el campo esterilización
                 int petSterilization;
                 if (isSterilization)
@@ -125,7 +129,6 @@ public class FormPetsPetControl extends AppCompatActivity {
                         petSterilization, petDescription);
                 Toast.makeText(this, "Se han insertado los datos correctamente.",
                         Toast.LENGTH_SHORT).show();
-
                 // Liberar la memoria asociada al objeto Bitmap
                 petPic.recycle();
 

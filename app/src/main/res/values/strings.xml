@@ -79,8 +79,9 @@
     <string name="invalidation_pass">La contraseña tiene un formato incorrecto.</string>
     <string name="txt_picture">Foto:</string>
     <string name="btn_picture">Buscar imagen…</string>
-    <string name="txt_picture_selected">Imagen.jpg</string>
     <string name="image_description">Imagen del usuario</string>
+    <string name="txt_picture_selected">Imagen.jpg</string>
+    <string name="default_image_name">Imagen predeterminada</string>
     <string name="asterik">*</string>
     <string name="fields_required">Los campos con este símbolo son obligatorios.</string>
     <string name="btn_next">Siguiente</string>

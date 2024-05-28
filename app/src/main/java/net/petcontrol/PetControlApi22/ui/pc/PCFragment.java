@@ -139,8 +139,14 @@ public class PCFragment extends Fragment {
                 // dbManager.deleteAllOwners();
                 //Log.d("DeleteAllOwners", "DeleteAllOwners");
                 // Eliminar un propietario específico
-                //dbManager.deleteOwner(9);
-                //Log.d("DeleteOwner", "DeleteOwner");
+                dbManager.deleteOwner(11);
+                Log.d("DeleteOwner", "DeleteOwner");
+                dbManager.deleteOwner(12);
+                Log.d("DeleteOwner", "DeleteOwner");
+                dbManager.deleteOwner(13);
+                Log.d("DeleteOwner", "DeleteOwner");
+                dbManager.deleteOwner(14);
+                Log.d("DeleteOwner", "DeleteOwner");
 
                 // Eliminar todas las mascotas
                 //dbManager.deleteAllPets();

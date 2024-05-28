@@ -114,13 +114,10 @@ public class RegisterPetControl extends AppCompatActivity {
                                        int position, long id) {
                 // Obtén el elemento seleccionado
                 selectedGender = parentView.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(), "Seleccionaste: " + selectedGender,
-                        Toast.LENGTH_SHORT).show();
+                Log.d("GÉNERO", "Seleccionaste: " + selectedGender);
             }
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // No hacer nada si no se selecciona nada
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
         // Establece la opción vacía como la opción seleccionada por defecto
         genders.setSelection(0, true);
@@ -130,16 +127,13 @@ public class RegisterPetControl extends AppCompatActivity {
         //--Email
         validationEmail.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable e) {
                 email = validationEmail.getText().toString();
+
                 // Validación de correo --> Si es correcto aparece en verde, sino, en rojo
                 if (emailValidation(email)) {
                     msgEmailCorrect = getResources().getString(R.string.validation_email);
@@ -158,16 +152,13 @@ public class RegisterPetControl extends AppCompatActivity {
         //--Password
         validationPass.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
                 pass = validationPass.getText().toString();
+
                 // Validación de contraseña --> Si es correcta aparece en verde, sino, en rojo
                 if (passValidation(pass)) {
                     msgPassCorrect = getResources().getString(R.string.validation_pass);
@@ -197,8 +188,8 @@ public class RegisterPetControl extends AppCompatActivity {
         });
         //--Siguiente
         next.setOnClickListener(v -> {
-            //Log.d("Email", email);
-            //Log.d("Pass", pass);
+            Log.d("Email", email);
+            Log.d("Pass", pass);
             sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
             editor = sharedPreferences.edit();
 
@@ -223,7 +214,6 @@ public class RegisterPetControl extends AppCompatActivity {
                     if (withoutDigit(nameCorrect)) {
                         // Coger los valores insertados por el usuario en cada campo
                         nameUser = name.getText().toString();
-                        picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
 
                         /* ===VALIDACIONES=== */
                         // Validar el campo de edad
@@ -235,11 +225,16 @@ public class RegisterPetControl extends AppCompatActivity {
                             yearsUser = 0;
                             Log.e("insertOwner", "La edad no es válida: " + e.getMessage());
                         }
-
-                        dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture, dateBirthday,
-                                emailSaved, passSaved);
-                        // Liberar la memoria asociada al objeto Bitmap
-                        picture.recycle();
+                        // Valida la imagen del ImageView
+                        if (pictureUser.getDrawable() != null) {
+                            //picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
+                            if (picture != null) {
+                                dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture,
+                                        dateBirthday, emailSaved, passSaved);
+                                // Liberar la memoria asociada al objeto Bitmap
+                                picture.recycle();
+                            }
+                        }
 
                         Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                         startActivity(i);
@@ -287,6 +282,7 @@ public class RegisterPetControl extends AppCompatActivity {
             validationPass.setTransformationMethod(new PasswordTransformationMethod());
         });
 
+
         //--EVENTO IMAGEFILTERBUTTON
         // Mostrar en un cuadro de diálogo los requisitos de la contraseña
         info.setOnClickListener(v1 -> showPasswordDialog());
@@ -314,8 +310,20 @@ public class RegisterPetControl extends AppCompatActivity {
 
             // Obtenemos la imagen seleccionada por el usuario
             pictureUser.setImageURI(selectedFileUri);
+            // Convertimos la URI a Bitmap y lo asignamos a picture
+            try {
+                picture = BitmapFactory.decodeStream(getContentResolver().openInputStream(Objects.requireNonNull(selectedFileUri)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // Muestra el nombre de la imagen seleccionada
             pictureSelected.setText(namePicture);
+        } else {
+            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
+            pictureUser.setImageResource(R.drawable.ferret);
+            // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
+            picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
+            pictureSelected.setText(R.string.default_image_name);
         }
     }
 /*
