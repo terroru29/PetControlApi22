@@ -138,9 +138,10 @@ public class PCFragment extends Fragment {
                 // Eliminar todos los propietarios
                 // dbManager.deleteAllOwners();
                 //Log.d("DeleteAllOwners", "DeleteAllOwners");
+
                 // Eliminar un propietario específico
-                //dbManager.deleteOwner(11);
-                //Log.d("DeleteOwner", "DeleteOwner");
+                dbManager.deleteOwner(1);
+                Log.d("DeleteOwner", "DeleteOwner");
 
                 // Eliminar todas las mascotas
                 //dbManager.deleteAllPets();
@@ -159,6 +160,7 @@ public class PCFragment extends Fragment {
             // Buscar datos en la base de datos
             try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())) {
                 dbManager.openRead();
+
                 try (Cursor cursor = dbManager.fetchAllPets()) {
                     if (cursor != null && cursor.moveToFirst()) {
                         // Datos a mostrar
@@ -265,7 +267,6 @@ public class PCFragment extends Fragment {
                             img.setImageResource(R.drawable.ferret); // Imagen por defecto si ownerPic es nulo
                         }
                     } while (cursor.moveToNext());
-                    //cursor.close();
                     // Configura la cadena de datos en el TextView
                     data.setText(userData.toString());
                 } else

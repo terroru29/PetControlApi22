@@ -99,6 +99,16 @@ public class FormPetsPetControl extends AppCompatActivity {
         //--EVENTO BUTTON
         //-Aceptar
         accept.setOnClickListener(v -> {
+            // Validar los datos antes de iniciar el hilo de inserción
+            String petName = name.getText().toString();
+
+            if (petName.isEmpty()) {
+                // Mostrar un mensaje indicando que se requiere, al menos, el nombre
+                Toast.makeText(FormPetsPetControl.this, "Por favor, ingrese el nombre " +
+                                "del animal.", Toast.LENGTH_SHORT).show();
+                return; // Detener el proceso si el nombre está vacío
+            }
+
             // Crear un nuevo hilo para realizar la inserción en segundo plano
             new Thread(() -> {
                 // Se inicializa el objeto DatabaseManagerPetControl
@@ -107,24 +117,20 @@ public class FormPetsPetControl extends AppCompatActivity {
                     dbManager.open();
 
                     // Recoger los datos escritos por el usuario
-                    String petName = name.getText().toString();
-                    //int petAge = Integer.parseInt(age.getText().toString());
                     String petBreed = breed.getText().toString();
-                    //String petSex = male.isChecked() ? "Macho" : "Hembra";
-                    //Bitmap petPic = ((BitmapDrawable) photo.getDrawable()).getBitmap();
                     boolean isSterilization = sterilization.isChecked();
                     String petDescription = description.getText().toString();
 
                     /* ===VALIDACIONES=== */
                     // Validar el campo de edad
                     try {
-                        if (!age.getText().toString().isEmpty())
+                        if (!age.getText().toString().isEmpty()) {
                             petAge = Integer.parseInt(age.getText().toString());
-                        //if (petAge > 0)
                             //yearsPet = Integer.parseInt(String.valueOf(petAge));
+                        }
                     } catch (NumberFormatException e) {
                         // Manejar el caso donde la cadena es vacía o no es un número válido
-                        yearsPet = 0;
+                        petAge = 0;
                         Log.e("insertPets", "La edad no es válida: " + e.getMessage());
                     }
                     // Validar campo sexo
@@ -133,8 +139,8 @@ public class FormPetsPetControl extends AppCompatActivity {
                     else if (female.isChecked())
                         petSex = "Hembra";
                     else
-                        // Si no se ha seleccionado ningún sexo, establece el valor como vacío
-                        petSex = "";
+
+                        petSex = "";    // Si no hay sexo marcado, el valor será una cadena vacía
                     // Validar el campo esterilización
                     int petSterilization;
                     if (isSterilization)
@@ -184,15 +190,16 @@ public class FormPetsPetControl extends AppCompatActivity {
                         Log.d("Imagen por defecto", "La imagen es predeterminada.");
                     }
                     // Añadir al animal a la base de datos
-                    dbManager.insertPets(typeID, petName, yearsPet, petBreed, petSex, petPic,
+                    dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
                             petSterilization, petDescription);
-                    //Toast.makeText(this, "Se han insertado los datos correctamente.",
-                            //Toast.LENGTH_SHORT).show();
-                    message = getResources().getString(R.string.correct_data);
-                    showToast(message);
-                    Log.i("Success", "Se han insertado los datos correctamente.");
+                    Log.d("Success", "Se han insertado los datos correctamente.");
+                    //message = getResources().getString(R.string.correct_data);
+                    //showToast(message);
                     // Liberar la memoria asociada al objeto Bitmap
-                    petPic.recycle();
+                    if (petPic != null)
+                        petPic.recycle();
+                    // Informar al hilo de la interfaz de usuario que la inserción se ha completado
+                    uiHandler.sendEmptyMessage(INSERTION_COMPLETED);
                 } catch (SQLException e) {
                     // Manejar errores de la base de datos
                     Log.e("DatabaseError", "Error al interactuar con la base de datos", e);

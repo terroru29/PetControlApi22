@@ -190,8 +190,17 @@ public class RegisterPetControl extends AppCompatActivity {
         });
         //--Siguiente
         next.setOnClickListener(v -> {
-            Log.d("Email", email);
-            Log.d("Pass", pass);
+            // Asegurarse de que email y pass no sean null antes de registrar en el log
+            if (email != null)
+                Log.d("Email", email);
+            else
+                Log.d("Email", "Email es null");
+
+            if (pass != null)
+                Log.d("Pass", pass);
+            else
+                Log.d("Pass", "Pass es null");
+
             sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
             editor = sharedPreferences.edit();
 
@@ -208,8 +217,7 @@ public class RegisterPetControl extends AppCompatActivity {
             editor.apply();
 
             if (validateEmail && validatePass) {
-                Toast.makeText(getApplicationContext(), "Datos guardados: " + emailSaved + " / "
-                        + passSaved, Toast.LENGTH_SHORT).show();
+                Log.d("Datos salvados", "Datos guardados: " + emailSaved);
 
                 nameCorrect = name.getText().toString();
                 if (!nameCorrect.isEmpty()) {
@@ -222,10 +230,21 @@ public class RegisterPetControl extends AppCompatActivity {
                         try {
                             if (ageUser > 16)
                                 yearsUser = Integer.parseInt(String.valueOf(ageUser));
+                            /*
+                            yearsUser = Integer.parseInt(String.valueOf(ageUser));
+                            if (yearsUser < 16) {
+                                Toast.makeText(getApplicationContext(), "Debe ser mayor o igual " +
+                                        "de 16 años.", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            */
                         } catch (NumberFormatException e) {
                             // Manejar el caso donde la cadena está vacía o no es un número válido
                             yearsUser = 0;
                             Log.e("insertOwner", "La edad no es válida: " + e.getMessage());
+                            //Toast.makeText(getApplicationContext(), "La edad no es válida.",
+                                    //Toast.LENGTH_LONG).show();
+                            //return;
                         }
                         /*
                         // Valida la imagen del ImageView
@@ -252,15 +271,19 @@ public class RegisterPetControl extends AppCompatActivity {
                             picture = convertToBitmap(drawable);
                             Log.d("convertToBitmap", "La imagen seleccionada ya es un " +
                                     "BitmapDrawable.");
-                            // Asignar una imagen por defecto
-                            picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
-                            Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                            if (picture == null) {
+                                // Asignar una imagen por defecto si la conversión falla
+                                picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
+                                Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                            }
                         }
                         dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture,
                                 dateBirthday, emailSaved, passSaved);
                         Log.i("Success", "Se han insertado los datos correctamente.");
+
                         // Liberar la memoria asociada al objeto Bitmap
-                        picture.recycle();
+                        if (picture != null)
+                            picture.recycle();
 
                         Intent i = new Intent(getApplicationContext(), AddPetPetControl.class);
                         startActivity(i);

@@ -94,7 +94,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 COLUMN_OWNERS_NAME + " TEXT NOT NULL, " +
                 COLUMN_OWNERS_AGE + " INTEGER, " +
                 COLUMN_OWNERS_GENDER + " TEXT, " +
-                COLUMN_OWNERS_BIRTHDAY + " TEXT, " +  //TODO formato ISO8601 (YYYY-MM-DD)
+                COLUMN_OWNERS_BIRTHDAY + " TEXT, " +  // Formato ISO8601 (YYYY-MM-DD)
                 COLUMN_OWNERS_PIC + " BLOB, " +
                 COLUMN_OWNERS_EMAIL + " TEXT NOT NULL, " +
                 COLUMN_OWNERS_PASSWORD + " TEXT NOT NULL);";

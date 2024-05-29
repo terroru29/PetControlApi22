@@ -165,6 +165,7 @@ public class LoginPetControl extends AppCompatActivity {
             termsCheck = false;
         }
 
+        // Recuperar el email y la contraseña guardados de SharedPreferences
         sharedPreferences = getSharedPreferences("PetControlPreferences", MODE_PRIVATE);
         // Le asigna una cadena vacía por defecto si no recibe valores
         savedEmail = sharedPreferences.getString("email", "");
@@ -173,7 +174,11 @@ public class LoginPetControl extends AppCompatActivity {
         Log.d("Email recuperado", savedEmail);
         Log.d("Password recuperado", savedPassword);
 
-        // Si las credenciales coinciden
+        // Asegurarse de que email y pass no sean null
+        if (email == null) email = "";
+        if (pass == null) pass = "";
+
+        // Comprobar que el email y la contraseña ingresados coinciden con las credenciales guardadas
         if (email.equals(savedEmail) && pass.equals(savedPassword)) {
             Log.i("Credenciales", email + "···" + pass);
             Toast.makeText(this, "¡Acceso permitido!", Toast.LENGTH_LONG).show();
