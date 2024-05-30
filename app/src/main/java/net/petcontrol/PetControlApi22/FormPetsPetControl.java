@@ -193,6 +193,7 @@ public class FormPetsPetControl extends AppCompatActivity {
                     dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
                             petSterilization, petDescription);
                     Log.d("Success", "Se han insertado los datos correctamente.");
+                    Log.i("Emojis", "Descripción: " + petDescription);
                     //message = getResources().getString(R.string.correct_data);
                     //showToast(message);
                     // Liberar la memoria asociada al objeto Bitmap

@@ -138,7 +138,6 @@ public class PCFragment extends Fragment {
                 // Eliminar todos los propietarios
                 // dbManager.deleteAllOwners();
                 //Log.d("DeleteAllOwners", "DeleteAllOwners");
-
                 // Eliminar un propietario específico
                 //dbManager.deleteOwner(24);
                 //Log.d("DeleteOwner", "DeleteOwner");

@@ -117,7 +117,6 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                     pic_pet = BitmapFactory.decodeResource(context.getResources(), R.drawable.pig);
                 }
                  */
-
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
                 contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_NAME, name); // Obligatorio
