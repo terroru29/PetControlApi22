@@ -7,6 +7,7 @@ import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -40,9 +41,10 @@ public class LoginPetControl extends AppCompatActivity {
     String email, savedEmail, pass, savedPassword, passwordNew, passwordConfirm, conditions,
             credentials, acceptTerms;
     boolean change = false, termsCheck;
-     SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private RegisterPetControl rpc;
+    DatabaseManagerPetControl dbMPC;
 
     // CUADRO DE DIÁLOGO
     EditText newPassword, confirmPassword;
@@ -278,6 +280,41 @@ public class LoginPetControl extends AppCompatActivity {
                 editor.putString("password", passwordConfirm);
                 // Aplica los cambios
                 editor.apply();
+
+                // Recuperar el email guardado de SharedPreferences
+                savedEmail = sharedPreferences.getString("email", "");
+
+                // Verificar que savedEmail no sea null o vacío
+                if (TextUtils.isEmpty(savedEmail))
+                    Log.e("EmailError", "El email recuperado es null o vacío.");
+                else {
+                    // Verificar que el correo no sea null antes de cambiar la contraseña
+                    if (savedEmail != null)
+                        Log.i("E-mail user", savedEmail);
+                    else
+                        Log.e("E-mail user", "savedEmail es null");
+
+                    // Verificar que la contraseña nueva no sea null antes de cambiarla
+                    if (passwordConfirm != null)
+                        Log.i("Contraseña nueva", "Contraseña nueva: " + passwordConfirm);
+                    else
+                        Log.e("Contraseña nueva", "passwordConfirm es null");
+
+                    try (DatabaseManagerPetControl dbMPC = new DatabaseManagerPetControl(this)) {
+                        // Intentar abrir la base de datos en modo escritura
+                        dbMPC.open();
+
+                        // Realizo el cambio de contraseña en la BD
+                        dbMPC.updatePasswordOwner(passwordConfirm, savedEmail);
+                        Log.d("Cambio contraseña BD", "Contraseña almacenada en la BD.");
+                    } catch (SQLException e) {
+                        // Manejar errores de la base de datos
+                        Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
+                    } catch (Exception e) {
+                        // Manejar otros tipos de errores
+                        Log.e("GeneralError", "Ocurrió un error", e);
+                    }
+                }
             }
         });
         builder.setNegativeButton("Cancelar", (dialog, which) -> {

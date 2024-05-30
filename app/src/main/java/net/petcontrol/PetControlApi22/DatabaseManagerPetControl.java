@@ -429,6 +429,18 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         return database.update(DatabaseHelperPetControl.TABLE_OWNERS, contentValues,
                 DatabaseHelperPetControl.COLUMN_OWNERS_ID + " = " + id, null);
     }
+    // Actualizar contraseña usuario
+    public int updatePasswordOwner(String pass, String email) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);
+
+        String whereClause = DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL + " = ?";
+        // Valores que reemplazan los marcadores de posición (?) en la cláusula 'Where'
+        String[] whereArgs = new String[]{email};
+
+        return database.update(DatabaseHelperPetControl.TABLE_OWNERS, contentValues,
+                whereClause, whereArgs);
+    }
     // Actualizar visita al veterinario
     public int updateVisitVet(int id, int id_pet, String name, String loc, String date,
                               String reason, String diagnosis, String treatment, double price) {
