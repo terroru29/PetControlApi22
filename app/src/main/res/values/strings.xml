@@ -121,6 +121,7 @@
     <string name="hint_description">Descripción</string>
     <string name="incorrect_age">La edad no puede ser negativa.</string>
     <string name="correct_data">Se han insertado los datos correctamente.</string>
+    <string name="name_animal_required">Por favor, ingrese el nombre del animal.</string>
 
     <!-- FAST CONFIGURATION -->
     <string name="title_fast_configuration">Configuración rápida</string>

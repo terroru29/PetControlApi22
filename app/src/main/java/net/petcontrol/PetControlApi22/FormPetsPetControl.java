@@ -17,6 +17,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,12 +29,16 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FormPetsPetControl extends AppCompatActivity {
     EditText name, age, breed, description;
@@ -43,7 +49,7 @@ public class FormPetsPetControl extends AppCompatActivity {
     Intent i;
     Bitmap petPic;
     String petSex, message;
-    int petAge, yearsPet;
+    int petAge;
     // Define un código de solicitud para identificar la respuesta de la galería
     private static final int PICK_IMAGE_REQUEST = 1;
     // Constantes para identificar los mensajes
@@ -96,6 +102,33 @@ public class FormPetsPetControl extends AppCompatActivity {
             startActivityForResult(gallery, PICK_IMAGE_REQUEST);
         });
 
+
+        //--EVENTO EDITTEXT (descripción)
+        // Escucha los cambios de texto en el EditText
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            // Cuando el usuario ha terminado de escribir
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Convierte a cadena lo que el usuario ha escrito en el campo
+                String text = s.toString();
+                // Convierte el texto a emojis
+                String textWithEmojis = convertTextToEmoji(text);
+
+                if (!text.equals(textWithEmojis)) {
+                    description.removeTextChangedListener(this); // Evita bucles infinitos
+                    description.setText(textWithEmojis);
+                    // Mantiene el cursor al final
+                    description.setSelection(textWithEmojis.length());
+                    // Reanuda la escucha de cambios de texto
+                    description.addTextChangedListener(this);
+                }
+            }
+        });
+
         //--EVENTO BUTTON
         //-Aceptar
         accept.setOnClickListener(v -> {
@@ -103,9 +136,9 @@ public class FormPetsPetControl extends AppCompatActivity {
             String petName = name.getText().toString();
 
             if (petName.isEmpty()) {
+                message = getResources().getString(R.string.name_animal_required);
                 // Mostrar un mensaje indicando que se requiere, al menos, el nombre
-                Toast.makeText(FormPetsPetControl.this, "Por favor, ingrese el nombre " +
-                                "del animal.", Toast.LENGTH_SHORT).show();
+                showToast(message);
                 return; // Detener el proceso si el nombre está vacío
             }
 
@@ -139,7 +172,6 @@ public class FormPetsPetControl extends AppCompatActivity {
                     else if (female.isChecked())
                         petSex = "Hembra";
                     else
-
                         petSex = "";    // Si no hay sexo marcado, el valor será una cadena vacía
                     // Validar el campo esterilización
                     int petSterilization;
@@ -189,6 +221,7 @@ public class FormPetsPetControl extends AppCompatActivity {
                         petPic = BitmapFactory.decodeResource(getResources(), R.drawable.pig);
                         Log.d("Imagen por defecto", "La imagen es predeterminada.");
                     }
+                    //TODO Probar que se añade la descripción con el mapeo de emojis
                     // Añadir al animal a la base de datos
                     dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
                             petSterilization, petDescription);
@@ -212,7 +245,6 @@ public class FormPetsPetControl extends AppCompatActivity {
                     uiHandler.sendEmptyMessage(INSERTION_ERROR);
                 }
             }).start();
-
             // Retroceder la pantalla
             i = new Intent(getApplicationContext(), AddPetPetControl.class);
             startActivity(i);
@@ -423,5 +455,31 @@ public class FormPetsPetControl extends AppCompatActivity {
             runOnUiThread(() -> Toast.makeText(FormPetsPetControl.this, message,
                     Toast.LENGTH_SHORT).show());
         }
+    }
+    // Define un mapa de texto a emoji
+    private final Map<String, String> emojiMap = new HashMap<String, String>() {{
+        put(":)", "\uD83D\uDE42"); // 😊 Cara sonriente
+        put(":(", "\uD83D\uDE41"); // 🙁 Cara triste
+        put(";)", "\uD83D\uDE09"); // 😉 Guiño
+        put(";(", "\uD83D\uDE22"); // 😢 Cara con lagrimita
+    }};
+    // Método para reemplazar texto con emojis
+    public String convertTextToEmoji(String text) {
+        // Expresión regular para encontrar los emoticonos en el texto
+        Pattern pattern = Pattern.compile(":\\)|:\\(|;\\)|;\\(");
+        Matcher matcher = pattern.matcher(text);
+
+        // Reemplaza cada emoticono encontrado con su correspondiente emoji
+        StringBuffer sb = new StringBuffer();
+
+        while (matcher.find()) {
+            String emoticon = matcher.group();
+            String emoji = emojiMap.get(emoticon);
+
+            if (emoji != null)
+                matcher.appendReplacement(sb, emoji);
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 }
