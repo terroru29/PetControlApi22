@@ -145,6 +145,10 @@ public class PCFragment extends Fragment {
                 // Eliminar todas las mascotas
                 //dbManager.deleteAllPets();
                 //Log.d("DeleteAllPets", "DeleteAllPets");
+                // Eliminar una mascota
+                //dbManager.deletePet(17);
+                //Log.d("DeletePet", "DeletePet");
+
 
             } catch (SQLException e) {
                 // Manejar errores de la base de datos

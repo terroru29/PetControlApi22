@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -480,7 +479,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 new String[]{String.valueOf(id)});
     }
     // Eliminar mascota
-    public void deletePet(int id, int id_type) {
+    public void deletePet(int id) {
         database.delete(DatabaseHelperPetControl.TABLE_PETS,
                 DatabaseHelperPetControl.COLUMN_PETS_ID + " = " + id, null);
     }

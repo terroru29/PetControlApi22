@@ -221,7 +221,7 @@
         android:autofillHints="name"
         android:ems="10"
         android:hint="@string/hint_description"
-        android:inputType="textMultiLine"
+        android:inputType="textImeMultiLine"
         android:lines="5"
         android:maxLines="4"
         android:minLines="1"
