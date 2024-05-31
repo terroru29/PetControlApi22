@@ -149,7 +149,6 @@ public class PCFragment extends Fragment {
                 //dbManager.deletePet(17);
                 //Log.d("DeletePet", "DeletePet");
 
-
             } catch (SQLException e) {
                 // Manejar errores de la base de datos
                 Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
