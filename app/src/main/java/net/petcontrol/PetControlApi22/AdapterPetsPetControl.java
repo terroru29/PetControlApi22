@@ -25,16 +25,16 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AdapterPetsPetControl extends BaseAdapter {
     private TextToSpeech textInVoice;
-    private Context context;
-    private int[] images;
-    private String[] namesPets;
-    private boolean[] isImageChanged;
-    private Handler mainHandler;
+    private final Context context;
+    private final int[] images;
+    private final String[] namesPets;
+    private final boolean[] isImageChanged;
+    private final Handler mainHandler;
     DatabaseManagerPetControl dbPetControl;
-    private List<TypePetsPetControl> typePets;  // Lista para almacenar los tipos de mascotas
+    private final List<TypePetsPetControl> typePets;  // Lista para almacenar los tipos de mascotas
 
     // Se garantiza que los cambios realizados por un hilo sean visibles para los demás hilos
-    private volatile AtomicInteger id = new AtomicInteger();
+    private final AtomicInteger id = new AtomicInteger();
 
 
     /**
