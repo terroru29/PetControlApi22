@@ -49,7 +49,7 @@ public class FormPetsPetControl extends AppCompatActivity {
     Intent i;
     Bitmap petPic;
     String petSex, message;
-    int petAge;
+    int typeID, petAge;
     // Define un código de solicitud para identificar la respuesta de la galería
     private static final int PICK_IMAGE_REQUEST = 1;
     // Constantes para identificar los mensajes
@@ -79,7 +79,7 @@ public class FormPetsPetControl extends AppCompatActivity {
 
         // Recuperar el ID y tipo de animal pasados de la actividad anterior
         @SuppressLint("UnsafeIntentLaunch") Intent intent = getIntent();
-        int typeID = intent.getIntExtra("typeID", -1);
+        typeID = intent.getIntExtra("typeID", -1);
         //String typeName = intent.getStringExtra("typeName");
 
         /*
@@ -163,7 +163,7 @@ public class FormPetsPetControl extends AppCompatActivity {
                         }
                     } catch (NumberFormatException e) {
                         // Manejar el caso donde la cadena es vacía o no es un número válido
-                        petAge = 0;
+                        petAge = 16;
                         Log.e("insertPets", "La edad no es válida: " + e.getMessage());
                     }
                     // Validar campo sexo
@@ -174,11 +174,8 @@ public class FormPetsPetControl extends AppCompatActivity {
                     else
                         petSex = "";    // Si no hay sexo marcado, el valor será una cadena vacía
                     // Validar el campo esterilización
-                    int petSterilization;
-                    if (isSterilization)
-                        petSterilization = 1;
-                    else
-                        petSterilization = 0;
+                    int petSterilization = isSterilization ? 1 : 0;
+
                     /*
                     // Valida la imagen del ImageView
                     if (photo.getDrawable() != null) {
@@ -217,18 +214,21 @@ public class FormPetsPetControl extends AppCompatActivity {
                         petPic = convertToBitmap(drawable);
                         Log.d("convertToBitmap", "La imagen seleccionada ya es un " +
                                 "BitmapDrawable.");
-                        // Asignar una imagen por defecto
-                        petPic = BitmapFactory.decodeResource(getResources(), R.drawable.pig);
-                        Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                        // Validar y asignar la imagen del ImageView
+                        if (petPic == null) {
+                            // Asignar una imagen por defecto
+                            int defaultImageResId = getDefaultImageResIdForAnimal(typeID);
+
+                            petPic = BitmapFactory.decodeResource(getResources(), defaultImageResId);
+                            Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                        }
                     }
-                    //TODO Probar que se añade la descripción con el mapeo de emojis
                     // Añadir al animal a la base de datos
                     dbManager.insertPets(typeID, petName, petAge, petBreed, petSex, petPic,
                             petSterilization, petDescription);
                     Log.d("Success", "Se han insertado los datos correctamente.");
                     Log.i("Emojis", "Descripción: " + petDescription);
-                    //message = getResources().getString(R.string.correct_data);
-                    //showToast(message);
+
                     // Liberar la memoria asociada al objeto Bitmap
                     if (petPic != null)
                         petPic.recycle();
@@ -383,10 +383,12 @@ public class FormPetsPetControl extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else {
-            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
-            photo.setImageResource(R.drawable.pig);
+            // Si no se selecciona ninguna imagen, asignar la imagen predeterminada según el tipo de animal
+            int defaultImageResId = getDefaultImageResIdForAnimal(typeID);
             // Convertimos el recurso predeterminado a Bitmap y lo asignamos a petPic
-            petPic = BitmapFactory.decodeResource(getResources(), R.drawable.pig);
+            petPic = BitmapFactory.decodeResource(getResources(), defaultImageResId);
+            // Si el usuario no selecciona imagen, asignamos una imagen predeterminada
+            photo.setImageResource(defaultImageResId);
         }
     }
     // Handler para manejar mensajes del hilo de fondo y actualizar la UI
@@ -411,12 +413,72 @@ public class FormPetsPetControl extends AppCompatActivity {
     };
 
     private Bitmap convertToBitmap(Drawable drawable) {
+        // Maneja el caso en que drawable es null
         if (drawable == null) {
-            // Maneja el caso en que drawable es null, devolviendo un bitmap predeterminado o lanzando una excepción
+            // Devuelve un bitmap predeterminado
             Log.e("DrawableErrorNull", "Drawable es null");
-            // O devolver un bitmap predeterminado
-            return BitmapFactory.decodeResource(getResources(), R.drawable.pig);
-            // O puedes lanzar una excepción si quieres manejar esto en un nivel superior
+            /*
+            int defaultImageResource;
+            // Asignar una imagen predeterminada según el animal seleccionado
+            switch (typeID) {
+                case 1:
+                    defaultImageResource =  R.drawable.dog_default;
+                    Log.d("Imagen perro", "Imagen de perro.");
+                    break;
+                case 2:
+                    defaultImageResource =  R.drawable.cat_default;
+                    Log.d("Imagen gato", "Imagen de gato.");
+                    break;
+                case 3:
+                    defaultImageResource =  R.drawable.hamster_default;
+                    Log.d("Imagen hámster", "Imagen de hámster.");
+                    break;
+                case 4:
+                    defaultImageResource =  R.drawable.fish_default;
+                    Log.d("Imagen pez", "Imagen de pez.");
+                    break;
+                case 5:
+                    defaultImageResource =  R.drawable.mouse_default;
+                    Log.d("Imagen ratón", "Imagen de ratón.");
+                    break;
+                case 6:
+                    defaultImageResource =  R.drawable.bird_default;
+                    Log.d("Imagen pájaro", "Imagen de pájaro.");
+                    break;
+                case 7:
+                    defaultImageResource =  R.drawable.rabbit_default;
+                    Log.d("Imagen conejo", "Imagen de conejo.");
+                    break;
+                case 8:
+                    defaultImageResource =  R.drawable.tortoise_default;
+                    Log.d("Imagen tortuga", "Imagen de tortuga.");
+                    break;
+                case 9:
+                    defaultImageResource =  R.drawable.ferret_default;
+                    Log.d("Imagen hurón", "Imagen de hurón.");
+                    break;
+                case 10:
+                    defaultImageResource =  R.drawable.pig_default;
+                    Log.d("Imagen cerdo", "Imagen de cerdo.");
+                    break;
+                case 11:
+                    defaultImageResource =  R.drawable.tarantula_default;
+                    Log.d("Imagen tarántula", "Imagen de tarántula.");
+                    break;
+                case 12:
+                    defaultImageResource =  R.drawable.snake_default;
+                    Log.d("Imagen serpiente", "Imagen de serpiente.");
+                    break;
+                default:
+                    // Imagen por defecto para animales no especificados
+                    defaultImageResource =  R.drawable.animal_default;
+                    Log.d("Imagen por defecto", "No hay animal.");
+                    break;
+            }
+            */
+            // Devuelve un bitmap predeterminado según el animal
+            return BitmapFactory.decodeResource(getResources(), getDefaultImageResIdForAnimal(typeID));
+            // Lanza una excepción para manejarlo en un nivel superior
             // throw new IllegalArgumentException("Drawable no puede ser null");
         }
         if (drawable instanceof BitmapDrawable) {
@@ -430,10 +492,10 @@ public class FormPetsPetControl extends AppCompatActivity {
         if (width <= 0 || height <= 0) {
             Log.e("DrawableErrorSize", "Drawable tiene dimensiones no válidas: width=" +
                     width + ", height=" + height);
-            // Devuelve un bitmap predeterminado o lanza una excepción
+            // Devuelve un bitmap predeterminado basado en el tipo de animal
             Log.d("DrawableSizeDefault", "Bitmap predeterminado.");
-            return BitmapFactory.decodeResource(getResources(), R.drawable.pig);
-            // O puedes lanzar una excepción si quieres manejar esto en un nivel superior
+            return BitmapFactory.decodeResource(getResources(), getDefaultImageResIdForAnimal(typeID));
+            // Lanza una excepción para manejarlo en un nivel superior
             // throw new IllegalArgumentException("Drawable tiene dimensiones no válidas: width=" +
             // width + ", height=" + height);
         }
@@ -481,5 +543,30 @@ public class FormPetsPetControl extends AppCompatActivity {
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+    // Se le asigna a cada animal una imagen predeterminada
+    private final Map<Integer, Integer> defaultAnimalImages = new HashMap<Integer, Integer>() {{
+        put(1, R.drawable.dog_default); // Perros
+        put(2, R.drawable.cat_default); // Gatos
+        put(3, R.drawable.hamster_default); // Hámsters
+        put(4, R.drawable.fish_default); // Peces
+        put(5, R.drawable.mouse_default); // Ratones
+        put(6, R.drawable.bird_default); // Pájaros
+        put(7, R.drawable.rabbit_default); // Ratones
+        put(8, R.drawable.tortoise_default); // Tortugas
+        put(9, R.drawable.ferret_default); // Hurones
+        put(10, R.drawable.pig_default); // Cerdos
+        put(11, R.drawable.tarantula_default); // Tarántulas
+        put(12, R.drawable.snake_default); // Serpientes
+    }};
+    // Selecciona la imagen asignada a ese animal o pone una genérica
+    private int getDefaultImageResIdForAnimal(int typeId) {
+        Integer defaultImageResId = defaultAnimalImages.get(typeId);
+
+        if (defaultImageResId != null)
+            return defaultImageResId;
+        else
+            // Devuelve una imagen por defecto genérica si el tipo de animal no tiene una específica
+            return R.drawable.animal_default;
     }
 }

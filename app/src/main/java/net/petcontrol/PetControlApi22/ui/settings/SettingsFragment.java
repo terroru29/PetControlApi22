@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import net.petcontrol.PetControlApi22.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
-
     private FragmentSettingsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
