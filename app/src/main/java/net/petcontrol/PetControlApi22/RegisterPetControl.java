@@ -272,9 +272,30 @@ public class RegisterPetControl extends AppCompatActivity {
                             Log.d("convertToBitmap", "La imagen seleccionada ya es un " +
                                     "BitmapDrawable.");
                             if (picture == null) {
-                                // Asignar una imagen por defecto si la conversión falla
-                                picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
-                                Log.d("Imagen por defecto", "La imagen es predeterminada.");
+                                // Asignar una imagen predeterminada según el género seleccionado
+                                switch (selectedGender) {
+                                    case "Femenino":
+                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.female);
+                                        Log.d("Imagen femenino", "Imagen de mujer.");
+                                        break;
+                                    case "Masculino":
+                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.male);
+                                        Log.d("Imagen masculino", "Imagen de hombre.");
+                                        break;
+                                    case "No binario":
+                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.not_binary);
+                                        Log.d("Imagen no binario", "Imagen de persona no binaria.");
+                                        break;
+                                    case "Genero fluido":
+                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.gender_fluid);
+                                        Log.d("Imagen género fluído", "Imagen de género fluído.");
+                                        break;
+                                    default:
+                                        // Imagen por defecto para géneros no especificados
+                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.person);
+                                        Log.d("Imagen por defecto", "No hay género.");
+                                        break;
+                                }
                             }
                         }
                         dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture,
@@ -367,10 +388,37 @@ public class RegisterPetControl extends AppCompatActivity {
             // Muestra el nombre de la imagen seleccionada
             pictureSelected.setText(namePicture);
         } else {
+            /*
             // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
             pictureUser.setImageResource(R.drawable.ferret);
             // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
             picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
+            */
+            // Asignar una imagen predeterminada según el género seleccionado
+            switch (selectedGender) {
+                case "Femenino":
+                    picture = BitmapFactory.decodeResource(getResources(), R.drawable.female);
+                    Log.d("Imagen femenino", "Imagen de mujer.");
+                    break;
+                case "Masculino":
+                    picture = BitmapFactory.decodeResource(getResources(), R.drawable.male);
+                    Log.d("Imagen masculino", "Imagen de hombre.");
+                    break;
+                case "No binario":
+                    picture = BitmapFactory.decodeResource(getResources(), R.drawable.not_binary);
+                    Log.d("Imagen no binario", "Imagen de persona no binaria.");
+                    break;
+                case "Genero fluido":
+                    picture = BitmapFactory.decodeResource(getResources(), R.drawable.gender_fluid);
+                    Log.d("Imagen género fluído", "Imagen de género fluído.");
+                    break;
+                default:
+                    // Imagen por defecto para géneros no especificados
+                    picture = BitmapFactory.decodeResource(getResources(), R.drawable.person);
+                    Log.d("Imagen por defecto", "No hay género.");
+                    break;
+            }
+            pictureUser.setImageBitmap(picture);
             pictureSelected.setText(R.string.default_image_name);
             /*
             // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
@@ -549,12 +597,38 @@ public class RegisterPetControl extends AppCompatActivity {
         dialog.show();
     }
     private Bitmap convertToBitmap(Drawable drawable) {
+        // Maneja el caso en que drawable es null
         if (drawable == null) {
-            // Maneja el caso en que drawable es null, devolviendo un bitmap predeterminado o lanzando una excepción
+            // Devuelve un bitmap predeterminado
             Log.e("DrawableErrorNull", "Drawable es null");
-            // O devolver un bitmap predeterminado
-            return BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
-            // O puedes lanzar una excepción si quieres manejar esto en un nivel superior
+            int defaultImageResource;
+            // Asignar una imagen predeterminada según el género seleccionado
+            switch (selectedGender) {
+                case "Femenino":
+                    defaultImageResource =  R.drawable.female;
+                    Log.d("Imagen femenino", "Imagen de mujer.");
+                    break;
+                case "Masculino":
+                    defaultImageResource =  R.drawable.male;
+                    Log.d("Imagen masculino", "Imagen de hombre.");
+                    break;
+                case "No binario":
+                    defaultImageResource =  R.drawable.not_binary;
+                    Log.d("Imagen no binario", "Imagen de persona no binaria.");
+                    break;
+                case "Genero fluido":
+                    defaultImageResource =  R.drawable.gender_fluid;
+                    Log.d("Imagen género fluído", "Imagen de género fluído.");
+                    break;
+                default:
+                    // Imagen por defecto para géneros no especificados
+                    defaultImageResource =  R.drawable.person;
+                    Log.d("Imagen por defecto", "No hay género.");
+                    break;
+            }
+            // Devuelve un bitmap predeterminado según el género
+            return BitmapFactory.decodeResource(getResources(), defaultImageResource);
+            // Lanza una excepción para manejarlo en un nivel superior
             // throw new IllegalArgumentException("Drawable no puede ser null");
         }
         if (drawable instanceof BitmapDrawable) {

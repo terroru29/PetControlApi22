@@ -163,19 +163,11 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
         // Verifica si ya existe un propietario almacenado
-        if (isOwnerStored()) {
+        /*if (isOwnerStored()) {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
-        } else {
+        } else {*/
             try {
-                /*
-                // Validar el campo de la imagen
-                if (pic_owner == null) {
-                    // Cargar la imagen predeterminada desde los recursos
-                    pic_owner = BitmapFactory.decodeResource(context.getResources(), R.drawable.ferret);
-                }
-                */
-
                 ContentValues contentValues = new ContentValues();
                 // Verifica cada campo y si es nulo, inserta un valor por defecto o null
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);   // Obligatorio
@@ -203,7 +195,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 // Manejo de cualquier excepción que pueda ocurrir
                 Log.e("DatabaseManagerPetControl", "Exception: " + e.getMessage(), e);
             }
-        }
+        //}
     }
     /**
      * Inserta una nueva visita al veterinario en la base de datos.
