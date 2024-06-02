@@ -9,7 +9,7 @@
         android:id="@+id/txtTypeInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:text=""
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -25,12 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/forward"
+        android:src="@drawable/forward"
         app:layout_constraintBottom_toBottomOf="@+id/txtTypeInformation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txtTypeInformation"
         app:layout_constraintTop_toTopOf="@+id/txtTypeInformation"
-        app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/forward" />
+        app:layout_constraintVertical_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

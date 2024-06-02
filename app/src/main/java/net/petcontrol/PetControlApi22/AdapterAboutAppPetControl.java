@@ -35,7 +35,7 @@ public class AdapterAboutAppPetControl extends ArrayAdapter<AboutTheAppPetContro
         ImageView arrows = convertView.findViewById(R.id.ivForward);
 
         // Modificar según valor almacenado
-        textInformation.setText(atpPC.information);
+        textInformation.setText(Objects.requireNonNull(atpPC).information);
 
 
         //--EVENTO ITEM LISTVIEW
@@ -55,8 +55,11 @@ public class AdapterAboutAppPetControl extends ArrayAdapter<AboutTheAppPetContro
                     break;
             }
             // Iniciar la actividad si el intent no es null
-            if (intent != null)
+            if (intent != null) {
+                // Esta nueva actividad debe iniciarse en una nueva tarea
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getContext().startActivity(intent);
+            }
         });
         return convertView;
     }

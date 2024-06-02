@@ -5,14 +5,14 @@ import java.time.LocalDate;
 /**
  *  MODELO de Recordatorios
  */
-public class RemindersPetControl {
+public class EventsPetControl {
     // Atributos
     private LocalDate date;
     private String content;
 
 
     // Constructor
-    public RemindersPetControl(LocalDate date, String content) {
+    public EventsPetControl(LocalDate date, String content) {
         this.date = date;
         this.content = content;
     }

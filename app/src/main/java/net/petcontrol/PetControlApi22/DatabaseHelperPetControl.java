@@ -57,12 +57,13 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     public static final String COLUMN_VISITS_TREATMENT = "Treatment";
     public static final String COLUMN_VISITS_PRICE = "VisitPrice";
 
-    // Tabla de RECORDATORIOS
-    public static final String TABLE_REMINDERS = "Reminders";
-    public static final String COLUMN_REMINDERS_ID = "IDReminder";
-    public static final String COLUMN_REMINDERS_ID_PET = "IDPetReminder";
-    public static final String COLUMN_REMINDERS_DATE = "DateReminder";
-    public static final String COLUMN_REMINDERS_CONTENT = "ContentReminder";
+    // Tabla de EVENTOS
+    //TODO añadir título de columna (TEXT)
+    public static final String TABLE_EVENTS = "Events";
+    public static final String COLUMN_EVENTS_ID = "IDEvent";
+    public static final String COLUMN_EVENTS_ID_PET = "IDPetEvent";
+    public static final String COLUMN_EVENTS_DATE = "DateEvent";
+    public static final String COLUMN_EVENTS_CONTENT = "ContentEvent";
 
 
     // --- CREACIÓN TABLAS ---
@@ -114,14 +115,15 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 "FOREIGN KEY (" + COLUMN_VISITS_ID_PET + ") " +
                 "REFERENCES TABLE_PETS(COLUMN_PETS_ID));";
 
-    // SQL para crear la tabla de recordatorios
-    private static final String TABLE_REMINDERS_CREATE =
-        "CREATE TABLE if not exists " + TABLE_REMINDERS + " (" +
-                COLUMN_REMINDERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_REMINDERS_ID_PET + " INTEGER, " +
-                COLUMN_REMINDERS_DATE + " TEXT, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
-                COLUMN_REMINDERS_CONTENT + " TEXT, " +
-                "FOREIGN KEY (" + COLUMN_REMINDERS_ID_PET + ") " +
+    // SQL para crear la tabla de eventos
+    //TODO añadir título de columna (TEXT)
+    private static final String TABLE_EVENTS_CREATE =
+        "CREATE TABLE if not exists " + TABLE_EVENTS + " (" +
+                COLUMN_EVENTS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_EVENTS_ID_PET + " INTEGER, " +
+                COLUMN_EVENTS_DATE + " TEXT, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
+                COLUMN_EVENTS_CONTENT + " TEXT, " +
+                "FOREIGN KEY (" + COLUMN_EVENTS_ID_PET + ") " +
                 "REFERENCES TABLE_PETS(COLUMN_PETS_ID));";
 
 
@@ -153,10 +155,10 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
         if (!isTableExists(db, TABLE_VISITS_VET))
             // Si no existe, se crea
             db.execSQL(TABLE_VISITS_VET_CREATE);
-        // Verificar si la tabla recordatorios existe
-        if (!isTableExists(db, TABLE_REMINDERS))
+        // Verificar si la tabla eventos existe
+        if (!isTableExists(db, TABLE_EVENTS))
             // Si no existe, se crea
-            db.execSQL(TABLE_REMINDERS_CREATE);
+            db.execSQL(TABLE_EVENTS_CREATE);
     }
 
 
@@ -167,7 +169,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PETS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_OWNERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VISITS_VET);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         onCreate(db);
     }
 

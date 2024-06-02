@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toEndOf="@+id/txtUserGender"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.091" />
+        app:layout_constraintVertical_bias="0.083" />
 
     <TextView
         android:id="@+id/txtUserGender"
@@ -29,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toEndOf="@+id/imgUser"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.092" />
+        app:layout_constraintVertical_bias="0.083" />
 
     <ImageView
         android:id="@+id/imgUser"
@@ -54,7 +54,7 @@
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toEndOf="@+id/imgUser"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintVertical_bias="0.027" />
 
     <ListView
         android:id="@+id/lvSettings"
@@ -75,10 +75,10 @@
         android:src="@drawable/cloud_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.636" />
+        app:layout_constraintVertical_bias="0.61" />
 
     <TextView
         android:id="@+id/txtNumVersion"
@@ -89,7 +89,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/txtVersion"
-        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintHorizontal_bias="0.066"
         app:layout_constraintStart_toStartOf="@+id/txtVersion"
         app:layout_constraintTop_toBottomOf="@+id/txtVersion"
         app:layout_constraintVertical_bias="0.0" />

@@ -1,14 +1,14 @@
-package net.petcontrol.PetControlApi22.ui.reminders;
+package net.petcontrol.PetControlApi22.ui.events;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class RemindersViewModel extends ViewModel {
+public class EventsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public RemindersViewModel() {
+    public EventsViewModel() {
         mText = new MutableLiveData<>();
         //mText.setValue("This is reminders fragment");
     }

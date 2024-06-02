@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="net.petcontrol.PetControlApi22.ui.reminders.RemindersFragment"
-        android:label="@string/title_reminders"
-        tools:layout="@layout/fragment_reminders" />
+        android:name="net.petcontrol.PetControlApi22.ui.events.EventsFragment"
+        android:label="@string/title_events"
+        tools:layout="@layout/fragment_events" />
 
     <fragment
         android:id="@+id/navigation_calendar"

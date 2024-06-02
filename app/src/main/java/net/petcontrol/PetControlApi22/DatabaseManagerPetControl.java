@@ -224,19 +224,20 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         // Inserta la visita al veterinario en su respectiva tabla
         database.insert(DatabaseHelperPetControl.TABLE_VISITS_VET, null, contentValues);
     }
+    //TODO añadir la columna título
     /**
-     * Inserta un nuevo recordatorio en la base de datos.
+     * Inserta un nuevo evento en la base de datos.
      *
-     * @param date    La fecha del recordatorio con formato aaaa-MM-dd HH:mm:ss.
-     * @param content El contenido del recordatorio.
+     * @param date    La fecha del evento con formato aaaa-MM-dd HH:mm:ss.
+     * @param content El contenido del evento.
      */
-    public void insertReminder(String date, String content) {
+    public void insertEvent(String date, String content) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelperPetControl.COLUMN_REMINDERS_DATE, date);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_REMINDERS_CONTENT, content);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_DATE, date);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT, content);
 
-        // Inserta el recordatorio en su respectiva tabla
-        database.insert(DatabaseHelperPetControl.TABLE_REMINDERS, null, contentValues);
+        // Inserta el evento en su respectiva tabla
+        database.insert(DatabaseHelperPetControl.TABLE_EVENTS, null, contentValues);
     }
 
 
@@ -359,14 +360,15 @@ public class DatabaseManagerPetControl implements AutoCloseable {
             cursor.moveToFirst();
         return cursor;
     }
-    // Obtener todas los recordatorios
-    public Cursor fetchAllReminders() {
-        String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_REMINDERS_ID,
-                DatabaseHelperPetControl.COLUMN_REMINDERS_ID_PET,
-                DatabaseHelperPetControl.COLUMN_REMINDERS_DATE,
-                DatabaseHelperPetControl.COLUMN_REMINDERS_CONTENT};
+    // Obtener todas los eventos
+    //TODO añadir la columna título
+    public Cursor fetchAllEvents() {
+        String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_EVENTS_ID,
+                DatabaseHelperPetControl.COLUMN_EVENTS_ID_PET,
+                DatabaseHelperPetControl.COLUMN_EVENTS_DATE,
+                DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT};
 
-        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_REMINDERS, columns, null,
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_EVENTS, columns, null,
                 null, null, null, null);
 
         if (cursor != null)
@@ -448,13 +450,14 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                     DatabaseHelperPetControl.COLUMN_VISITS_ID_PET + " = " + id_pet + " AND " +
                     DatabaseHelperPetControl.COLUMN_VISITS_DATE + " = " + date, null);
     }
-    // Actualizar recordatorios
-    public int updateReminder(int id, String date, String content) {
+    // Actualizar eventos
+    //TODO añadir la columna título
+    public int updateEvent(int id, String date, String content) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelperPetControl.COLUMN_REMINDERS_DATE, date);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_REMINDERS_CONTENT, content);
-        return database.update(DatabaseHelperPetControl.TABLE_REMINDERS, contentValues,
-                DatabaseHelperPetControl.COLUMN_REMINDERS_ID + " = " + id, null);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_DATE, date);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT, content);
+        return database.update(DatabaseHelperPetControl.TABLE_EVENTS, contentValues,
+                DatabaseHelperPetControl.COLUMN_EVENTS_ID + " = " + id, null);
     }
 
 
@@ -495,10 +498,11 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                         DatabaseHelperPetControl.COLUMN_VISITS_ID_PET + " = " + id_pet + " AND " +
                 DatabaseHelperPetControl.COLUMN_VISITS_DATE + " = " + date, null);
     }
-    // Eliminar recordatorio
-    public void deleteReminder(int id) {
-        database.delete(DatabaseHelperPetControl.TABLE_REMINDERS,
-                DatabaseHelperPetControl.COLUMN_REMINDERS_ID + " = " + id, null);
+    // Eliminar evento
+    //TODO añadir la columna título
+    public void deleteEvent(int id) {
+        database.delete(DatabaseHelperPetControl.TABLE_EVENTS,
+                DatabaseHelperPetControl.COLUMN_EVENTS_ID + " = " + id, null);
     }
 
 
@@ -534,7 +538,6 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        // quality 100
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
     }

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.reminders.RemindersFragment">
+    tools:context=".ui.events.EventsFragment">
 
     <TextView
-        android:id="@+id/text_reminders"
+        android:id="@+id/text_events"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recordatorios"
+        android:text="Eventos"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="45sp"
@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvReminders"
+        android:id="@+id/rvEvents"
         android:layout_width="330dp"
         android:layout_height="537dp"
         app:layout_constraintBottom_toBottomOf="parent"

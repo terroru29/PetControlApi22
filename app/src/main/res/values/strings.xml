@@ -2,7 +2,7 @@
     <string name="app_name">PetControl</string>
 
     <!-- BOTTOM VIEW -->
-    <string name="title_reminders">Recordatorios</string>
+    <string name="title_events">Eventos</string>
     <string name="title_calendar">Calendario</string>
     <string name="title_PC">PetControl</string>
     <string name="title_location">Ubicación</string>
@@ -161,7 +161,7 @@
     <string name="version_and_num">Versión: 1.0.0b</string>
     <string name="user_agreement">Acuerdo de usuario</string>
     <string name="privacy_policy">Política de privacidad</string>
-    <string name="user_experience_program">Programa de experiencia de usuario</string>
+    <string name="user_experience_program">Experiencia de usuario</string>
     <!-- ACUERDO DE USUARIO -->
     <string name="user_agreement_title">Acuerdo con el usuario de PetControl</string>
     <string name="agreement">

@@ -1,4 +1,4 @@
-package net.petcontrol.PetControlApi22.ui.reminders;
+package net.petcontrol.PetControlApi22.ui.events;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import net.petcontrol.PetControlApi22.databinding.FragmentRemindersBinding;
+import net.petcontrol.PetControlApi22.databinding.FragmentEventsBinding;
 
-public class RemindersFragment extends Fragment {
+public class EventsFragment extends Fragment {
 
-    private FragmentRemindersBinding binding;
+    private FragmentEventsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        RemindersViewModel remindersViewModel =
-                new ViewModelProvider(this).get(RemindersViewModel.class);
+        EventsViewModel eventsViewModel =
+                new ViewModelProvider(this).get(EventsViewModel.class);
 
-        binding = FragmentRemindersBinding.inflate(inflater, container, false);
+        binding = FragmentEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textReminders;
-        remindersViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textEvents;
+        eventsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
