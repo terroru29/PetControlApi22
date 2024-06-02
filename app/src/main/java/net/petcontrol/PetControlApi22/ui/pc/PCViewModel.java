@@ -11,6 +11,7 @@ public class PCViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         //mText.setValue("This is PC fragment");
     }
+    //Actualiza la interfaz de usuario (IU) de manera reactiva en un Fragment
     public LiveData<String> getText() {
         return mText;
     }

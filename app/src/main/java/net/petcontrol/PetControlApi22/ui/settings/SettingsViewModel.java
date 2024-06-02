@@ -12,7 +12,7 @@ public class SettingsViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         //mText.setValue("This is settings fragment");
     }
-
+    //Actualiza la interfaz de usuario (IU) de manera reactiva en un Fragment
     public LiveData<String> getText() {
         return mText;
     }
