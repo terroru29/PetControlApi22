@@ -6,16 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import net.petcontrol.PetControlApi22.AdapterSettingsPetControl;
 import net.petcontrol.PetControlApi22.R;
+import net.petcontrol.PetControlApi22.SettingsPetControl;
 import net.petcontrol.PetControlApi22.ThirdPartyDataPetControl;
 //import net.petcontrol.PetControlApi22.R;
 import net.petcontrol.PetControlApi22.databinding.FragmentSettingsBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
@@ -35,15 +41,32 @@ public class SettingsFragment extends Fragment {
 
         // Asociar recursos
         //boton = root.findViewById(R.id.button);
-        // Configurar el botón
+        // Configurar los elementos
         final Button boton = binding.button;
+        final ListView settings = binding.lvSettings;
 
-        //--EVENTO BOTÓN
+        // Asociar cadenas
+        String third = getResources().getString(R.string.third_party_data);
+        String about = getResources().getString(R.string.about_app);
+        String update = getResources().getString(R.string.update_app);
+
+        // Crear la lista de elementos
+        List<SettingsPetControl> listOfSettings = new ArrayList<>();
+        listOfSettings.add(new SettingsPetControl(R.drawable.third_party_data, third, R.drawable.more_than));
+        listOfSettings.add(new SettingsPetControl(R.drawable.info_app, about, R.drawable.more_than));
+        listOfSettings.add(new SettingsPetControl(R.drawable.arrow_update, update, R.drawable.more_than));
+
+        // Crear el adaptador y configurarlo en el ListView
+        AdapterSettingsPetControl adapter = new AdapterSettingsPetControl(requireContext(), listOfSettings);
+        settings.setAdapter(adapter);
+
+
+        /*//--EVENTO BOTÓN
         boton.setOnClickListener(v -> {
             // Iniciar la nueva actividad
             Intent i = new Intent(requireContext(), ThirdPartyDataPetControl.class);
             startActivity(i);
-        });
+        });*/
         return root;
     }
     @Override

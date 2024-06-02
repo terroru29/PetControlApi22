@@ -137,6 +137,14 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
+    <!-- AJUSTES -->
+    <string name="names_settings">Nombre de cada tipo de ajuste</string>
+    <string name="about_app">Sobre la aplicación</string>
+    <string name="update_app">Actualización</string>
+    <!-- VERSIÓN -->
+    <string name="cloud_up">Icono de una nube con una flecha sentido superior.</string>
+    <string name="version">Versión</string>
+    <string name="num_version">1.0.0b</string>
     <!-- DATOS DE TERCEROS -->
     <string name="back">Botón de regresar de página</string>
     <string name="third_party_data">Datos de terceros</string>
@@ -148,5 +156,10 @@
     <string name="maps">Google Maps</string>
     <string name="description_places">Logo de Google Places API</string>
     <string name="places">Google Places API</string>
+    <!-- ACERCA DE ESTA APLICACIÓN -->
+    <!-- ACTUALIZACIÓN -->
+    <string name="description_img_update">Flecha abierta con sentido superior dentro de un círculo.</string>
+    <string name="version_update">1.0.0</string>
+    <string name="text_update">Esta es la versión más reciente</string>
 
 </resources>
