@@ -141,6 +141,7 @@
     <string name="names_settings">Nombre de cada tipo de ajuste</string>
     <string name="about_app">Sobre la aplicación</string>
     <string name="update_app">Actualización</string>
+    <string name="forward">Símbolo de mayor que representando el pasar de pantalla.</string>
     <!-- VERSIÓN -->
     <string name="cloud_up">Icono de una nube con una flecha sentido superior.</string>
     <string name="version">Versión</string>
@@ -157,6 +158,195 @@
     <string name="description_places">Logo de Google Places API</string>
     <string name="places">Google Places API</string>
     <!-- ACERCA DE ESTA APLICACIÓN -->
+    <string name="version_and_num">Versión: 1.0.0b</string>
+    <string name="user_agreement">Acuerdo de usuario</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="user_experience_program">Programa de experiencia de usuario</string>
+    <!-- ACUERDO DE USUARIO -->
+    <string name="user_agreement_title">Acuerdo con el usuario de PetControl</string>
+    <string name="agreement">
+        <![CDATA[
+        <h1>Acuerdo de Usuario</h1>
+        <p>Bienvenido a PetControl. Este acuerdo de usuario ("Acuerdo") es un contrato entre usted y
+         PetControl ("nosotros") que establece los términos y condiciones bajo los cuales usted
+         puede utilizar nuestra aplicación.</p>
+
+        <h2>1. Aceptación de los Términos</h2>
+        <p>Al descargar, instalar o utilizar la aplicación PetControl, usted acepta cumplir con este
+         Acuerdo. Si no está de acuerdo con estos términos, no debe utilizar la aplicación.</p>
+
+        <h2>2. Edad Mínima</h2>
+        <p>Debe tener al menos 16 años para utilizar PetControl. Al aceptar este Acuerdo, usted
+        declara y garantiza que tiene al menos 16 años.</p>
+
+        <h2>3. Funcionalidades de la Aplicación</h2>
+        <p>PetControl le permite gestionar el control de sus mascotas mediante las siguientes
+        funcionalidades:</p>
+        <ul>
+            <li><b>Eventos:</b> Visualice los eventos que ha introducido en el calendario,
+            incluyendo fecha, título y nota.</li>
+            <li><b>Calendario:</b> Anote citas veterinarias, tomas de medicamentos, vacunas y otros
+            eventos importantes relacionados con sus mascotas.</li>
+            <li><b>Localización:</b> Ubique veterinarios, parques y tiendas de comida de animales
+            cercanas a su ubicación actual.</li>
+            <li><b>Pantalla Principal:</b> Vea sus mascotas con su foto (o una predeterminada),
+            nombre, sexo (si se ha introducido) y edad (si se escribió en su respectivo campo).</li>
+        </ul>
+
+        <h2>4. Uso de la Información</h2>
+        <p>La información que usted introduzca en PetControl será utilizada únicamente para
+        proporcionar las funcionalidades de la aplicación. No compartiremos su información con
+        terceros sin su consentimiento, salvo cuando sea requerido por la ley.</p>
+
+        <h2>5. Modificaciones al Acuerdo</h2>
+        <p>Nos reservamos el derecho de modificar este Acuerdo en cualquier momento. Las
+        modificaciones serán efectivas cuando se publiquen en la aplicación. Su uso continuado de
+        PetControl después de la publicación de cualquier modificación constituye su aceptación de
+        dichos cambios.</p>
+
+        <h2>6. Terminación</h2>
+        <p>Podemos terminar su acceso a PetControl en cualquier momento, con o sin causa, con o sin
+        previo aviso, de manera efectiva inmediatamente.</p>
+
+        <h2>7. Limitación de Responsabilidad</h2>
+        <p>PetControl no será responsable de ningún daño indirecto, incidental, especial, consecuente
+         o punitivo, ni de ninguna pérdida de datos, uso, buena voluntad u otras pérdidas intangibles,
+          como resultado del uso o la incapacidad de uso de la aplicación.</p>
+
+        <h2>8. Ley Aplicable</h2>
+        <p>Este Acuerdo se regirá e interpretará de acuerdo con las leyes del país donde resida el
+        usuario, sin dar efecto a ningún principio de conflicto de leyes.</p>
+
+        <h2>9. Contacto</h2>
+        <p>Si tiene alguna pregunta sobre este Acuerdo, por favor contáctenos a través de
+        PetControl@pet-control.net.</p>
+
+        <p>Gracias por utilizar PetControl.</p>
+        ]]>
+    </string>
+    <!-- POLÍTICA DE PRIVACIDAD -->
+    <string name="privacy_policy_title">Política de Privacidad de PetControl</string>
+    <string name="policy">
+        <![CDATA[
+        <h1>Política de Privacidad</h1>
+        <p>En PetControl, valoramos su privacidad y estamos comprometidos a proteger la información
+        personal que comparte con nosotros. Esta Política de Privacidad describe cómo recopilamos,
+        usamos, compartimos y protegemos su información.</p>
+
+        <h2>1. Información que Recopilamos</h2>
+        <p>Podemos recopilar la siguiente información cuando utiliza PetControl:</p>
+        <ul>
+            <li><b>Información de la cuenta:</b> Nombre de usuario, dirección de correo electrónico,
+            contraseña y otros detalles que introduzca sobre usted.</li>
+            <li><b>Información de mascotas:</b> Fotos, nombres, sexo, edad y otros detalles que
+            introduzca sobre sus mascotas.</li>
+            <li><b>Datos de ubicación:</b> Información de geolocalización para ubicar veterinarios,
+            parques y tiendas de comida de animales cercanas.</li>
+            <li><b>Eventos del calendario:</b> Detalles sobre citas veterinarias, tomas de
+            medicamentos, vacunas y otros eventos que registre en el calendario.</li>
+        </ul>
+
+        <h2>2. Cómo Usamos su Información</h2>
+        <p>Utilizamos la información recopilada para:</p>
+        <ul>
+            <li>Proporcionar y mejorar las funcionalidades de PetControl.</li>
+            <li>Personalizar su experiencia de usuario.</li>
+            <li>Mostrar notas relacionadas con sus eventos del calendario.</li>
+        </ul>
+
+        <h2>3. Compartición de Información</h2>
+        <p>No compartimos su información personal con terceros, excepto en las siguientes
+        circunstancias:</p>
+        <ul>
+            <li>Con su consentimiento explícito.</li>
+            <li>Cuando sea necesario para cumplir con las leyes aplicables, regulaciones, procesos
+            legales o solicitudes gubernamentales.</li>
+            <li>Para proteger los derechos, propiedad o seguridad de PetControl, nuestros usuarios u
+             otros.</li>
+        </ul>
+
+        <h2>4. Seguridad de la Información</h2>
+        <p>Implementamos medidas de seguridad razonables para proteger su información contra acceso
+        no autorizado, pérdida, alteración o divulgación. Sin embargo, no podemos garantizar la
+        seguridad absoluta de la información transmitida a través de Internet.</p>
+
+        <h2>5. Retención de Información</h2>
+        <p>Retenemos su información personal mientras sea necesario para proporcionarle los
+        servicios de PetControl y cumplir con nuestras obligaciones legales. Puede solicitar la
+        eliminación de su cuenta y sus datos personales en cualquier momento.</p>
+
+        <h2>6. Derechos del Usuario</h2>
+        <p>Usted tiene derecho a acceder, corregir o eliminar su información personal. También puede
+         oponerse al procesamiento de sus datos o solicitar la portabilidad de los mismos. Para
+         ejercer estos derechos, por favor contáctenos a través de PetControl@pet-control.net.</p>
+
+        <h2>7. Cambios a esta Política de Privacidad</h2>
+        <p>Nos reservamos el derecho de modificar esta Política de Privacidad en cualquier momento.
+        Las modificaciones serán efectivas cuando se publiquen en la aplicación. Le notificaremos
+        cualquier cambio importante a través de la aplicación o por otros medios apropiados.</p>
+
+        <h2>8. Contacto</h2>
+        <p>Si tiene alguna pregunta o inquietud sobre esta Política de Privacidad, por favor
+        contáctenos a través de PetControl@pet-control.net.</p>
+
+        <p>Gracias por confiar en PetControl para el cuidado de sus mascotas.</p>
+        ]]>
+    </string>
+    <!-- PROGRAMA DE EXPERIENCIA DE USUARIO -->
+    <string name="ux_program_title">Programa de Experiencia de Usuario de PetControl</string>
+    <string name="ux_program">
+        <![CDATA[
+        <h1>Programa de Experiencia de Usuario de PetControl</h1>
+        <p>Gracias por su interés en participar en el Programa de Experiencia de Usuario de
+        PetControl ("Programa UX"). Este programa tiene como objetivo mejorar nuestra aplicación a
+        través de sus comentarios y sugerencias. Al participar, usted acepta los siguientes términos
+         y condiciones.</p>
+
+        <h2>1. Participación Voluntaria</h2>
+        <p>Su participación en el Programa UX es completamente voluntaria. Puede optar por no
+        participar o dejar de participar en cualquier momento sin ninguna penalización.</p>
+
+        <h2>2. Información Recopilada</h2>
+        <p>Podemos recopilar los siguientes tipos de información durante su participación en el
+        Programa UX:</p>
+        <ul>
+            <li><b>Comentarios y sugerencias:</b> Opiniones y sugerencias que proporcione sobre la
+            funcionalidad, diseño y uso de PetControl.</li>
+            <li><b>Datos de uso:</b> Información sobre cómo utiliza la aplicación, incluyendo las
+            características que utiliza con más frecuencia, errores encontrados y su flujo de
+            navegación.</li>
+            <li><b>Encuestas y entrevistas:</b> Respuestas a encuestas o preguntas durante
+            entrevistas que realizamos para obtener más detalles sobre su experiencia.</li>
+        </ul>
+
+        <h2>3. Uso de la Información</h2>
+        <p>Utilizaremos la información recopilada para mejorar la funcionalidad, diseño y
+        rendimiento de PetControl. Sus comentarios pueden ser utilizados para identificar problemas,
+         desarrollar nuevas características y mejorar la experiencia general del usuario.</p>
+
+        <h2>4. Confidencialidad</h2>
+        <p>Nos comprometemos a mantener la confidencialidad de toda la información personal que nos
+        proporcione durante su participación en el Programa UX. No compartiremos su información
+        personal con terceros sin su consentimiento explícito, salvo cuando sea requerido por la ley.</p>
+
+        <h2>5. Propiedad de los Comentarios</h2>
+        <p>Usted acepta que cualquier comentario, sugerencia o idea que proporcione a través del
+        Programa UX será propiedad exclusiva de PetControl. Nos concede una licencia mundial,
+        perpetua, irrevocable y libre de regalías para utilizar, modificar y distribuir sus
+        comentarios para cualquier propósito.</p>
+
+        <h2>6. Modificaciones al Programa</h2>
+        <p>Nos reservamos el derecho de modificar o finalizar el Programa UX en cualquier momento.
+        Cualquier modificación será efectiva cuando se publique en la aplicación o se le notifique
+        de otra manera.</p>
+
+        <h2>7. Contacto</h2>
+        <p>Si tiene alguna pregunta sobre el Programa de Experiencia de Usuario de PetControl, por
+        favor contáctenos a través de PetControl@pet-control.net.</p>
+
+        <p>Gracias por contribuir al mejoramiento de PetControl.</p>
+        ]]>
+    </string>
     <!-- ACTUALIZACIÓN -->
     <string name="description_img_update">Flecha abierta con sentido superior dentro de un círculo.</string>
     <string name="version_update">1.0.0</string>

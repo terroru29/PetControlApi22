@@ -14,30 +14,28 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Objects;
 
-public class AdapterSettingsPetControl extends ArrayAdapter<SettingsPetControl> {
+public class AdapterAboutAppPetControl extends ArrayAdapter<AboutTheAppPetControl> {
     Intent intent = null;
 
 
-    public AdapterSettingsPetControl (Context context, List<SettingsPetControl> settings) {
-        super(context, 0, settings);
+    public AdapterAboutAppPetControl (Context context, List<AboutTheAppPetControl> infor) {
+        super(context, 0, infor);
     }
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        SettingsPetControl sPC = getItem(position);
+        AboutTheAppPetControl atpPC = getItem(position);
 
         if (convertView == null)
             convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.adapter_settings_petcontrol, parent, false);
+                    .inflate(R.layout.adapter_about_app_petcontrol, parent, false);
 
         // Asociar variables con sus recursos
-        ImageView imgSettings = convertView.findViewById(R.id.ivTypeSettings);
-        TextView textSettings = convertView.findViewById(R.id.txtTypeSettings);
-        ImageView arrows = convertView.findViewById(R.id.ivMoreThan);
+        TextView textInformation = convertView.findViewById(R.id.txtTypeInformation);
+        ImageView arrows = convertView.findViewById(R.id.ivForward);
 
         // Modificar según valor almacenado
-        imgSettings.setImageResource(Objects.requireNonNull(sPC).imageSettings);
-        textSettings.setText(sPC.typeSettings);
+        textInformation.setText(atpPC.information);
 
 
         //--EVENTO ITEM LISTVIEW
@@ -45,13 +43,13 @@ public class AdapterSettingsPetControl extends ArrayAdapter<SettingsPetControl> 
             // Determinar qué actividad iniciar en función de la posición
             switch (position) {
                 case 0:
-                    intent = new Intent(getContext(), ThirdPartyDataPetControl.class);
+                    intent = new Intent(getContext(), UserAgreementPetControl.class);
                     break;
                 case 1:
-                    intent = new Intent(getContext(), AboutAppPetControl.class);
+                    intent = new Intent(getContext(), PrivacyPolicyPetControl.class);
                     break;
                 case 2:
-                    intent = new Intent(getContext(), UpdateAppPetControl.class);
+                    intent = new Intent(getContext(), UserExperienceProgramPetControl.class);
                     break;
                 default:
                     break;

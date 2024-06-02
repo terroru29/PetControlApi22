@@ -58,26 +58,14 @@
 
     <ListView
         android:id="@+id/lvSettings"
-        android:layout_width="360dp"
-        android:layout_height="170dp"
+        android:layout_width="367dp"
+        android:layout_height="190dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.376" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.942"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.89" />
 
     <ImageView
         android:id="@+id/ivVersion"
@@ -87,10 +75,24 @@
         android:src="@drawable/cloud_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.168"
+        app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.636" />
+
+    <TextView
+        android:id="@+id/txtNumVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/num_version"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txtVersion"
+        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintStart_toStartOf="@+id/txtVersion"
+        app:layout_constraintTop_toBottomOf="@+id/txtVersion"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txtVersion"
@@ -103,23 +105,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ivVersion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toEndOf="@+id/ivVersion"
         app:layout_constraintTop_toTopOf="@+id/ivVersion"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/txtNumVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/num_version"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/txtVersion"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtVersion"
-        app:layout_constraintTop_toBottomOf="@+id/txtVersion"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

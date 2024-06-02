@@ -1,13 +1,10 @@
 package net.petcontrol.PetControlApi22.ui.settings;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import net.petcontrol.PetControlApi22.AdapterSettingsPetControl;
 import net.petcontrol.PetControlApi22.R;
 import net.petcontrol.PetControlApi22.SettingsPetControl;
-import net.petcontrol.PetControlApi22.ThirdPartyDataPetControl;
-//import net.petcontrol.PetControlApi22.R;
 import net.petcontrol.PetControlApi22.databinding.FragmentSettingsBinding;
 
 import java.util.ArrayList;
@@ -39,10 +34,7 @@ public class SettingsFragment extends Fragment {
 
         //settingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        // Asociar recursos
-        //boton = root.findViewById(R.id.button);
         // Configurar los elementos
-        final Button boton = binding.button;
         final ListView settings = binding.lvSettings;
 
         // Asociar cadenas
@@ -52,21 +44,18 @@ public class SettingsFragment extends Fragment {
 
         // Crear la lista de elementos
         List<SettingsPetControl> listOfSettings = new ArrayList<>();
-        listOfSettings.add(new SettingsPetControl(R.drawable.third_party_data, third, R.drawable.more_than));
-        listOfSettings.add(new SettingsPetControl(R.drawable.info_app, about, R.drawable.more_than));
-        listOfSettings.add(new SettingsPetControl(R.drawable.arrow_update, update, R.drawable.more_than));
+        listOfSettings.add(new SettingsPetControl(R.drawable.third_party_data, third,
+                R.drawable.more_than));
+        listOfSettings.add(new SettingsPetControl(R.drawable.info_app, about,
+                R.drawable.more_than));
+        listOfSettings.add(new SettingsPetControl(R.drawable.arrow_update, update,
+                R.drawable.more_than));
 
         // Crear el adaptador y configurarlo en el ListView
-        AdapterSettingsPetControl adapter = new AdapterSettingsPetControl(requireContext(), listOfSettings);
+        AdapterSettingsPetControl adapter = new AdapterSettingsPetControl(requireContext(),
+                listOfSettings);
         settings.setAdapter(adapter);
 
-
-        /*//--EVENTO BOTÓN
-        boton.setOnClickListener(v -> {
-            // Iniciar la nueva actividad
-            Intent i = new Intent(requireContext(), ThirdPartyDataPetControl.class);
-            startActivity(i);
-        });*/
         return root;
     }
     @Override
