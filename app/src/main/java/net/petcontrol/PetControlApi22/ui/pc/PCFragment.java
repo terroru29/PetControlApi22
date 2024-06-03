@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -417,5 +418,50 @@ public class PCFragment extends Fragment {
 
         // Notificamos que se ha producido un cambio
         adapterPC.notifyDataSetChanged();
+    }
+    private List<PCPetControl> getListOfPets() {
+        listPets = new ArrayList<>();
+
+        try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())) {
+            // Abrir en modo lectura
+            dbManager.openRead();
+
+            try (Cursor cursor = dbManager.fetchDataPets()) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        String name = cursor.getString(cursor
+                                .getColumnIndexOrThrow(DatabaseHelperPetControl.COLUMN_PETS_NAME));
+                        int age = cursor.getInt(cursor
+                                .getColumnIndexOrThrow(DatabaseHelperPetControl.COLUMN_PETS_AGE));
+                        String sex = cursor.getString(cursor
+                                .getColumnIndexOrThrow(DatabaseHelperPetControl.COLUMN_PETS_SEX));
+                        byte[] pic = cursor.getBlob(cursor
+                                .getColumnIndexOrThrow(DatabaseHelperPetControl.COLUMN_PETS_PIC));
+                        Bitmap photo = getBitmapFromByteArray(pic);
+
+                        listPets.add(new PCPetControl(photo, name, sex, age));
+                    } while (cursor.moveToNext());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("DatabaseError", "Error al obtener los datos.");
+            }
+        } catch (SQLException e) {
+            // Manejar errores de la base de datos
+            Log.e("DatabaseError", "Error al interactuar con la base de datos", e);
+        } catch (Exception ex) {
+            // Manejar otros tipos de errores
+            Log.e("GeneralError", "Ocurrió un error", ex);
+        }
+        return listPets;
+    }
+    // Convertir Byte Array a Bitmap
+    public Bitmap getBitmapFromByteArray(byte[] blob) {
+        if (blob == null || blob.length == 0) {
+            // Si el parámetro es null o está vacío
+            Log.e("DatabaseError", "ByteArray es null o está vacío");
+            return null;
+        }
+        return BitmapFactory.decodeByteArray(blob, 0, blob.length);
     }
 }

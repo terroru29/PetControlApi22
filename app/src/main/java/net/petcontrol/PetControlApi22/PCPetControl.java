@@ -13,10 +13,10 @@ public class PCPetControl {
 
     // Constructor
     public PCPetControl(Bitmap photo, String name, String sex, int age) {
+        this.photo = photo;
         this.name = name;
         this.sex = sex;
         this.age = age;
-        this.photo = photo;
     }
 
 
