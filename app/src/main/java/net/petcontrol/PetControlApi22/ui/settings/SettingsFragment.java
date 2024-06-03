@@ -21,7 +21,6 @@ import java.util.List;
 public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
 
-    //TODO Hacer que el paso de pantalla sea con alpha (difuminado)
     //TODO añadir datos user (img, name, gender & age)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

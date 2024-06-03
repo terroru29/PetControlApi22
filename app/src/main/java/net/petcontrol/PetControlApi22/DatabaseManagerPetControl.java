@@ -109,13 +109,6 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 throw new IllegalArgumentException("El nombre de la mascota ya está guardado para otro " +
                         "animal.");
             } else {
-                /*
-                // Validar el campo de la imagen
-                if (pic_pet == null) {
-                    // Cargar la imagen predeterminada desde los recursos
-                    pic_pet = BitmapFactory.decodeResource(context.getResources(), R.drawable.pig);
-                }
-                 */
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_ID_TYPE, id_type);
                 contentValues.put(DatabaseHelperPetControl.COLUMN_PETS_NAME, name); // Obligatorio
@@ -134,13 +127,12 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 long result = database.insert(DatabaseHelperPetControl.TABLE_PETS, null,
                         contentValues);
 
-                if (result == -1) {
+                if (result == -1)
                     // Error en la inserción
                     Log.e("DatabaseManagerPetControl", "Error al insertar la mascota.");
-                } else {
+                else
                     // Inserción exitosa
                     Log.d("DatabaseManagerPetControl", "Mascota insertada correctamente.");
-                }
             }
         } catch (Exception e) {
             // Manejo de cualquier excepción que pueda ocurrir
@@ -163,10 +155,10 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     public void insertOwner(String name, int age, String gender, Bitmap pic_owner, String birthday,
                             String email, String pass) {
         // Verifica si ya existe un propietario almacenado
-        /*if (isOwnerStored()) {
+        if (isOwnerStored()) {
             // Si ya existe un propietario almacenado, muestra un mensaje y no permite la inserción
             throw new IllegalStateException("El número máximo de usuarios debe ser 1.");
-        } else {*/
+        } else {
             try {
                 ContentValues contentValues = new ContentValues();
                 // Verifica cada campo y si es nulo, inserta un valor por defecto o null
@@ -195,8 +187,9 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 // Manejo de cualquier excepción que pueda ocurrir
                 Log.e("DatabaseManagerPetControl", "Exception: " + e.getMessage(), e);
             }
-        //}
+        }
     }
+    //TODO Eliminar tabla
     /**
      * Inserta una nueva visita al veterinario en la base de datos.
      *
@@ -224,20 +217,48 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         // Inserta la visita al veterinario en su respectiva tabla
         database.insert(DatabaseHelperPetControl.TABLE_VISITS_VET, null, contentValues);
     }
-    //TODO añadir la columna título
     /**
      * Inserta un nuevo evento en la base de datos.
      *
-     * @param date    La fecha del evento con formato aaaa-MM-dd HH:mm:ss.
+     * @param date    La fecha del evento con formato aaaa-MM-dd ~HH:mm:ss~.
+     * @param title   El título del evento.
      * @param content El contenido del evento.
      */
-    public void insertEvent(String date, String content) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_DATE, date);
-        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT, content);
+    public void insertEvent(String date, String title, String content) {
+        /*try {
+            // Verifica si el título del evento ya existe en la base de datos
+            if (isValueExists(DatabaseHelperPetControl.TABLE_EVENTS,
+                    DatabaseHelperPetControl.COLUMN_EVENTS_TITLE, title)) {
+                // Si el título del evento ya está guardado para otro evento, lanza una excepción
+                throw new IllegalArgumentException("El título del evento ya está guardado para otro " +
+                        "evento.");
+            } else {*/
+                ContentValues contentValues = new ContentValues();
 
-        // Inserta el evento en su respectiva tabla
-        database.insert(DatabaseHelperPetControl.TABLE_EVENTS, null, contentValues);
+                contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_DATE, date);   // Obligatorio
+                // El título del evento tendrá la primera letra mayúscula
+                contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_TITLE,
+                        StringUtils.capitalize(title)); // Obligatorio
+                contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT,
+                        content != null ? content : "");    // Si no texto, BD tendrá cadena vacía
+
+                // Inserta el evento en su respectiva tabla
+                //database.insert(DatabaseHelperPetControl.TABLE_EVENTS, null, contentValues);
+                // Inserta el evento en su respectiva tabla
+                long result = database.insert(DatabaseHelperPetControl.TABLE_EVENTS, null,
+                        contentValues);
+
+                if (result == -1)
+                    // Error en la inserción
+                    Log.e("DatabaseManagerPetControl", "Error al insertar el evento.");
+                else
+                    // Inserción exitosa
+                    Log.d("DatabaseManagerPetControl", "Evento agregado correctamente.");
+            /*}
+        } catch (Exception e) {
+            // Manejo de cualquier excepción que pueda ocurrir
+            Log.e("DatabaseManagerPetControl", "Exception: " + e.getMessage(), e);
+        }*/
     }
 
 
@@ -342,6 +363,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         return cursor;
     }
     // Obtener todas las visitas veterinarias
+    //TODO Eliminar tabla
     public Cursor fetchAllVisitsVet() {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_VISITS_ID,
                 DatabaseHelperPetControl.COLUMN_VISITS_ID_PET,
@@ -364,8 +386,9 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     //TODO añadir la columna título
     public Cursor fetchAllEvents() {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_EVENTS_ID,
-                DatabaseHelperPetControl.COLUMN_EVENTS_ID_PET,
+                //DatabaseHelperPetControl.COLUMN_EVENTS_ID_PET,
                 DatabaseHelperPetControl.COLUMN_EVENTS_DATE,
+                DatabaseHelperPetControl.COLUMN_EVENTS_TITLE,
                 DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT};
 
         Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_EVENTS, columns, null,
@@ -434,6 +457,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 whereClause, whereArgs);
     }
     // Actualizar visita al veterinario
+    //TODO Eliminar tabla
     public int updateVisitVet(int id, int id_pet, String name, String loc, String date,
                               String reason, String diagnosis, String treatment, double price) {
         ContentValues contentValues = new ContentValues();
@@ -451,10 +475,11 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                     DatabaseHelperPetControl.COLUMN_VISITS_DATE + " = " + date, null);
     }
     // Actualizar eventos
-    //TODO añadir la columna título
-    public int updateEvent(int id, String date, String content) {
+    //TODO Revisar cláusula Where --> parametrizarla (=?)
+    public int updateEvent(int id, String date, String title, String content) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_DATE, date);
+        contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_TITLE, title);
         contentValues.put(DatabaseHelperPetControl.COLUMN_EVENTS_CONTENT, content);
         return database.update(DatabaseHelperPetControl.TABLE_EVENTS, contentValues,
                 DatabaseHelperPetControl.COLUMN_EVENTS_ID + " = " + id, null);
@@ -466,7 +491,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     public void deleteTypePet(int id, String type_pet) {
         if (isValueExists(DatabaseHelperPetControl.TABLE_TYPES_PETS,
                 DatabaseHelperPetControl.COLUMN_TYPES_PETS_ID, type_pet)) {
-            // No permitir eliminaciones a los tipos de animales predeterminados
+            // No permitir eliminar los tipos de animales predeterminados
             throw new UnsupportedOperationException("No está permitido borrar un tipo de animal.");
         }
         database.delete(DatabaseHelperPetControl.TABLE_TYPES_PETS,
@@ -491,7 +516,8 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     public void deleteAllOwners() {
         database.delete(DatabaseHelperPetControl.TABLE_OWNERS, null, null);
     }
-    // Eliminar visita veterinaria  TODO revisar PK
+    // Eliminar visita veterinaria
+    //TODO Revisar PK y eliminar tabla
     public void deleteVisitVet(int id, int id_pet, LocalDateTime date) {
         database.delete(DatabaseHelperPetControl.TABLE_VISITS_VET,
                 DatabaseHelperPetControl.COLUMN_VISITS_ID + " = " + id + " AND " +
@@ -499,7 +525,6 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 DatabaseHelperPetControl.COLUMN_VISITS_DATE + " = " + date, null);
     }
     // Eliminar evento
-    //TODO añadir la columna título
     public void deleteEvent(int id) {
         database.delete(DatabaseHelperPetControl.TABLE_EVENTS,
                 DatabaseHelperPetControl.COLUMN_EVENTS_ID + " = " + id, null);

@@ -58,11 +58,11 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     public static final String COLUMN_VISITS_PRICE = "VisitPrice";
 
     // Tabla de EVENTOS
-    //TODO añadir título de columna (TEXT)
     public static final String TABLE_EVENTS = "Events";
     public static final String COLUMN_EVENTS_ID = "IDEvent";
     public static final String COLUMN_EVENTS_ID_PET = "IDPetEvent";
     public static final String COLUMN_EVENTS_DATE = "DateEvent";
+    public static final String COLUMN_EVENTS_TITLE = "TitleEvent";
     public static final String COLUMN_EVENTS_CONTENT = "ContentEvent";
 
 
@@ -101,13 +101,14 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 COLUMN_OWNERS_PASSWORD + " TEXT NOT NULL);";
 
     // SQL para crear la tabla de visitas veterinarias
+    //TODO Eliminar tabla
     private static final String TABLE_VISITS_VET_CREATE =
         "CREATE TABLE if not exists " + TABLE_VISITS_VET + " (" +
                 COLUMN_VISITS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_VISITS_ID_PET + " INTEGER, " +
+                COLUMN_VISITS_ID_PET + " INTEGER NOT NULL, " +
                 COLUMN_VISITS_NAME + " TEXT, " +
                 COLUMN_VISITS_LOC + " TEXT, " +
-                COLUMN_VISITS_DATE + " TEXT, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
+                COLUMN_VISITS_DATE + " TEXT NOT NULL, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
                 COLUMN_VISITS_REASON + " TEXT, " +
                 COLUMN_VISITS_DIAGNOSIS + " TEXT, " +
                 COLUMN_VISITS_TREATMENT + " TEXT, " +
@@ -116,15 +117,17 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 "REFERENCES TABLE_PETS(COLUMN_PETS_ID));";
 
     // SQL para crear la tabla de eventos
-    //TODO añadir título de columna (TEXT)
+    //TODO Quitar ID_PET y su FK
     private static final String TABLE_EVENTS_CREATE =
         "CREATE TABLE if not exists " + TABLE_EVENTS + " (" +
                 COLUMN_EVENTS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_EVENTS_ID_PET + " INTEGER, " +
-                COLUMN_EVENTS_DATE + " TEXT, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
-                COLUMN_EVENTS_CONTENT + " TEXT, " +
-                "FOREIGN KEY (" + COLUMN_EVENTS_ID_PET + ") " +
-                "REFERENCES TABLE_PETS(COLUMN_PETS_ID));";
+                //COLUMN_EVENTS_ID_PET + " INTEGER, " +
+                // Fecha seleccionada en el calendario, NO LA DE LA CREACIÓN DEL EVENTO
+                COLUMN_EVENTS_DATE + " TEXT NOT NULL, " +   //TODO formato ISO8601 (YYYY-MM-DD ~HH:MM:SS~)
+                COLUMN_EVENTS_TITLE + " TEXT NOT NULL, " +
+                COLUMN_EVENTS_CONTENT + " TEXT);";// +
+                /*"FOREIGN KEY (" + COLUMN_EVENTS_ID_PET + ") " +
+                "REFERENCES TABLE_PETS(COLUMN_PETS_ID));";*/
 
 
     // --- CREACIÓN BD ---
