@@ -46,6 +46,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     public static final String COLUMN_OWNERS_PASSWORD = "Password";
 
     // Tabla de VISITAS VETERINARIAS
+    //TODO Eliminar tabla
     public static final String TABLE_VISITS_VET = "VisitsVet";
     public static final String COLUMN_VISITS_ID = "IDVet";
     public static final String COLUMN_VISITS_ID_PET = "IDPet";
@@ -60,7 +61,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
     // Tabla de EVENTOS
     public static final String TABLE_EVENTS = "Events";
     public static final String COLUMN_EVENTS_ID = "IDEvent";
-    public static final String COLUMN_EVENTS_ID_PET = "IDPetEvent";
+    //public static final String COLUMN_EVENTS_ID_PET = "IDPetEvent";
     public static final String COLUMN_EVENTS_DATE = "DateEvent";
     public static final String COLUMN_EVENTS_TITLE = "TitleEvent";
     public static final String COLUMN_EVENTS_CONTENT = "ContentEvent";

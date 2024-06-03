@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/pink_pastel"
     tools:context=".ui.pc.PCFragment">
 
     <TextView
@@ -47,6 +48,7 @@
         tools:src="@tools:sample/backgrounds/scenic" />
 
     <ListView
+        android:id="@+id/lvPets"
         android:layout_width="290dp"
         android:layout_height="513dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!-- Contenedor de la imagen -->
+    <LinearLayout
+        android:id="@+id/llImageContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Imagen con fondo circular -->
+        <ImageView
+            android:id="@+id/ivPet"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/shape_oval"
+            android:contentDescription="@string/description_photo"
+            android:scaleType="center"
+            app:srcCompat="@drawable/animal_default" />
+
+    </LinearLayout>
+
+    <!-- Contenedor rectangular con extremos ovalados -->
+    <LinearLayout
+        android:id="@+id/llRectangle"
+        android:layout_width="281dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022">
+
+        <!-- Nombre de la mascota -->
+
+        <!-- Sexo y edad de la mascota -->
+        <TextView
+            android:id="@+id/txtPetName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_oval"
+            android:text="@string/hint_name"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <LinearLayout
+            android:id="@+id/llHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Sexo de la mascota -->
+            <TextView
+                android:id="@+id/txtPetSex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/purple"
+                android:text="@string/hint_gender"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:typeface="sans"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Edad de la mascota -->
+            <TextView
+                android:id="@+id/txtPetAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/purple"
+                android:text="@string/hint_age"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:typeface="sans" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

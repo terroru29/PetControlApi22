@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -163,13 +164,17 @@ public class DatabaseManagerPetControl implements AutoCloseable {
                 ContentValues contentValues = new ContentValues();
                 // Verifica cada campo y si es nulo, inserta un valor por defecto o null
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_NAME, name);   // Obligatorio
-                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age); //0 por defecto
+                // Si no se inserta fecha de nacimiento, la edad por defecto será de 16 años
+                contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_AGE, age != 0 ? age : 16);
+                // Si no se elige género, inserta cadena vacía
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
-                        gender != null ? gender : ""); // Si no se elige género, inserta cadena vacía
+                        gender != null ? gender : "");
+                // Si no se indica fecha de cumpleaños, se inserta una cadena vacía
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY,
-                        birthday != null ? birthday : ""); // Si no se indica fecha de cumpleaños, insertar una cadena vacía
+                        birthday != null ? birthday : "");
+                // Si no hay imagen, insertar null
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PIC,
-                        pic_owner != null ? getBitmapAsByteArray(pic_owner) : null); // Si no hay imagen, insertar null
+                        pic_owner != null ? getBitmapAsByteArray(pic_owner) : null);
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_EMAIL, email); // Obligatorio
                 contentValues.put(DatabaseHelperPetControl.COLUMN_OWNERS_PASSWORD, pass);   // Obligatorio
 
@@ -325,6 +330,20 @@ public class DatabaseManagerPetControl implements AutoCloseable {
             cursor.moveToFirst();
         return cursor;
     }
+    // Obtener datos básicos de las mascotas
+    public Cursor fetchDataPets() {
+        String[] columns = new String[] { DatabaseHelperPetControl.COLUMN_PETS_NAME,
+                DatabaseHelperPetControl.COLUMN_PETS_AGE,
+                DatabaseHelperPetControl.COLUMN_PETS_SEX,
+                DatabaseHelperPetControl.COLUMN_PETS_PIC };
+
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_PETS, columns, null,
+                null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        return cursor;
+    }
     // Obtener todos los propietarios
     public Cursor fetchAllOwners() {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_OWNERS_ID,
@@ -365,8 +384,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
     // Obtener datos específicos del propietario
     public Cursor fetchOwnerDetails(String name) {
         // Definir las columnas que quieres recuperar
-        String[] columns = new String[] {
-                DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
+        String[] columns = new String[] { DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
                 DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
                 DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
                 DatabaseHelperPetControl.COLUMN_OWNERS_PIC };
@@ -375,7 +393,7 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS,  // Tabla
                 columns,                               // Columnas a recuperar
                 DatabaseHelperPetControl.COLUMN_OWNERS_NAME + " = ?",
-                new String[]{String.valueOf(name)},     // Argumentos
+                new String[]{name},                     // Argumentos
                 null,                                  // Group by
                 null,                                  // Having
                 null                                   // Order by

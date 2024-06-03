@@ -1,6 +1,10 @@
 package net.petcontrol.PetControlApi22.ui.settings;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Bitmap;
@@ -31,8 +35,9 @@ import java.util.List;
 
 public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
+    SharedPreferences sharedPreferences;
+    String userName;
 
-    //TODO añadir datos user (img, name, gender & age)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         // Crear el ViewModel
@@ -44,6 +49,10 @@ public class SettingsFragment extends Fragment {
         View root = binding.getRoot();
 
         //settingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        // Obtener preferencias y asignar a una variable
+        sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        userName = sharedPreferences.getString("username", "persona");
 
         // Configurar los elementos
         final ImageView owner = binding.imgUser;
@@ -85,10 +94,11 @@ public class SettingsFragment extends Fragment {
             // Intentar abrir la base de datos
             dbManager.openRead();
 
-            try (Cursor cursor = dbManager.fetchOwnerDetails("Patricia")) {
+            try (Cursor cursor = dbManager.fetchOwnerDetails("PetControl")) {
+                Log.d("Nombre", userName);
                 if (cursor != null && cursor.moveToFirst()) {
                     // Datos a mostrar
-                    do {
+                    //do {
                         @SuppressLint("Range") String ownerName = cursor.getString(cursor.
                                 getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_NAME));
                         @SuppressLint("Range") int ownerAge = cursor.getInt(cursor.
@@ -106,8 +116,8 @@ public class SettingsFragment extends Fragment {
                         if (ownerPic != null)
                             owner.setImageBitmap(ownerPic);
                         else
-                            owner.setImageResource(R.drawable.pig); // Imagen por defecto si ownerPic es nulo
-                    } while (cursor.moveToNext());
+                            owner.setImageResource(R.drawable.person); // Imagen por defecto si ownerPic es nulo
+                    //} while (cursor.moveToNext());
                 } else
                     // Si no hay datos en la tabla de usuarios, muestra un mensaje en el TextView
                     Log.e("No data found User", "No se encontraron datos de usuarios.");

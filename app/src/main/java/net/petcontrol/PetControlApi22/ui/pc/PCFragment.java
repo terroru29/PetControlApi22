@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import net.petcontrol.PetControlApi22.AdapterPCPetControl;
 import net.petcontrol.PetControlApi22.AddPetPetControl;
 import net.petcontrol.PetControlApi22.DatabaseHelperPetControl;
 import net.petcontrol.PetControlApi22.DatabaseManagerPetControl;
+import net.petcontrol.PetControlApi22.PCPetControl;
 import net.petcontrol.PetControlApi22.R;
 import net.petcontrol.PetControlApi22.databinding.FragmentPcBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PCFragment extends Fragment {
         //implements DataLoadListenerPetControl {
@@ -33,7 +39,11 @@ public class PCFragment extends Fragment {
     TextView data;
     ImageButton add, del, edit, search;
     ImageView img;
+    ListView pets;
     LinearLayout contain;
+    private DatabaseManagerPetControl db;
+    private List<PCPetControl> listPets;
+    private AdapterPCPetControl adapterPC;
     /*
     private DatabasePetControl dbPetControl;
     private PetsDAOPetControl petsDAO;
@@ -111,6 +121,7 @@ public class PCFragment extends Fragment {
         PCViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Asociar recursos
+        pets = root.findViewById(R.id.lvPets);
         data = root.findViewById(R.id.txtDataUser);
         img = root.findViewById(R.id.imageView);
         add = root.findViewById(R.id.añadir);
@@ -119,12 +130,36 @@ public class PCFragment extends Fragment {
         search = root.findViewById(R.id.consultar);
         contain = root.findViewById(R.id.imageContainer);
 
+
+        // Inicializaciones
+        db = new DatabaseManagerPetControl(requireContext());
+        listPets = new ArrayList<>();
+        adapterPC = new AdapterPCPetControl(requireContext(), listPets);
+        pets.setAdapter(adapterPC);
+
+        // Cargar datos
+        loadAnimals();
+
+
+        //--EVENTO LISTVIEW
+        pets.setOnItemClickListener((parent, view, position, id) -> {
+            PCPetControl selectedAnimal = listPets.get(position);
+
+            // AnimalProfileFragmentPetControl
+            Intent intent = new Intent(getContext(), AddPetPetControl.class);
+            intent.putExtra("animalName", selectedAnimal.getName());
+            startActivity(intent);
+        });
+
+//-------------------------------------------------------------------------------------------------
+
         // Asociar listener de clic a cada botón
         add.setOnClickListener(v -> {
             // Acción de añadir datos a la base de datos
             Intent i = new Intent(requireContext(), AddPetPetControl.class);
             startActivity(i);
         });
+        /*
         del.setOnClickListener(v -> {
             try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())){
                 // Intentar abrir la base de datos
@@ -135,7 +170,7 @@ public class PCFragment extends Fragment {
                 Log.d("OwnerCount", "Total Owners: " + ownerCount);
 
                 // Eliminar todos los propietarios
-                // dbManager.deleteAllOwners();
+                //dbManager.deleteAllOwners();
                 //Log.d("DeleteAllOwners", "DeleteAllOwners");
                 // Eliminar un propietario específico
                 //dbManager.deleteOwner(30);
@@ -271,7 +306,7 @@ public class PCFragment extends Fragment {
                         if (ownerPic != null) {
                             img.setImageBitmap(ownerPic);
                         } else {
-                            img.setImageResource(R.drawable.ferret); // Imagen por defecto si ownerPic es nulo
+                            img.setImageResource(R.drawable.person); // Imagen por defecto si ownerPic es nulo
                         }
                     } while (cursor.moveToNext());
                     // Configura la cadena de datos en el TextView
@@ -286,6 +321,7 @@ public class PCFragment extends Fragment {
                 dbManager.close();
             }
         });
+        */
         return root;
     }
     @Override
@@ -294,6 +330,7 @@ public class PCFragment extends Fragment {
         binding = null;
     }
 
+//--------------------------------------------------------------------------------------------------
     /*
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -343,4 +380,42 @@ public class PCFragment extends Fragment {
         });
     }
     */
+
+// ------------------------------------------------------------------------------------------------
+    // Carga los datos de la base de datos y actualiza el adaptador
+    private void loadAnimals() {
+        listPets = new ArrayList<>();
+        // Abrir la BD en modo lectura
+        db.openRead();
+
+        // Obtener la información de la base de datos
+        try (Cursor cursor = db.fetchDataPets()) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") String petName = cursor
+                        .getString(cursor.getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_NAME));
+                    @SuppressLint("Range") int petAge = cursor
+                        .getInt(cursor.getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_AGE));
+                    @SuppressLint("Range") String petSex = cursor
+                        .getString(cursor.getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_SEX));
+                    @SuppressLint("Range") byte[] petPicByteArray = cursor
+                        .getBlob(cursor.getColumnIndex(DatabaseHelperPetControl.COLUMN_PETS_PIC));
+                    Bitmap petPic = db.getBitmapFromByteArray(petPicByteArray);
+
+                    // Creamos objeto --> Animal
+                    PCPetControl pet = new PCPetControl(petPic, petName, petSex, petAge);
+                    // Añado a la lista al animal con sus datos
+                    listPets.add(pet);
+                } while (cursor.moveToNext());
+            } else {
+                Log.e("No data found Pets", "No se encontraron datos de la mascota.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("DatabaseError", "Error al obtener los datos.");
+        }
+
+        // Notificamos que se ha producido un cambio
+        adapterPC.notifyDataSetChanged();
+    }
 }

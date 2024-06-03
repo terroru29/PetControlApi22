@@ -58,8 +58,8 @@ public class RegisterPetControl extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     // Permitirá cualquier carácter (sin @), @, cualquier carácter (sin @), ., de 2 a 3 letras minúsculas
     private static final String EMAIL_PATTERN = "^[^@]+@+[^@]+\\.[a-z]{2,3}+$";
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences, sharedPref;
+    SharedPreferences.Editor editor, edit;
     DatabaseManagerPetControl dbPC;
     Calendar cal;
     SimpleDateFormat sdf;
@@ -222,8 +222,14 @@ public class RegisterPetControl extends AppCompatActivity {
                 nameCorrect = name.getText().toString();
                 if (!nameCorrect.isEmpty()) {
                     if (withoutDigit(nameCorrect)) {
-                        // Coger los valores insertados por el usuario en cada campo
+                        // Obtener el nombre del usuario
                         nameUser = name.getText().toString();
+
+                        sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                        edit = sharedPreferences.edit();
+                        edit.putString("username", nameUser); // Guarda el nombre del usuario obtenido
+                        edit.apply();
+
 
                         /* ===VALIDACIONES=== */
                         // Validar el campo de edad
@@ -240,25 +246,10 @@ public class RegisterPetControl extends AppCompatActivity {
                             */
                         } catch (NumberFormatException e) {
                             // Manejar el caso donde la cadena está vacía o no es un número válido
-                            yearsUser = 0;
+                            yearsUser = 16;
                             Log.e("insertOwner", "La edad no es válida: " + e.getMessage());
-                            //Toast.makeText(getApplicationContext(), "La edad no es válida.",
-                                    //Toast.LENGTH_LONG).show();
-                            //return;
                         }
-                        /*
-                        // Valida la imagen del ImageView
-                        if (pictureUser.getDrawable() != null) {
-                            //picture = ((BitmapDrawable) pictureUser.getDrawable()).getBitmap();
-                            if (picture != null) {
-                                dbPC.insertOwner(nameUser, yearsUser, selectedGender, picture,
-                                        dateBirthday, emailSaved, passSaved);
-                                Log.i("Success", "Se han insertado los datos correctamente.");
-                                // Liberar la memoria asociada al objeto Bitmap
-                                picture.recycle();
-                            }
-                        }
-                        */
+
                         Drawable drawable = pictureUser.getDrawable();
                         if (drawable instanceof BitmapDrawable) {
                             // Si ya es un BitmapDrawable, simplemente obtenemos el Bitmap
@@ -275,24 +266,29 @@ public class RegisterPetControl extends AppCompatActivity {
                                 // Asignar una imagen predeterminada según el género seleccionado
                                 switch (selectedGender) {
                                     case "Femenino":
-                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.female);
+                                        picture = BitmapFactory.decodeResource(getResources(),
+                                                R.drawable.female);
                                         Log.d("Imagen femenino", "Imagen de mujer.");
                                         break;
                                     case "Masculino":
-                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.male);
+                                        picture = BitmapFactory.decodeResource(getResources(),
+                                                R.drawable.male);
                                         Log.d("Imagen masculino", "Imagen de hombre.");
                                         break;
                                     case "No binario":
-                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.not_binary);
+                                        picture = BitmapFactory.decodeResource(getResources(),
+                                                R.drawable.not_binary);
                                         Log.d("Imagen no binario", "Imagen de persona no binaria.");
                                         break;
                                     case "Genero fluido":
-                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.gender_fluid);
+                                        picture = BitmapFactory.decodeResource(getResources(),
+                                                R.drawable.gender_fluid);
                                         Log.d("Imagen género fluído", "Imagen de género fluído.");
                                         break;
                                     default:
                                         // Imagen por defecto para géneros no especificados
-                                        picture = BitmapFactory.decodeResource(getResources(), R.drawable.person);
+                                        picture = BitmapFactory.decodeResource(getResources(),
+                                                R.drawable.person);
                                         Log.d("Imagen por defecto", "No hay género.");
                                         break;
                                 }
@@ -388,27 +384,25 @@ public class RegisterPetControl extends AppCompatActivity {
             // Muestra el nombre de la imagen seleccionada
             pictureSelected.setText(namePicture);
         } else {
-            /*
-            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
-            pictureUser.setImageResource(R.drawable.ferret);
-            // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
-            picture = BitmapFactory.decodeResource(getResources(), R.drawable.ferret);
-            */
             // Asignar una imagen predeterminada según el género seleccionado
             switch (selectedGender) {
                 case "Femenino":
+                    // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
                     picture = BitmapFactory.decodeResource(getResources(), R.drawable.female);
                     Log.d("Imagen femenino", "Imagen de mujer.");
                     break;
                 case "Masculino":
+                    // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
                     picture = BitmapFactory.decodeResource(getResources(), R.drawable.male);
                     Log.d("Imagen masculino", "Imagen de hombre.");
                     break;
                 case "No binario":
+                    // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
                     picture = BitmapFactory.decodeResource(getResources(), R.drawable.not_binary);
                     Log.d("Imagen no binario", "Imagen de persona no binaria.");
                     break;
                 case "Genero fluido":
+                    // Convertimos el recurso predeterminado a Bitmap y lo asignamos a picture
                     picture = BitmapFactory.decodeResource(getResources(), R.drawable.gender_fluid);
                     Log.d("Imagen género fluído", "Imagen de género fluído.");
                     break;
@@ -418,16 +412,9 @@ public class RegisterPetControl extends AppCompatActivity {
                     Log.d("Imagen por defecto", "No hay género.");
                     break;
             }
+            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
             pictureUser.setImageBitmap(picture);
             pictureSelected.setText(R.string.default_image_name);
-            /*
-            // Si el usuario no selecciona una imagen, asignamos una imagen predeterminada
-            @SuppressLint("UseCompatLoadingForDrawables")
-            Drawable defaultDrawable = getResources().getDrawable(R.drawable.ferret, null);
-            pictureUser.setImageDrawable(defaultDrawable);
-            picture = convertToBitmap(defaultDrawable);
-            pictureSelected.setText(R.string.default_image_name);
-             */
         }
     }
 /*
@@ -559,8 +546,6 @@ public class RegisterPetControl extends AppCompatActivity {
 
             // Calcula la edad basada en la fecha seleccionada
             ageUser = calculateAge(dateBirthday);
-
-            // Almacenar la fecha en la base de datos
         }
     };
     // Método para calcular la edad basándose en la fecha de nacimiento
