@@ -122,7 +122,6 @@ public class PCFragment extends Fragment {
         // Asociar listener de clic a cada botón
         add.setOnClickListener(v -> {
             // Acción de añadir datos a la base de datos
-            //addDataToDatabase();
             Intent i = new Intent(requireContext(), AddPetPetControl.class);
             startActivity(i);
         });

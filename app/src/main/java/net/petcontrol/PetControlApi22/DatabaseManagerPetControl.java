@@ -362,6 +362,30 @@ public class DatabaseManagerPetControl implements AutoCloseable {
             cursor.moveToFirst();
         return cursor;
     }
+    // Obtener datos específicos del propietario
+    public Cursor fetchOwnerDetails(String name) {
+        // Definir las columnas que quieres recuperar
+        String[] columns = new String[] {
+                DatabaseHelperPetControl.COLUMN_OWNERS_NAME,
+                DatabaseHelperPetControl.COLUMN_OWNERS_AGE,
+                DatabaseHelperPetControl.COLUMN_OWNERS_GENDER,
+                DatabaseHelperPetControl.COLUMN_OWNERS_PIC };
+
+        // Realizar la consulta
+        Cursor cursor = database.query(DatabaseHelperPetControl.TABLE_OWNERS,  // Tabla
+                columns,                               // Columnas a recuperar
+                DatabaseHelperPetControl.COLUMN_OWNERS_NAME + " = ?",
+                new String[]{String.valueOf(name)},     // Argumentos
+                null,                                  // Group by
+                null,                                  // Having
+                null                                   // Order by
+        );
+
+        // Si el cursor no es nulo y tiene al menos una fila, obtener los datos
+        if (cursor != null)
+            cursor.moveToFirst();
+        return cursor;
+    }
     // Obtener todas las visitas veterinarias
     //TODO Eliminar tabla
     public Cursor fetchAllVisitsVet() {
