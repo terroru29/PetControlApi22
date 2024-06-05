@@ -109,7 +109,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 COLUMN_VISITS_ID_PET + " INTEGER NOT NULL, " +
                 COLUMN_VISITS_NAME + " TEXT, " +
                 COLUMN_VISITS_LOC + " TEXT, " +
-                COLUMN_VISITS_DATE + " TEXT NOT NULL, " +   //TODO formato ISO8601 (YYYY-MM-DD HH:MM:SS)
+                COLUMN_VISITS_DATE + " TEXT NOT NULL, " +   // Formato ISO8601 (YYYY-MM-DD HH:MM:SS)
                 COLUMN_VISITS_REASON + " TEXT, " +
                 COLUMN_VISITS_DIAGNOSIS + " TEXT, " +
                 COLUMN_VISITS_TREATMENT + " TEXT, " +
@@ -124,7 +124,7 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
                 COLUMN_EVENTS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 //COLUMN_EVENTS_ID_PET + " INTEGER, " +
                 // Fecha seleccionada en el calendario, NO LA DE LA CREACIÓN DEL EVENTO
-                COLUMN_EVENTS_DATE + " TEXT NOT NULL, " +   //TODO formato ISO8601 (YYYY-MM-DD ~HH:MM:SS~)
+                COLUMN_EVENTS_DATE + " TEXT NOT NULL, " +   // Formato ISO8601 (YYYY-MM-DD ~HH:MM:SS~)
                 COLUMN_EVENTS_TITLE + " TEXT NOT NULL, " +
                 COLUMN_EVENTS_CONTENT + " TEXT);";// +
                 /*"FOREIGN KEY (" + COLUMN_EVENTS_ID_PET + ") " +

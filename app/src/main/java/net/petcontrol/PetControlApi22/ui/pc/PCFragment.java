@@ -39,7 +39,6 @@ public class PCFragment extends Fragment {
     private FragmentPcBinding binding;
     TextView data;
     ImageButton add, del, edit, search;
-    ImageView img;
     ListView pets;
     LinearLayout contain;
     private List<PCPetControl> listPets;
@@ -123,7 +122,6 @@ public class PCFragment extends Fragment {
         // Asociar recursos
         pets = root.findViewById(R.id.lvPets);
         data = root.findViewById(R.id.txtDataUser);
-        img = root.findViewById(R.id.imageView);
         add = root.findViewById(R.id.añadir);
         del = root.findViewById(R.id.eliminar);
         edit = root.findViewById(R.id.modificar);
@@ -146,7 +144,7 @@ public class PCFragment extends Fragment {
         pets.setOnItemClickListener((parent, view, position, id) -> {
             PCPetControl selectedAnimal = listPets.get(position);
 
-            // AnimalProfilePetControl
+            //TODO AnimalProfilePetControl
             Intent intent = new Intent(getContext(), FormPetsPetControl.class);
             intent.putExtra("animalName", selectedAnimal.getName());
             startActivity(intent);
@@ -180,13 +178,27 @@ public class PCFragment extends Fragment {
                 //dbManager.deleteAllPets();
                 //Log.d("DeleteAllPets", "DeleteAllPets");
                 // Eliminar una mascota
-                dbManager.deletePet(34);
-                Log.d("DeletePet", "DeletePet");
 //                dbManager.deletePet(35);
 //                Log.d("DeletePet", "DeletePet");
 //                dbManager.deletePet(36);
 //                Log.d("DeletePet", "DeletePet");
 //                dbManager.deletePet(37);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(38);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(39);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(40);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(41);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(42);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(43);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(44);
+//                Log.d("DeletePet", "DeletePet");
+//                dbManager.deletePet(45);
 //                Log.d("DeletePet", "DeletePet");
 
             } catch (SQLException e) {
@@ -287,9 +299,9 @@ public class PCFragment extends Fragment {
                                 getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_AGE));
                         @SuppressLint("Range") String ownerGender = cursor.getString(cursor.
                                 getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_GENDER));
-                        @SuppressLint("Range") byte[] ownerPicByteArray = cursor.getBlob(cursor.getColumnIndex
+                        /*@SuppressLint("Range") byte[] ownerPicByteArray = cursor.getBlob(cursor.getColumnIndex
                                 (DatabaseHelperPetControl.COLUMN_OWNERS_PIC));
-                        Bitmap ownerPic = dbManager.getBitmapFromByteArray(ownerPicByteArray);
+                        Bitmap ownerPic = dbManager.getBitmapFromByteArray(ownerPicByteArray);*/
                         @SuppressLint("Range") String ownerBirthday = cursor.getString(cursor.
                                 getColumnIndex(DatabaseHelperPetControl.COLUMN_OWNERS_BIRTHDAY));
                         @SuppressLint("Range") String ownerEmail = cursor.getString(cursor.
@@ -302,12 +314,6 @@ public class PCFragment extends Fragment {
                                 .append(", Edad: ").append(ownerAge).append(", Género: ").append(ownerGender)
                                 .append(", Birthday: ").append(ownerBirthday).append(", Email: ")
                                 .append(ownerEmail).append(", Pass: ").append(ownerPass);
-                        // Verificar si ownerPic es nulo
-                        if (ownerPic != null) {
-                            img.setImageBitmap(ownerPic);
-                        } else {
-                            img.setImageResource(R.drawable.person); // Imagen por defecto si ownerPic es nulo
-                        }
                     } while (cursor.moveToNext());
                     // Configura la cadena de datos en el TextView
                     data.setText(userData.toString());

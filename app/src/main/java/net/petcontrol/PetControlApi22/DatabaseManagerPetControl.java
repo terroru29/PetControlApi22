@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -425,7 +424,6 @@ public class DatabaseManagerPetControl implements AutoCloseable {
         return cursor;
     }
     // Obtener todas los eventos
-    //TODO añadir la columna título
     public Cursor fetchAllEvents() {
         String[] columns = new String[] {DatabaseHelperPetControl.COLUMN_EVENTS_ID,
                 //DatabaseHelperPetControl.COLUMN_EVENTS_ID_PET,

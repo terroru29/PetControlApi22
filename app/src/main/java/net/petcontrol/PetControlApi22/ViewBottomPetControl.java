@@ -10,18 +10,18 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import net.petcontrol.PetControlApi22.databinding.ActivityMenuInferiorPetcontrolBinding;
+import net.petcontrol.PetControlApi22.databinding.ActivityViewBottomPetcontrolBinding;
 
 import java.util.Objects;
 
 public class ViewBottomPetControl extends AppCompatActivity {
-    //private ActivityMenuInferiorPetcontrolBinding binding;
+    private ActivityViewBottomPetcontrolBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityMenuInferiorPetcontrolBinding binding = ActivityMenuInferiorPetcontrolBinding.inflate(getLayoutInflater());
+        binding = ActivityViewBottomPetcontrolBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         BottomNavigationView navViewBottom = findViewById(R.id.nav_view_bottom);

@@ -7,32 +7,51 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/txtDateNotifications"
+        android:id="@+id/txtTitleEvents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha"
-        android:textStyle="italic|bold"
-        android:typeface="serif"
+        android:layout_margin="10dp"
+        android:text="Title"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintVertical_bias="0.051" />
 
     <TextView
-        android:id="@+id/txtContentNotifications"
+        android:id="@+id/txtDateEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Fecha"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="italic|bold"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.738"
+        app:layout_constraintStart_toEndOf="@+id/txtTitleEvents"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.058" />
+
+    <TextView
+        android:id="@+id/txtContentEvents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contenido"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="16sp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.174"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleEvents"
+        app:layout_constraintVertical_bias="0.027" />
 </androidx.constraintlayout.widget.ConstraintLayout>

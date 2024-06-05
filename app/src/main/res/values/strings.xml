@@ -125,7 +125,7 @@
 
     <!-- PANTALLA PRINCIPAL -->
     <string name="add_type">Añadir tipo</string>
-    <string name="title_main">Tipo animales</string>
+    <string name="title_main">Mis animales</string>
     <string name="img_description">Icono plus para añadir</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
