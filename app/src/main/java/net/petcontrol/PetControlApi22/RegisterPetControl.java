@@ -1,10 +1,5 @@
 package net.petcontrol.PetControlApi22;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.utils.widget.ImageFilterButton;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
@@ -36,6 +31,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -225,11 +225,12 @@ public class RegisterPetControl extends AppCompatActivity {
                         // Obtener el nombre del usuario
                         nameUser = name.getText().toString();
 
+                        /*
                         sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                         edit = sharedPreferences.edit();
                         edit.putString("username", nameUser); // Guarda el nombre del usuario obtenido
                         edit.apply();
-
+                        */
 
                         /* ===VALIDACIONES=== */
                         // Validar el campo de edad

@@ -146,6 +146,7 @@ public class PCFragment extends Fragment {
 
             //TODO AnimalProfilePetControl
             Intent intent = new Intent(getContext(), FormPetsPetControl.class);
+            //TODO Pasar datos por Intent
             intent.putExtra("animalName", selectedAnimal.getName());
             startActivity(intent);
         });
@@ -194,11 +195,7 @@ public class PCFragment extends Fragment {
 //                Log.d("DeletePet", "DeletePet");
 //                dbManager.deletePet(42);
 //                Log.d("DeletePet", "DeletePet");
-//                dbManager.deletePet(43);
-//                Log.d("DeletePet", "DeletePet");
-//                dbManager.deletePet(44);
-//                Log.d("DeletePet", "DeletePet");
-//                dbManager.deletePet(45);
+//                dbManager.deletePet(58);
 //                Log.d("DeletePet", "DeletePet");
 
             } catch (SQLException e) {
