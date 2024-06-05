@@ -186,7 +186,7 @@ public class LoginPetControl extends AppCompatActivity {
             Toast.makeText(this, "¡Acceso permitido!", Toast.LENGTH_LONG).show();
 
             if (termsCheck) {
-                Intent i = new Intent(this, MenuInferiorPetControl.class);
+                Intent i = new Intent(this, ViewBottomPetControl.class);
                 startActivity(i);
             }
         }

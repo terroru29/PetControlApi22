@@ -40,7 +40,7 @@ public class AdapterPCPetControl extends ArrayAdapter<PCPetControl> {
         TextView age = convertView.findViewById(R.id.txtPetAge);
 
         photo.setImageBitmap(pc.getPhoto());
-        name.setText(Objects.requireNonNull(pc).getName());
+        name.setText(pc.getName());
         sex.setText(pc.getSex());
         age.setText(String.valueOf(pc.getAge()));
 

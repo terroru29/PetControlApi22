@@ -6,7 +6,7 @@
     app:startDestination="@+id/navigation_PC">
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_events"
         android:name="net.petcontrol.PetControlApi22.ui.events.EventsFragment"
         android:label="@string/title_events"
         tools:layout="@layout/fragment_events" />

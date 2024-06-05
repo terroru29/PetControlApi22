@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -132,14 +131,23 @@ public class PCFragment extends Fragment {
         contain = root.findViewById(R.id.imageContainer);
 
 
+        /*
         // Inicializaciones
         db = new DatabaseManagerPetControl(requireContext());
-        listPets = new ArrayList<>();
-        adapterPC = new AdapterPCPetControl(requireContext(), listPets);
+        // Abre la base de datos para lectura
+        db.openRead();
+         */
+
+        // Se obtiene la lista de mascotas de la base de datos
+        List<PCPetControl> petsList = getListOfPets();
+        // Se inicializa el adaptador con la lista de mascotas
+        adapterPC = new AdapterPCPetControl(requireContext(), petsList);
+        // Asigna el adaptador al ListView
         pets.setAdapter(adapterPC);
 
+
         // Cargar datos
-        loadAnimals();
+        //loadAnimals();
 
 
         //--EVENTO LISTVIEW
@@ -160,7 +168,6 @@ public class PCFragment extends Fragment {
             Intent i = new Intent(requireContext(), AddPetPetControl.class);
             startActivity(i);
         });
-        /*
         del.setOnClickListener(v -> {
             try (DatabaseManagerPetControl dbManager = new DatabaseManagerPetControl(requireContext())){
                 // Intentar abrir la base de datos
@@ -322,7 +329,6 @@ public class PCFragment extends Fragment {
                 dbManager.close();
             }
         });
-        */
         return root;
     }
     @Override
@@ -383,6 +389,7 @@ public class PCFragment extends Fragment {
     */
 
 // ------------------------------------------------------------------------------------------------
+    /*
     // Carga los datos de la base de datos y actualiza el adaptador
     private void loadAnimals() {
         listPets = new ArrayList<>();
@@ -419,6 +426,7 @@ public class PCFragment extends Fragment {
         // Notificamos que se ha producido un cambio
         adapterPC.notifyDataSetChanged();
     }
+    */
     private List<PCPetControl> getListOfPets() {
         listPets = new ArrayList<>();
 
@@ -453,6 +461,9 @@ public class PCFragment extends Fragment {
             // Manejar otros tipos de errores
             Log.e("GeneralError", "Ocurrió un error", ex);
         }
+        // Notificamos que se ha producido un cambio
+        adapterPC.notifyDataSetChanged();
+
         return listPets;
     }
     // Convertir Byte Array a Bitmap

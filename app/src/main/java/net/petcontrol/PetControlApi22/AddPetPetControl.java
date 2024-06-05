@@ -67,7 +67,7 @@ public class AddPetPetControl extends AppCompatActivity {
      * @param view Elemento sobre el que se ejecutará la acción
      */
     public void next(View view) {
-        Intent i = new Intent(this, MenuInferiorPetControl.class);
+        Intent i = new Intent(this, ViewBottomPetControl.class);
         startActivity(i);
         // Cierra la actividad actual para evitar que el usuario regrese a ella
         //finish();

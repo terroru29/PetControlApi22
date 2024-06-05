@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_events"
         android:icon="@drawable/sharp_notifications_24"
         android:title="@string/title_events" />
  
