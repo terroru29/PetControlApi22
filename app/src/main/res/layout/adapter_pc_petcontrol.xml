@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
@@ -10,10 +11,9 @@
         android:id="@+id/llImageContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_rectangle"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/llRectangle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,7 +24,7 @@
             android:layout_height="80dp"
             android:background="@drawable/shape_oval"
             android:contentDescription="@string/description_photo"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             app:srcCompat="@drawable/animal_default" />
 
     </LinearLayout>
@@ -32,18 +32,18 @@
     <!-- Contenedor rectangular con extremos ovalados -->
     <LinearLayout
         android:id="@+id/llRectangle"
-        android:layout_width="281dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="50dp"
         android:background="@drawable/rounded_rectangle"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022">
+        app:layout_constraintVertical_bias="0.0">
 
         <!-- Nombre de la mascota -->
 
@@ -70,13 +70,13 @@
                 android:id="@+id/txtPetSex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:background="@color/purple"
                 android:text="@string/hint_gender"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                android:typeface="sans"
-                android:layout_marginEnd="16dp" />
+                android:typeface="sans" />
 
             <!-- Edad de la mascota -->
             <TextView

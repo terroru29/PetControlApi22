@@ -26,6 +26,7 @@ import net.petcontrol.PetControlApi22.AdapterPCPetControl;
 import net.petcontrol.PetControlApi22.AddPetPetControl;
 import net.petcontrol.PetControlApi22.DatabaseHelperPetControl;
 import net.petcontrol.PetControlApi22.DatabaseManagerPetControl;
+import net.petcontrol.PetControlApi22.FormPetsPetControl;
 import net.petcontrol.PetControlApi22.PCPetControl;
 import net.petcontrol.PetControlApi22.R;
 import net.petcontrol.PetControlApi22.databinding.FragmentPcBinding;
@@ -41,7 +42,6 @@ public class PCFragment extends Fragment {
     ImageView img;
     ListView pets;
     LinearLayout contain;
-    private DatabaseManagerPetControl db;
     private List<PCPetControl> listPets;
     private AdapterPCPetControl adapterPC;
     /*
@@ -131,13 +131,6 @@ public class PCFragment extends Fragment {
         contain = root.findViewById(R.id.imageContainer);
 
 
-        /*
-        // Inicializaciones
-        db = new DatabaseManagerPetControl(requireContext());
-        // Abre la base de datos para lectura
-        db.openRead();
-         */
-
         // Se obtiene la lista de mascotas de la base de datos
         List<PCPetControl> petsList = getListOfPets();
         // Se inicializa el adaptador con la lista de mascotas
@@ -145,17 +138,16 @@ public class PCFragment extends Fragment {
         // Asigna el adaptador al ListView
         pets.setAdapter(adapterPC);
 
-
-        // Cargar datos
-        //loadAnimals();
+        // Notificamos que se ha producido un cambio y tiene que actualizarse
+        adapterPC.notifyDataSetChanged();
 
 
         //--EVENTO LISTVIEW
         pets.setOnItemClickListener((parent, view, position, id) -> {
             PCPetControl selectedAnimal = listPets.get(position);
 
-            // AnimalProfileFragmentPetControl
-            Intent intent = new Intent(getContext(), AddPetPetControl.class);
+            // AnimalProfilePetControl
+            Intent intent = new Intent(getContext(), FormPetsPetControl.class);
             intent.putExtra("animalName", selectedAnimal.getName());
             startActivity(intent);
         });
@@ -188,8 +180,8 @@ public class PCFragment extends Fragment {
                 //dbManager.deleteAllPets();
                 //Log.d("DeleteAllPets", "DeleteAllPets");
                 // Eliminar una mascota
-//                dbManager.deletePet(34);
-//                Log.d("DeletePet", "DeletePet");
+                dbManager.deletePet(34);
+                Log.d("DeletePet", "DeletePet");
 //                dbManager.deletePet(35);
 //                Log.d("DeletePet", "DeletePet");
 //                dbManager.deletePet(36);
@@ -461,9 +453,6 @@ public class PCFragment extends Fragment {
             // Manejar otros tipos de errores
             Log.e("GeneralError", "Ocurrió un error", ex);
         }
-        // Notificamos que se ha producido un cambio
-        adapterPC.notifyDataSetChanged();
-
         return listPets;
     }
     // Convertir Byte Array a Bitmap
