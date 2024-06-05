@@ -211,4 +211,20 @@ public class DatabaseHelperPetControl extends SQLiteOpenHelper {
             db.insert(TABLE_TYPES_PETS, null, contentValues);
         }
     }
+     public void updatePet(PetsPetControl pet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PETS_NAME, pet.getNamePet());
+        values.put(COLUMN_PETS_AGE, pet.getAgePet());
+        values.put(COLUMN_PETS_BREED, pet.getBreed());
+        values.put(COLUMN_PETS_SEX, pet.getSexPet());
+        values.put(COLUMN_PETS_PIC, pet.getUriPicPet());
+        values.put(COLUMN_PETS_STERILIZATION, pet.getSterilization() ? 1 : 0);
+        values.put(COLUMN_PETS_DESCRIPTION, pet.getDescriptionPet());
+
+        //array de String que contiene los valores que reemplazarán a los marcadores de posición ? en la cláusula WHERE
+        // pasamos el ID de la mascota que queremos actualizar
+        db.update(TABLE_PETS, values, COLUMN_PETS_ID + " = ?", new String[]{String.valueOf(pet.getIDPet())});
+        db.close();
+    }
 }
